@@ -4,7 +4,6 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
   const handleLogin = (e) => {
 
     e.preventDefault();
@@ -48,7 +47,7 @@ const Login = () => {
       border: "1px solid #ccc",
     },
     button: {
-      width: "100%",
+      width: "150%",
       padding: "10px",
       backgroundColor: "#007bff",
       color: "white",
