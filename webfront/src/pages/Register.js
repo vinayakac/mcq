@@ -27,12 +27,26 @@ export default function Register() {
       return;
     }
 
-    // Store user data in localStorage (excluding confirmPassword)
-    const { username, email, password } = formData;
-    localStorage.setItem(
-      "userData",
-      JSON.stringify({ username, email, password })
+    // Retrieve existing users from localStorage
+    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Check if the email already exists
+    const emailExists = existingUsers.some(
+      (user) => user.email === formData.email
     );
+
+    if (emailExists) {
+      alert("An account with this email already exists.");
+      return;
+    }
+
+    // Store the new user data (excluding confirmPassword)
+    const { username, email, password } = formData;
+    const newUser = { username, email, password };
+
+    // Add the new user to the existing users array and save it to localStorage
+    const updatedUsers = [...existingUsers, newUser];
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
 
     // Navigate to login page after storing the data
     navigate("/login");
