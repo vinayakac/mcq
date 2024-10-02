@@ -6,6 +6,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
+    
     e.preventDefault();
     // Add your login logic here
     if (email && password) {
