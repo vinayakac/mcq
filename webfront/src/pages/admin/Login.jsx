@@ -63,7 +63,7 @@ export default function AdminLogin() {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.header}>Admin Login</h2>
+      <h2 style={styles.header}>ADMIN LOGIN</h2>
       <form onSubmit={handleLogin} style={styles.form}>
         <div style={styles.formGroup}>
           <label style={styles.label} htmlFor="username">Username:</label>
