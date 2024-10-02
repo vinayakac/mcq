@@ -1,85 +1,115 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export default function Register() {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    console.log('Email:', email, 'Password:', password);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const styles = {
-    container: {
-      maxWidth: '400px',
-      margin: '50px auto',
-      padding: '20px',
-      border: '1px solid #ccc',
-      borderRadius: '8px',
-      boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-      backgroundColor: '#fff',
-    },
-    heading: {
-      textAlign: 'center',
-      marginBottom: '20px',
-    },
-    form: {
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    formGroup: {
-      marginBottom: '15px',
-    },
-    label: {
-      marginBottom: '5px',
-      fontWeight: 'bold',
-    },
-    input: {
-      padding: '10px',
-      border: '1px solid #ccc',
-      borderRadius: '4px',
-    },
-    button: {
-      padding: '10px',
-      border: 'none',
-      borderRadius: '4px',
-      backgroundColor: '#007bff',
-      color: 'white',
-      fontSize: '16px',
-      cursor: 'pointer',
-    },
-    buttonHover: {
-      backgroundColor: '#0056b3',
-    },
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Simple form validation
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    // Retrieve existing users from localStorage
+    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Check if the email already exists
+    const emailExists = existingUsers.some(
+      (user) => user.email === formData.email
+    );
+
+    if (emailExists) {
+      alert("An account with this email already exists.");
+      return;
+    }
+
+    // Store the new user data (excluding confirmPassword)
+    const { username, email, password } = formData;
+    const newUser = { username, email, password };
+
+    // Add the new user to the existing users array and save it to localStorage
+    const updatedUsers = [...existingUsers, newUser];
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+    // Navigate to login page after storing the data
+    navigate("/login");
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>LOGIN</h2>
-      <form onSubmit={handleLogin} style={styles.form}>
-        <div style={styles.formGroup}>
-          <label htmlFor="email" style={styles.label}>Email Address:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={styles.input}
-          />
+    <div
+      className="register-container"
+      style={{ textAlign: "center", padding: "20px" }}
+    >
+      <h2>Register</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>
+            Username:
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </label>
         </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="password" style={styles.label}>  Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={styles.input}
-          />
+        <div>
+          <label>
+            Email:
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </label>
         </div>
-        <button type="submit" style={styles.button}>Login</button>
+        <div>
+          <label>
+            Password:
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Confirm Password:
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <button type="submit">Register</button>
+        </div>
       </form>
     </div>
   );
