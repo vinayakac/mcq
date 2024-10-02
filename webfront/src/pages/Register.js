@@ -1,116 +1,94 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-export default function Register() {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+const RegistrationForm = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
 
-    // Simple form validation
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+    // Basic validation
+    if (!username || !email || !password || !confirmPassword) {
+      setError("Please fill out all fields.");
       return;
     }
 
-    // Retrieve existing users from localStorage
-    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-
-    // Check if the email already exists
-    const emailExists = existingUsers.some(
-      (user) => user.email === formData.email
-    );
-
-    if (emailExists) {
-      alert("An account with this email already exists.");
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
       return;
     }
 
-    // Store the new user data (excluding confirmPassword)
-    const { username, email, password } = formData;
-    const newUser = { username, email, password };
+    // Store data in local storage
+    const userData = {
+      username,
+      email,
+      password, // Consider encrypting passwords in a real application
+    };
 
-    // Add the new user to the existing users array and save it to localStorage
-    const updatedUsers = [...existingUsers, newUser];
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    localStorage.setItem("userData", JSON.stringify(userData));
 
-    // Navigate to login page after storing the data
-    navigate("/login");
+    // Set success message
+    setSuccess("Account created successfully!");
+    
+    // Clear the form
+    setUsername("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
   return (
-    <div
-      className="register-container"
-      style={{ textAlign: "center", padding: "20px" }}
-    >
-      <h2>Register</h2>
+    <div style={{ maxWidth: "400px", margin: "0 auto", padding: "20px", border: "1px solid #ccc", borderRadius: "5px" }}>
+      <h2>Create Account</h2>
+      {error && <div style={{ color: "red" }}>{error}</div>}
+      {success && <div style={{ color: "green" }}>{success}</div>}
       <form onSubmit={handleSubmit}>
         <div>
-          <label>
-            Username:
-            <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              required
-            />
-          </label>
+          <label>Username:</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
         </div>
         <div>
-          <label>
-            Email:
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </label>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </div>
         <div>
-          <label>
-            Password:
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </label>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </div>
         <div>
-          <label>
-            Confirm Password:
-            <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-            />
-          </label>
+          <label>Confirm Password:</label>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
         </div>
-        <div>
-          <button type="submit">Register</button>
-        </div>
+        <button type="submit">Create Account</button>
       </form>
     </div>
   );
-}
+};
+
+export default RegistrationForm;
