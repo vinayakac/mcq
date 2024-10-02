@@ -6,9 +6,9 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
-    
+
     e.preventDefault();
-    // Add your login logic here
+  
     if (email && password) {
       console.log("Logging in with", email, password);
       // Redirect to another page upon successful login
