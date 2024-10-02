@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const handleLogin = (e) => {
+    
     e.preventDefault();
     // Add your login logic here
     if (email && password) {
@@ -118,3 +118,5 @@ const Login = () => {
 };
 
 export default Login;
+
+
