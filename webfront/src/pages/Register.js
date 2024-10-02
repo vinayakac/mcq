@@ -1,3 +1,102 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 export default function Register() {
-  return <div>Register Page</div>;
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Simple form validation
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    // Store user data in localStorage (excluding confirmPassword)
+    const { username, email, password } = formData;
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({ username, email, password })
+    );
+
+    // Navigate to login page after storing the data
+    navigate("/login");
+  };
+
+  return (
+    <div
+      className="register-container"
+      style={{ textAlign: "center", padding: "20px" }}
+    >
+      <h2>Register</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>
+            Username:
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Email:
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Password:
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Confirm Password:
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <button type="submit">Register</button>
+        </div>
+      </form>
+    </div>
+  );
 }
