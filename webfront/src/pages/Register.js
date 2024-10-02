@@ -34,7 +34,7 @@ const RegistrationForm = () => {
     localStorage.setItem("userData", JSON.stringify(userData));
 
     // Set success message
-    setSuccess("Account created successfully!");
+    setSuccess("account created successfully!");
     
     // Clear the form
     setUsername("");
