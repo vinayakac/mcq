@@ -4,10 +4,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
   const handleLogin = (e) => {
+
     e.preventDefault();
-    // Add your login logic here
+  
     if (email && password) {
       console.log("Logging in with", email, password);
       // Redirect to another page upon successful login
@@ -47,7 +47,7 @@ const Login = () => {
       border: "1px solid #ccc",
     },
     button: {
-      width: "100%",
+      width: "150%",
       padding: "10px",
       backgroundColor: "#007bff",
       color: "white",
