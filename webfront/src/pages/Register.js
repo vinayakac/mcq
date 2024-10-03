@@ -25,7 +25,9 @@ const Register = () => {
 
     if (!username) tempErrors.username = "Username is required";
     if (!email) tempErrors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(email)) tempErrors.email = "Email is invalid";
+    else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+      tempErrors.email = "Email is invalid (e.g., naiktejunaik@gmail.com)";
+    }
     if (!mobileNumber) tempErrors.mobileNumber = "Mobile number is required";
     else if (!/^\d{10}$/.test(mobileNumber))
       tempErrors.mobileNumber = "Mobile number must be 10 digits";
@@ -44,7 +46,9 @@ const Register = () => {
     if (validate()) {
       localStorage.setItem("user", JSON.stringify(formData));
       alert("Registration successful");
-      navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000); // Redirect after 1 second
     }
   };
 
@@ -53,54 +57,59 @@ const Register = () => {
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Username</label>
           <input
             type="text"
             name="username"
             value={formData.username}
             onChange={handleChange}
+            placeholder="Username"
+            className={errors.username ? "input-error" : ""}
           />
           {errors.username && <p className="error">{errors.username}</p>}
         </div>
         <div className="form-group">
-          <label>Email</label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
+            placeholder="Email"
+            className={errors.email ? "input-error" : ""}
           />
           {errors.email && <p className="error">{errors.email}</p>}
         </div>
         <div className="form-group">
-          <label>Mobile Number</label>
           <input
             type="text"
             name="mobileNumber"
             value={formData.mobileNumber}
             onChange={handleChange}
+            placeholder="Mobile Number"
+            className={errors.mobileNumber ? "input-error" : ""}
           />
           {errors.mobileNumber && (
             <p className="error">{errors.mobileNumber}</p>
           )}
         </div>
         <div className="form-group">
-          <label>Password</label>
           <input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
+            placeholder="Password"
+            className={errors.password ? "input-error" : ""}
           />
           {errors.password && <p className="error">{errors.password}</p>}
         </div>
         <div className="form-group">
-          <label>Confirm Password</label>
           <input
             type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
+            placeholder="Confirm Password"
+            className={errors.confirmPassword ? "input-error" : ""}
           />
           {errors.confirmPassword && (
             <p className="error">{errors.confirmPassword}</p>
