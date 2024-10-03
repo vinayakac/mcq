@@ -1,46 +1,58 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    const regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    return regex.test(email);
   };
 
   const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-    return passwordRegex.test(password);
+    const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z\d\W_]{8,}$/;
+    return regex.test(password);
+
   };
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    let isValid = true;
-    setEmailError("");
-    setPasswordError("");
+    setError("");
+
+    // Retrieve user from localStorage
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (!storedUser || storedUser.email !== email) {
+      setError("You must register first.");
+      return;
+    }
 
     if (!validateEmail(email)) {
-      setEmailError("Please enter a valid email address.");
-      isValid = false;
+      setError("Please enter a valid Gmail address (e.g., example@gmail.com).");
+      return;
     }
 
     if (!validatePassword(password)) {
-      setPasswordError(
-        "Password must be at least 8 characters long, contain uppercase, lowercase, and a number."
+      setError(
+        "Password must be at least 8 characters long, include at least one capital letter, one number, and one special character (or underscore)."
       );
-      isValid = false;
+      return;
     }
 
-    if (isValid) {
-      console.log("Logging in with", email, password);
-      navigate("/dashboard");
+    if (storedUser.password !== password) {
+      setError("Invalid password. Please try again.");
+      return;
     }
+
+    // If valid, redirect to the dashboard
+    navigate("/dashboard"); // Adjust this to the correct route for your app
   };
 
   const styles = {
@@ -91,10 +103,22 @@ const Login = () => {
       borderRadius: "4px",
       fontSize: "16px",
       cursor: "pointer",
-      transition: "background-color 0.3s",
+
+      position: "relative",
+
     },
-    buttonHover: {
-      backgroundColor: "#0056b3",
+    buttonIcon: {
+      cursor: "pointer",
+      position: "absolute",
+      right: "10px",
+      top: "10px",
+      background: "none",
+      border: "none",
+    },
+    error: {
+      color: "red",
+      marginBottom: "15px",
+      textAlign: "center",
     },
     signupLink: {
       textAlign: "center",
@@ -115,6 +139,7 @@ const Login = () => {
   return (
     <div style={styles.container}>
       <h2 style={styles.header}>Login</h2>
+      {error && <div style={styles.error}>{error}</div>}
       <form onSubmit={handleLogin}>
         <div style={styles.formGroup}>
           <label htmlFor="email" style={styles.label}>Email</label>
@@ -124,21 +149,35 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
+
+            required
+
             style={styles.input}
           />
           {emailError && <p style={styles.error}>{emailError}</p>}
         </div>
         <div style={styles.formGroup}>
           <label htmlFor="password" style={styles.label}>Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-            style={styles.input}
-          />
-          {passwordError && <p style={styles.error}>{passwordError}</p>}
+
+          <div style={{ position: "relative" }}>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              required
+              style={styles.input}
+            />
+            <button
+              type="button"
+              style={styles.buttonIcon}
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "👁️" : "👁️‍🗨️"}
+            </button>
+          </div>
+
         </div>
         <button
           type="submit"
@@ -151,15 +190,9 @@ const Login = () => {
       </form>
       <div style={styles.signupLink}>
         <p>
-          Don't have an account?{" "}
-          <a
-            href="/register"
-            style={styles.link}
-            onMouseOver={(e) => (e.target.style.textDecoration = "underline")}
-            onMouseOut={(e) => (e.target.style.textDecoration = "none")}
-          >
-            Sign Up
-          </a>
+
+          Don't have an account? <a href="/register" style={styles.link}>Sign Up</a>
+
         </p>
       </div>
     </div>
