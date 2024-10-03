@@ -16,6 +16,7 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
     // Remove error dynamically as the user corrects the input
     setErrors((prevErrors) => {
       let newErrors = { ...prevErrors };
@@ -31,7 +32,7 @@ const Register = () => {
         delete newErrors.mobileNumber;
       if (
         name === "password" &&
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(value)
+        /^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(value) // Updated regex here
       )
         delete newErrors.password;
       if (name === "confirmPassword" && value === formData.password)
@@ -45,7 +46,6 @@ const Register = () => {
     const { username, email, mobileNumber, password, confirmPassword } =
       formData;
 
-
     if (!username) tempErrors.username = "Username is required";
     if (!email) tempErrors.email = "Email is required";
     else if (
@@ -55,7 +55,6 @@ const Register = () => {
     ) {
       tempErrors.email =
         "Email is invalid (e.g., example@gmail.com or example.co)";
-
     }
     if (!mobileNumber) tempErrors.mobileNumber = "Mobile number is required";
     else if (!/^\d{10}$/.test(mobileNumber))
@@ -63,10 +62,10 @@ const Register = () => {
 
     if (!password) tempErrors.password = "Password is required";
     else if (
-      !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(password)
+      !/^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(password) // Updated regex here
     ) {
       tempErrors.password =
-        "Password must be at least 8 characters, contain one letter, one number, and one special character (including underscores)";
+        "Password must be at least 8 characters, contain one capital letter, one number, and one special character";
     }
     if (password !== confirmPassword)
       tempErrors.confirmPassword = "Passwords do not match";
@@ -75,7 +74,6 @@ const Register = () => {
     return Object.keys(tempErrors).length === 0;
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
@@ -83,7 +81,7 @@ const Register = () => {
       alert("Registration successful");
       setTimeout(() => {
         navigate("/login");
-      }, 1000); // Redirect after 1 second
+      }, 1000);
     }
   };
 
@@ -154,7 +152,6 @@ const Register = () => {
           Register
         </button>
       </form>
-
     </div>
   );
 };
