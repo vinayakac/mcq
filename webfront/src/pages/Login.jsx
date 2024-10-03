@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -8,8 +8,13 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // Simulated registered users for demo purposes
-  const registeredUsers = ["user@example.com"]; // Replace with actual user data
+  // Fetch registered users from local storage
+  const [registeredUsers, setRegisteredUsers] = useState([]);
+
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+    setRegisteredUsers(users);
+  }, []);
 
   const validateEmail = (email) => {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -26,11 +31,13 @@ const Login = () => {
     setError("");
 
     // Check if user is registered
-    if (!registeredUsers.includes(email)) {
+    const user = registeredUsers.find((user) => user.email === email);
+    if (!user) {
       setError("You must register first.");
       return;
     }
 
+    // Validate email and password
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
       return;
@@ -41,9 +48,15 @@ const Login = () => {
       return;
     }
 
-    // If valid, redirect to dashboard or any desired page
+    // Check if the password matches
+    if (user.password !== password) {
+      setError("Incorrect password.");
+      return;
+    }
+
+    // If valid, redirect to the dashboard
     console.log("Logging in with", email, password);
-    navigate("/dashboard"); // Example
+    navigate("/dashboard");
   };
 
   // Inline styles for the login page
@@ -105,9 +118,6 @@ const Login = () => {
     link: {
       color: "#007bff",
       textDecoration: "none",
-    },
-    linkHover: {
-      textDecoration: "underline",
     },
   };
 
