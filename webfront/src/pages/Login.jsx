@@ -1,20 +1,40 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const handleLogin = (e) => {
 
+  const validateEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    return regex.test(password);
+  };
+
+  const handleLogin = (e) => {
     e.preventDefault();
-  
-    if (email && password) {
-      console.log("Logging in with", email, password);
-      // Redirect to another page upon successful login
-      navigate("/dashboard"); // Example
-    } else {
-      alert("Please fill in all fields");
+    setError("");
+
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address.");
+      return;
     }
+
+    if (!validatePassword(password)) {
+      setError("Password must be at least 8 characters long, include at least one capital letter, one number, and one special character.");
+      return;
+    }
+
+    // If valid, redirect to dashboard or any desired page
+    console.log("Logging in with", email, password);
+    navigate("/dashboard"); // Example
   };
 
   // Inline styles for the login page
@@ -54,9 +74,20 @@ const Login = () => {
       border: "none",
       borderRadius: "4px",
       cursor: "pointer",
+      position: "relative",
     },
-    buttonHover: {
-      backgroundColor: "#0056b3",
+    buttonIcon: {
+      cursor: "pointer",
+      position: "absolute",
+      right: "10px",
+      top: "10px",
+      background: "none",
+      border: "none",
+    },
+    error: {
+      color: "red",
+      marginBottom: "15px",
+      textAlign: "center",
     },
     signupLink: {
       textAlign: "center",
@@ -74,6 +105,7 @@ const Login = () => {
   return (
     <div style={styles.container}>
       <h2 style={styles.header}>Login</h2>
+      {error && <div style={styles.error}>{error}</div>}
       <form onSubmit={handleLogin}>
         <div style={styles.formGroup}>
           <label htmlFor="email" style={styles.label}>Username or Email</label>
@@ -89,15 +121,24 @@ const Login = () => {
         </div>
         <div style={styles.formGroup}>
           <label htmlFor="password" style={styles.label}>Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-            required
-            style={styles.input}
-          />
+          <div style={{ position: "relative" }}>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              required
+              style={styles.input}
+            />
+            <button
+              type="button"
+              style={styles.buttonIcon}
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "👁️" : "👁️‍🗨️"}
+            </button>
+          </div>
         </div>
         <button
           type="submit"
@@ -110,7 +151,7 @@ const Login = () => {
       </form>
       <div style={styles.signupLink}>
         <p>
-          Don't have an account? <a href="/register" style={styles.link} onMouseOver={(e) => (e.target.style.textDecoration = "underline")} onMouseOut={(e) => (e.target.style.textDecoration = "none")}>Sign Up</a>
+          Don't have an account? <a href="/register" style={styles.link}>Sign Up</a>
         </p>
       </div>
     </div>
@@ -118,5 +159,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
