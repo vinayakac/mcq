@@ -60,7 +60,6 @@ const Register = () => {
     else if (!/^\d{10}$/.test(mobileNumber))
       tempErrors.mobileNumber = "Mobile number must be 10 digits";
 
-    // Password regex: At least 8 characters, one letter, one number, and one special character (any special character)
     if (!password) tempErrors.password = "Password is required";
     else if (
       !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(password)
