@@ -16,6 +16,29 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    // Remove error dynamically as the user corrects the input
+    setErrors((prevErrors) => {
+      let newErrors = { ...prevErrors };
+      if (name === "username" && value) delete newErrors.username;
+      if (
+        name === "email" &&
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
+          value
+        )
+      )
+        delete newErrors.email;
+      if (name === "mobileNumber" && /^\d{10}$/.test(value))
+        delete newErrors.mobileNumber;
+      if (
+        name === "password" &&
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(value)
+      )
+        delete newErrors.password;
+      if (name === "confirmPassword" && value === formData.password)
+        delete newErrors.confirmPassword;
+      return newErrors;
+    });
   };
 
   const validate = () => {
@@ -25,15 +48,26 @@ const Register = () => {
 
     if (!username) tempErrors.username = "Username is required";
     if (!email) tempErrors.email = "Email is required";
-    else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-      tempErrors.email = "Email is invalid (e.g., naiktejunaik@gmail.com)";
+    else if (
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
+        email
+      )
+    ) {
+      tempErrors.email =
+        "Email is invalid (e.g., example@gmail.com or example.co)";
     }
     if (!mobileNumber) tempErrors.mobileNumber = "Mobile number is required";
     else if (!/^\d{10}$/.test(mobileNumber))
       tempErrors.mobileNumber = "Mobile number must be 10 digits";
+
+    // Password regex: At least 8 characters, one letter, one number, and one special character (any special character)
     if (!password) tempErrors.password = "Password is required";
-    else if (password.length < 6)
-      tempErrors.password = "Password must be at least 6 characters";
+    else if (
+      !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(password)
+    ) {
+      tempErrors.password =
+        "Password must be at least 8 characters, contain one letter, one number, and one special character (including underscores)";
+    }
     if (password !== confirmPassword)
       tempErrors.confirmPassword = "Passwords do not match";
 
