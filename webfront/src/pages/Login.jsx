@@ -1,116 +1,171 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Register() {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
 
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  // Simulated registered users for demo purposes
+  const registeredUsers = ["user@example.com"]; // Replace with actual user data
+
+  const validateEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
   };
 
-  const handleSubmit = (e) => {
+  const validatePassword = (password) => {
+    const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    return regex.test(password);
+  };
+
+  const handleLogin = (e) => {
     e.preventDefault();
+    setError("");
 
-    // Simple form validation
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+    // Check if user is registered
+    if (!registeredUsers.includes(email)) {
+      setError("You must register first.");
       return;
     }
 
-    // Retrieve existing users from localStorage
-    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-
-    // Check if the email already exists
-    const emailExists = existingUsers.some(
-      (user) => user.email === formData.email
-    );
-
-    if (emailExists) {
-      alert("An account with this email already exists.");
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address.");
       return;
     }
 
-    // Store the new user data (excluding confirmPassword)
-    const { username, email, password } = formData;
-    const newUser = { username, email, password };
+    if (!validatePassword(password)) {
+      setError("Password must be at least 8 characters long, include at least one capital letter, one number, and one special character.");
+      return;
+    }
 
-    // Add the new user to the existing users array and save it to localStorage
-    const updatedUsers = [...existingUsers, newUser];
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    // If valid, redirect to dashboard or any desired page
+    console.log("Logging in with", email, password);
+    navigate("/dashboard"); // Example
+  };
 
-    // Navigate to login page after storing the data
-    navigate("/login");
+  // Inline styles for the login page
+  const styles = {
+    container: {
+      width: "300px",
+      margin: "100px auto",
+      padding: "30px",
+      backgroundColor: "#f4f4f4",
+      borderRadius: "8px",
+      boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+    },
+    header: {
+      textAlign: "center",
+      marginBottom: "20px",
+    },
+    formGroup: {
+      marginBottom: "15px",
+    },
+    label: {
+      display: "block",
+      marginBottom: "5px",
+      fontWeight: "bold",
+    },
+    input: {
+      width: "100%",
+      padding: "8px",
+      boxSizing: "border-box",
+      borderRadius: "4px",
+      border: "1px solid #ccc",
+    },
+    button: {
+      width: "100%",
+      padding: "10px",
+      backgroundColor: "#007bff",
+      color: "white",
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer",
+      position: "relative",
+    },
+    buttonIcon: {
+      cursor: "pointer",
+      position: "absolute",
+      right: "10px",
+      top: "10px",
+      background: "none",
+      border: "none",
+    },
+    error: {
+      color: "red",
+      marginBottom: "15px",
+      textAlign: "center",
+    },
+    signupLink: {
+      textAlign: "center",
+      marginTop: "15px",
+    },
+    link: {
+      color: "#007bff",
+      textDecoration: "none",
+    },
+    linkHover: {
+      textDecoration: "underline",
+    },
   };
 
   return (
-    <div
-      className="register-container"
-      style={{ textAlign: "center", padding: "20px" }}
-    >
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Username:
+    <div style={styles.container}>
+      <h2 style={styles.header}>Login</h2>
+      {error && <div style={styles.error}>{error}</div>}
+      <form onSubmit={handleLogin}>
+        <div style={styles.formGroup}>
+          <label htmlFor="email" style={styles.label}>Username or Email</label>
+          <input
+            type="text"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your username or email"
+            required
+            style={styles.input}
+          />
+        </div>
+        <div style={styles.formGroup}>
+          <label htmlFor="password" style={styles.label}>Password</label>
+          <div style={{ position: "relative" }}>
             <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
+              type={showPassword ? "text" : "password"}
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
               required
+              style={styles.input}
             />
-          </label>
+            <button
+              type="button"
+              style={styles.buttonIcon}
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "👁️" : "👁️‍🗨️"}
+            </button>
+          </div>
         </div>
-        <div>
-          <label>
-            Email:
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Password:
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Confirm Password:
-            <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <button type="submit">Register</button>
-        </div>
+        <button
+          type="submit"
+          style={styles.button}
+          onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+          onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+        >
+          Login
+        </button>
       </form>
+      <div style={styles.signupLink}>
+        <p>
+          Don't have an account? <a href="/register" style={styles.link}>Sign Up</a>
+        </p>
+      </div>
     </div>
   );
-}
+};
+
+export default Login;
