@@ -16,7 +16,6 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-
     // Remove error dynamically as the user corrects the input
     setErrors((prevErrors) => {
       let newErrors = { ...prevErrors };
