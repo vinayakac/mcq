@@ -45,6 +45,7 @@ const Register = () => {
     const { username, email, mobileNumber, password, confirmPassword } =
       formData;
 
+
     if (!username) tempErrors.username = "Username is required";
     if (!email) tempErrors.email = "Email is required";
     else if (
@@ -54,6 +55,7 @@ const Register = () => {
     ) {
       tempErrors.email =
         "Email is invalid (e.g., example@gmail.com or example.co)";
+
     }
     if (!mobileNumber) tempErrors.mobileNumber = "Mobile number is required";
     else if (!/^\d{10}$/.test(mobileNumber))
@@ -72,6 +74,7 @@ const Register = () => {
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -151,6 +154,7 @@ const Register = () => {
           Register
         </button>
       </form>
+
     </div>
   );
 };
