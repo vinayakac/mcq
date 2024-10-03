@@ -1,23 +1,89 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Register.css";
 
-const RegistrationForm = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+const Register = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    mobileNumber: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+
+    // Remove error dynamically as the user corrects the input
+    setErrors((prevErrors) => {
+      let newErrors = { ...prevErrors };
+      if (name === "username" && value) delete newErrors.username;
+      if (
+        name === "email" &&
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
+          value
+        )
+      )
+        delete newErrors.email;
+      if (name === "mobileNumber" && /^\d{10}$/.test(value))
+        delete newErrors.mobileNumber;
+      if (
+        name === "password" &&
+        /^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(value) // Updated regex here
+      )
+        delete newErrors.password;
+      if (name === "confirmPassword" && value === formData.password)
+        delete newErrors.confirmPassword;
+      return newErrors;
+    });
+  };
+
+  const validate = () => {
+    let tempErrors = {};
+    const { username, email, mobileNumber, password, confirmPassword } =
+      formData;
+
+    if (!username) tempErrors.username = "Username is required";
+    if (!email) tempErrors.email = "Email is required";
+    else if (
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
+        email
+      )
+    ) {
+      tempErrors.email =
+        "Email is invalid (e.g., example@gmail.com or example.co)";
+    }
+    if (!mobileNumber) tempErrors.mobileNumber = "Mobile number is required";
+    else if (!/^\d{10}$/.test(mobileNumber))
+      tempErrors.mobileNumber = "Mobile number must be 10 digits";
+
+    if (!password) tempErrors.password = "Password is required";
+    else if (
+      !/^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(password) // Updated regex here
+    ) {
+      tempErrors.password =
+        "Password must be at least 8 characters, contain one capital letter, one number, and one special character";
+    }
+    if (password !== confirmPassword)
+      tempErrors.confirmPassword = "Passwords do not match";
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
-
-    // Basic validation
-    if (!username || !email || !password || !confirmPassword) {
-      setError("Please fill out all fields.");
-      return;
+    if (validate()) {
+      localStorage.setItem("user", JSON.stringify(formData));
+      alert("Registration successful");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     }
+<<<<<<< HEAD
 
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
@@ -86,9 +152,83 @@ const RegistrationForm = () => {
           />
         </div>
         <button type="submit">Create Account</button>
+=======
+  };
+
+  return (
+    <div className="register-container">
+      <h2>Register</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            placeholder="Username"
+            className={errors.username ? "input-error" : ""}
+          />
+          {errors.username && <p className="error">{errors.username}</p>}
+        </div>
+        <div className="form-group">
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email"
+            className={errors.email ? "input-error" : ""}
+          />
+          {errors.email && <p className="error">{errors.email}</p>}
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            name="mobileNumber"
+            value={formData.mobileNumber}
+            onChange={handleChange}
+            placeholder="Mobile Number"
+            className={errors.mobileNumber ? "input-error" : ""}
+          />
+          {errors.mobileNumber && (
+            <p className="error">{errors.mobileNumber}</p>
+          )}
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Password"
+            className={errors.password ? "input-error" : ""}
+          />
+          {errors.password && <p className="error">{errors.password}</p>}
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            placeholder="Confirm Password"
+            className={errors.confirmPassword ? "input-error" : ""}
+          />
+          {errors.confirmPassword && (
+            <p className="error">{errors.confirmPassword}</p>
+          )}
+        </div>
+        <button type="submit" className="register-button">
+          Register
+        </button>
+>>>>>>> develop
       </form>
     </div>
   );
 };
 
+<<<<<<< HEAD
 export default RegistrationForm;
+=======
+export default Register;
+>>>>>>> develop

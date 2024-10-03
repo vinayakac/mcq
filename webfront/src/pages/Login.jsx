@@ -8,21 +8,13 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch registered users from local storage
-  const [registeredUsers, setRegisteredUsers] = useState([]);
-
-  useEffect(() => {
-    const users = JSON.parse(localStorage.getItem("registeredUsers")) || [];
-    setRegisteredUsers(users);
-  }, []);
-
   const validateEmail = (email) => {
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
     return regex.test(email);
   };
 
   const validatePassword = (password) => {
-    const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z\d\W_]{8,}$/;
     return regex.test(password);
   };
 
@@ -30,33 +22,34 @@ const Login = () => {
     e.preventDefault();
     setError("");
 
-    // Check if user is registered
-    const user = registeredUsers.find((user) => user.email === email);
-    if (!user) {
+    // Retrieve user from localStorage
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (!storedUser || storedUser.email !== email) {
       setError("You must register first.");
       return;
     }
 
     // Validate email and password
     if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
+      setError("Please enter a valid Gmail address (e.g., example@gmail.com).");
       return;
     }
 
     if (!validatePassword(password)) {
-      setError("Password must be at least 8 characters long, include at least one capital letter, one number, and one special character.");
+      setError(
+        "Password must be at least 8 characters long, include at least one capital letter, one number, and one special character (or underscore)."
+      );
       return;
     }
 
-    // Check if the password matches
-    if (user.password !== password) {
-      setError("Incorrect password.");
+    if (storedUser.password !== password) {
+      setError("Invalid password. Please try again.");
       return;
     }
 
     // If valid, redirect to the dashboard
-    console.log("Logging in with", email, password);
-    navigate("/dashboard");
+    navigate("/dashboard"); // Adjust this to the correct route for your app
   };
 
   // Inline styles for the login page
@@ -127,13 +120,13 @@ const Login = () => {
       {error && <div style={styles.error}>{error}</div>}
       <form onSubmit={handleLogin}>
         <div style={styles.formGroup}>
-          <label htmlFor="email" style={styles.label}>Username or Email</label>
+          <label htmlFor="email" style={styles.label}>Email</label>
           <input
             type="text"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your username or email"
+            placeholder="Enter your email"
             required
             style={styles.input}
           />
