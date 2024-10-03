@@ -65,9 +65,9 @@ const RegistrationForm = () => {
           maxWidth: "400px",
           width: "100%",
           padding: "50px",
-          border: "1px solid #ccc",
+          border: "5px solid #ccc",
           borderRadius: "5px",
-          backgroundColor: "#ffffff", // White background for the form
+          backgroundColor: "lightblue", // White background for the form
           boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
         }}
       >
@@ -85,8 +85,8 @@ const RegistrationForm = () => {
               required
               style={{
                 width: "100%",
-                padding: "8px",
-                marginTop: "5px",
+                padding: "10px",
+                marginTop: "10px",
                 border: "1px solid #ccc",
                 borderRadius: "4px",
                 backgroundColor: "#87CEEB", // Sky blue background for input
@@ -104,7 +104,7 @@ const RegistrationForm = () => {
               required
               style={{
                 width: "100%",
-                padding: "8px",
+                padding: "10px",
                 marginTop: "5px",
                 border: "1px solid #ccc",
                 borderRadius: "4px",
@@ -123,7 +123,7 @@ const RegistrationForm = () => {
               required
               style={{
                 width: "100%",
-                padding: "8px",
+                padding: "10px",
                 marginTop: "5px",
                 border: "1px solid #ccc",
                 borderRadius: "4px",
@@ -142,7 +142,7 @@ const RegistrationForm = () => {
               required
               style={{
                 width: "100%",
-                padding: "8px",
+                padding: "10px",
                 marginTop: "5px",
                 border: "1px solid #ccc",
                 borderRadius: "4px",
@@ -155,7 +155,7 @@ const RegistrationForm = () => {
             type="submit"
             style={{
               padding: "10px 15px",
-              backgroundColor: "#003366", // Dark blue background for the button
+              backgroundColor: "blue", // Dark blue background for the button
               color: "#fff", // White text color for contrast
               border: "none",
               borderRadius: "5px",
