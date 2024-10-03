@@ -1,94 +1,117 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Register.css";
 
-const RegistrationForm = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+const Register = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    mobileNumber: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const validate = () => {
+    let tempErrors = {};
+    const { username, email, mobileNumber, password, confirmPassword } =
+      formData;
+
+    if (!username) tempErrors.username = "Username is required";
+    if (!email) tempErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(email)) tempErrors.email = "Email is invalid";
+    if (!mobileNumber) tempErrors.mobileNumber = "Mobile number is required";
+    else if (!/^\d{10}$/.test(mobileNumber))
+      tempErrors.mobileNumber = "Mobile number must be 10 digits";
+    if (!password) tempErrors.password = "Password is required";
+    else if (password.length < 6)
+      tempErrors.password = "Password must be at least 6 characters";
+    if (password !== confirmPassword)
+      tempErrors.confirmPassword = "Passwords do not match";
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
-
-    // Basic validation
-    if (!username || !email || !password || !confirmPassword) {
-      setError("Please fill out all fields.");
-      return;
+    if (validate()) {
+      localStorage.setItem("user", JSON.stringify(formData));
+      alert("Registration successful");
+      navigate("/login");
     }
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    // Store data in local storage
-    const userData = {
-      username,
-      email,
-      password, // Consider encrypting passwords in a real application
-    };
-
-    localStorage.setItem("userData", JSON.stringify(userData));
-
-    // Set success message
-    setSuccess("account created successfully!");
-    
-    // Clear the form
-    setUsername("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "0 auto", padding: "20px", border: "1px solid #ccc", borderRadius: "5px" }}>
-      <h2>Create Account</h2>
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      {success && <div style={{ color: "green" }}>{success}</div>}
+    <div className="register-container">
+      <h2>Register</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username:</label>
+        <div className="form-group">
+          <label>Username</label>
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
           />
+          {errors.username && <p className="error">{errors.username}</p>}
         </div>
-        <div>
-          <label>Email:</label>
+        <div className="form-group">
+          <label>Email</label>
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
           />
+          {errors.email && <p className="error">{errors.email}</p>}
         </div>
-        <div>
-          <label>Password:</label>
+        <div className="form-group">
+          <label>Mobile Number</label>
+          <input
+            type="text"
+            name="mobileNumber"
+            value={formData.mobileNumber}
+            onChange={handleChange}
+          />
+          {errors.mobileNumber && (
+            <p className="error">{errors.mobileNumber}</p>
+          )}
+        </div>
+        <div className="form-group">
+          <label>Password</label>
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
           />
+          {errors.password && <p className="error">{errors.password}</p>}
         </div>
-        <div>
-          <label>Confirm Password:</label>
+        <div className="form-group">
+          <label>Confirm Password</label>
           <input
             type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
           />
+          {errors.confirmPassword && (
+            <p className="error">{errors.confirmPassword}</p>
+          )}
         </div>
-        <button type="submit">Create Account</button>
+        <button type="submit" className="register-button">
+          Register
+        </button>
       </form>
     </div>
   );
 };
 
-export default RegistrationForm;
+export default Register;
