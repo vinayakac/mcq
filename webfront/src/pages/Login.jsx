@@ -8,6 +8,9 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  // Simulated registered users for demo purposes
+  const registeredUsers = ["user@example.com"]; // Replace with actual user data
+
   const validateEmail = (email) => {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
@@ -21,6 +24,12 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     setError("");
+
+    // Check if user is registered
+    if (!registeredUsers.includes(email)) {
+      setError("You must register first.");
+      return;
+    }
 
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
