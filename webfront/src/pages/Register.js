@@ -16,6 +16,7 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
     // Remove error dynamically as the user corrects the input
     setErrors((prevErrors) => {
       let newErrors = { ...prevErrors };
@@ -31,7 +32,7 @@ const Register = () => {
         delete newErrors.mobileNumber;
       if (
         name === "password" &&
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(value)
+        /^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(value) // Updated regex here
       )
         delete newErrors.password;
       if (name === "confirmPassword" && value === formData.password)
@@ -61,10 +62,10 @@ const Register = () => {
 
     if (!password) tempErrors.password = "Password is required";
     else if (
-      !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(password)
+      !/^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(password) // Updated regex here
     ) {
       tempErrors.password =
-        "Password must be at least 8 characters, contain one letter, one number, and one special character (including underscores)";
+        "Password must be at least 8 characters, contain one capital letter, one number, and one special character";
     }
     if (password !== confirmPassword)
       tempErrors.confirmPassword = "Passwords do not match";
