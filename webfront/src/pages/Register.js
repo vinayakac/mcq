@@ -81,7 +81,7 @@ const Register = () => {
       alert("Registration successful");
       setTimeout(() => {
         navigate("/login");
-      }, 1000); // Redirect after 1 second
+      }, 1000);
     }
   };
 
