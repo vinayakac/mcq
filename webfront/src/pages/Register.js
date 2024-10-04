@@ -35,7 +35,7 @@ const RegistrationForm = () => {
 
     // Set success message
     setSuccess("account created successfully!");
-    
+
     // Clear the form
     setUsername("");
     setEmail("");
@@ -44,48 +44,109 @@ const RegistrationForm = () => {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "0 auto", padding: "20px", border: "1px solid #ccc", borderRadius: "5px" }}>
-      <h2>Create Account</h2>
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      {success && <div style={{ color: "green" }}>{success}</div>}
+    <div
+      style={{
+        maxWidth: "400px",
+        margin: "0 auto",
+        padding: "20px",
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+      }}
+    >
+      <h2 style={{ textAlign: "center" }}>Create Account</h2>
+      {error && (
+        <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>
+      )}
+      {success && (
+        <div style={{ color: "green", marginBottom: "10px" }}>{success}</div>
+      )}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username:</label>
+        <div style={{ marginBottom: "10px" }}>
+          <label style={{ display: "block", marginBottom: "5px" }}>
+            Username:
+          </label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            style={{
+              width: "100%",
+              padding: "8px",
+              boxSizing: "border-box",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+            }}
           />
         </div>
-        <div>
-          <label>Email:</label>
+        <div style={{ marginBottom: "10px" }}>
+          <label style={{ display: "block", marginBottom: "5px" }}>
+            Email:
+          </label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            style={{
+              width: "100%",
+              padding: "8px",
+              boxSizing: "border-box",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+            }}
           />
         </div>
-        <div>
-          <label>Password:</label>
+        <div style={{ marginBottom: "10px" }}>
+          <label style={{ display: "block", marginBottom: "5px" }}>
+            Password:
+          </label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            style={{
+              width: "100%",
+              padding: "8px",
+              boxSizing: "border-box",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+            }}
           />
         </div>
-        <div>
-          <label>Confirm Password:</label>
+        <div style={{ marginBottom: "10px" }}>
+          <label style={{ display: "block", marginBottom: "5px" }}>
+            Confirm Password:
+          </label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            style={{
+              width: "100%",
+              padding: "8px",
+              boxSizing: "border-box",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+            }}
           />
         </div>
-        <button type="submit">Create Account</button>
+        <button
+          type="submit"
+          style={{
+            width: "100%",
+            padding: "10px",
+            backgroundColor: "#007bff",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+        >
+          Create Account
+        </button>
       </form>
     </div>
   );
