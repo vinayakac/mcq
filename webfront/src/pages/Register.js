@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
+import FormInput from "../components/FormInput"; // Adjust the path if needed
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [submitted, setSubmitted] = useState(false); // Track form submission
+  const [submitted, setSubmitted] = useState(false); 
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -20,8 +21,13 @@ const Register = () => {
     validate: (values) => {
       let errors = {};
 
+      // Username validation: min 2, max 30 characters
       if (!values.username) {
         errors.username = "Username is required";
+      } else if (values.username.length < 2) {
+        errors.username = "Username must be at least 2 characters long";
+      } else if (values.username.length > 30) {
+        errors.username = "Username cannot exceed 30 characters";
       }
 
       if (!values.email) {
@@ -31,8 +37,7 @@ const Register = () => {
           values.email
         )
       ) {
-        errors.email =
-          "Email is invalid (e.g., example@gmail.com or example.co)";
+        errors.email = "Email is invalid (e.g., example@gmail.com or example.co)";
       }
 
       if (!values.mobileNumber) {
@@ -46,8 +51,7 @@ const Register = () => {
       } else if (
         !/^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(values.password)
       ) {
-        errors.password =
-          "Password must be at least 8 characters, contain one capital letter, one number, and one special character";
+        errors.password = "Password must be at least 8 characters, contain one capital letter, one number, and one special character";
       }
 
       if (values.password !== values.confirmPassword) {
@@ -67,7 +71,7 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(true); // Mark form as submitted
+    setSubmitted(true);
     formik.handleSubmit(e);
   };
 
@@ -75,91 +79,55 @@ const Register = () => {
     <div className="register-container">
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            name="username"
-            value={formik.values.username}
-            onChange={formik.handleChange}
-            placeholder="Username"
-            className={formik.errors.username && submitted ? "input-error" : ""}
-          />
-          {formik.errors.username && submitted && (
-            <p className="error">{formik.errors.username}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <input
-            type="email"
-            name="email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            placeholder="Email"
-            className={formik.errors.email && submitted ? "input-error" : ""}
-          />
-          {formik.errors.email && submitted && (
-            <p className="error">{formik.errors.email}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            name="mobileNumber"
-            value={formik.values.mobileNumber}
-            onChange={formik.handleChange}
-            placeholder="Mobile Number"
-            className={
-              formik.errors.mobileNumber && submitted ? "input-error" : ""
-            }
-          />
-          {formik.errors.mobileNumber && submitted && (
-            <p className="error">{formik.errors.mobileNumber}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            placeholder="Password"
-            className={formik.errors.password && submitted ? "input-error" : ""}
-          />
-          <span
-            className="password-icon"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            <i className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></i>
-          </span>
-          {formik.errors.password && submitted && (
-            <p className="error">{formik.errors.password}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <input
-            type={showConfirmPassword ? "text" : "password"}
-            name="confirmPassword"
-            value={formik.values.confirmPassword}
-            onChange={formik.handleChange}
-            placeholder="Confirm Password"
-            className={
-              formik.errors.confirmPassword && submitted ? "input-error" : ""
-            }
-          />
-          <span
-            className="password-icon"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-          >
-            <i
-              className={
-                showConfirmPassword ? "fas fa-eye-slash" : "fas fa-eye"
-              }
-            ></i>
-          </span>
-          {formik.errors.confirmPassword && submitted && (
-            <p className="error">{formik.errors.confirmPassword}</p>
-          )}
-        </div>
+        <FormInput
+          name="username"
+          value={formik.values.username}
+          onChange={formik.handleChange}
+          placeholder="Username"
+          error={formik.errors.username}
+          submitted={submitted}
+        />
+        <FormInput
+          type="email"
+          name="email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          placeholder="Email"
+          error={formik.errors.email}
+          submitted={submitted}
+        />
+        <FormInput
+          name="mobileNumber"
+          value={formik.values.mobileNumber}
+          onChange={formik.handleChange}
+          placeholder="Mobile Number"
+          error={formik.errors.mobileNumber}
+          submitted={submitted}
+        />
+        <FormInput
+          type={showPassword ? "text" : "password"}
+          name="password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          placeholder="Password"
+          error={formik.errors.password}
+          submitted={submitted}
+          showPasswordToggle
+          showPassword={showPassword}
+          togglePasswordVisibility={() => setShowPassword(!showPassword)}
+        />
+        <FormInput
+          type={showConfirmPassword ? "text" : "password"}
+          name="confirmPassword"
+          value={formik.values.confirmPassword}
+          onChange={formik.handleChange}
+          placeholder="Confirm Password"
+          error={formik.errors.confirmPassword}
+          submitted={submitted}
+          showPasswordToggle
+          showPassword={showConfirmPassword}
+          togglePasswordVisibility={() => setShowConfirmPassword(!showConfirmPassword)}
+        />
         <button type="submit" className="register-button">
           Register
         </button>
