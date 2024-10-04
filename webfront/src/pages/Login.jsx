@@ -1,55 +1,53 @@
 import React, { useState } from "react";
+import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const validateEmail = (email) => {
-    const regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-    return regex.test(email);
-  };
+  // Validation schema using Yup
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email("Invalid email address")
+      .matches(/^[a-zA-Z0-9._%+-]+@gmail\.com$/, "Must be a Gmail address")
+      .required("Email is required"),
+    password: Yup.string()
+      .min(8, "Password must be at least 8 characters")
+      .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .matches(/[0-9]/, "Password must contain at least one number")
+      .matches(/[\W_]/, "Password must contain at least one special character or underscore")
+      .required("Password is required"),
+  });
 
-  const validatePassword = (password) => {
-    const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z\d\W_]{8,}$/;
-    return regex.test(password);
-  };
+  // Formik hook for form state management
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      const { email, password } = values;
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setError("");
+      // Retrieve user from localStorage
+      const storedUser = JSON.parse(localStorage.getItem("user"));
 
-    // Retrieve user from localStorage
-    const storedUser = JSON.parse(localStorage.getItem("user"));
+      if (!storedUser || storedUser.email !== email) {
+        formik.setErrors({ email: "You must register first." });
+        return;
+      }
 
-    if (!storedUser || storedUser.email !== email) {
-      setError("You must register first.");
-      return;
-    }
+      if (storedUser.password !== password) {
+        formik.setErrors({ password: "Invalid password. Please try again." });
+        return;
+      }
 
-    if (!validateEmail(email)) {
-      setError("Please enter a valid Gmail address (e.g., example@gmail.com).");
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      setError(
-        "Password must be at least 8 characters long, include at least one capital letter, one number, and one special character (or underscore)."
-      );
-      return;
-    }
-
-    if (storedUser.password !== password) {
-      setError("Invalid password. Please try again.");
-      return;
-    }
-
-    // If valid, redirect to the dashboard
-    navigate("/dashboard"); // Adjust this to the correct route for your app
-  };
+      // Redirect to the dashboard if login is successful
+      navigate("/dashboard");
+    },
+  });
 
   // Inline styles for the login page
   const styles = {
@@ -88,7 +86,6 @@ const Login = () => {
       border: "none",
       borderRadius: "4px",
       cursor: "pointer",
-      position: "relative",
     },
     buttonIcon: {
       cursor: "pointer",
@@ -111,27 +108,24 @@ const Login = () => {
       color: "#007bff",
       textDecoration: "none",
     },
-    linkHover: {
-      textDecoration: "underline",
-    },
   };
 
   return (
     <div style={styles.container}>
       <h2 style={styles.header}>Login</h2>
-      {error && <div style={styles.error}>{error}</div>}
-      <form onSubmit={handleLogin}>
+      <form onSubmit={formik.handleSubmit}>
         <div style={styles.formGroup}>
           <label htmlFor="email" style={styles.label}>Email</label>
           <input
             type="text"
             id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...formik.getFieldProps("email")}
             placeholder="Enter your email"
-            required
             style={styles.input}
           />
+          {formik.touched.email && formik.errors.email ? (
+            <div style={styles.error}>{formik.errors.email}</div>
+          ) : null}
         </div>
         <div style={styles.formGroup}>
           <label htmlFor="password" style={styles.label}>Password</label>
@@ -139,10 +133,8 @@ const Login = () => {
             <input
               type={showPassword ? "text" : "password"}
               id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...formik.getFieldProps("password")}
               placeholder="Enter your password"
-              required
               style={styles.input}
             />
             <button
@@ -153,12 +145,13 @@ const Login = () => {
               {showPassword ? "👁️" : "👁️‍🗨️"}
             </button>
           </div>
+          {formik.touched.password && formik.errors.password ? (
+            <div style={styles.error}>{formik.errors.password}</div>
+          ) : null}
         </div>
         <button
           type="submit"
           style={styles.button}
-          onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
-          onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
         >
           Login
         </button>
