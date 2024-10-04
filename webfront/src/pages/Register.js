@@ -1,37 +1,75 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup"; // Import Yup for validation schema
+import { useNavigate } from "react-router-dom";
+import "./Register.css";
 
-const RegistrationForm = () => {
+const Register = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [submitted, setSubmitted] = useState(false); // Track form submission
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       username: "",
       email: "",
+      mobileNumber: "",
       password: "",
       confirmPassword: "",
     },
-    validationSchema: Yup.object({
-      username: Yup.string().required("Username is required"),
-      email: Yup.string().email("Invalid email format").required("Email is required"),
-      password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password"), null], "Passwords must match")
-        .required("Confirm Password is required"),
-    }),
-    onSubmit: (values) => {
-      // Store data in local storage
-      const userData = {
-        username: values.username,
-        email: values.email,
-        password: values.password, // In a real application, encrypt the password
-      };
-      localStorage.setItem("userData", JSON.stringify(userData));
+    validate: (values) => {
+      let errors = {};
 
-      // Reset form fields
-      formik.resetForm();
-      alert("Account created successfully!");
+      if (!values.username) {
+        errors.username = "Username is required";
+      }
+
+      if (!values.email) {
+        errors.email = "Email is required";
+      } else if (
+        !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
+          values.email
+        )
+      ) {
+        errors.email =
+          "Email is invalid (e.g., example@gmail.com or example.co)";
+      }
+
+      if (!values.mobileNumber) {
+        errors.mobileNumber = "Mobile number is required";
+      } else if (!/^\d{10}$/.test(values.mobileNumber)) {
+        errors.mobileNumber = "Mobile number must be 10 digits";
+      }
+
+      if (!values.password) {
+        errors.password = "Password is required";
+      } else if (
+        !/^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(values.password)
+      ) {
+        errors.password =
+          "Password must be at least 8 characters, contain one capital letter, one number, and one special character";
+      }
+
+      if (values.password !== values.confirmPassword) {
+        errors.confirmPassword = "Passwords do not match";
+      }
+
+      return errors;
+    },
+    onSubmit: (values) => {
+      localStorage.setItem("user", JSON.stringify(values));
+      alert("Registration successful");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     },
   });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true); // Mark form as submitted
+    formik.handleSubmit(e);
+  };
 
   return (
     <div style={{ maxWidth: "400px", margin: "0 auto", padding: "20px", border: "1px solid #ccc", borderRadius: "5px" }}>
@@ -42,52 +80,88 @@ const RegistrationForm = () => {
           <input
             type="text"
             name="username"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             value={formik.values.username}
+            onChange={formik.handleChange}
+            placeholder="Username"
+            className={formik.errors.username && submitted ? "input-error" : ""}
           />
-          {formik.touched.username && formik.errors.username ? (
-            <div style={{ color: "red" }}>{formik.errors.username}</div>
-          ) : null}
+          {formik.errors.username && submitted && (
+            <p className="error">{formik.errors.username}</p>
+          )}
         </div>
         <div>
           <label>Email:</label>
           <input
             type="email"
             name="email"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             value={formik.values.email}
-          />
-          {formik.touched.email && formik.errors.email ? (
-            <div style={{ color: "red" }}>{formik.errors.email}</div>
-          ) : null}
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.password}
+            placeholder="Email"
+            className={formik.errors.email && submitted ? "input-error" : ""}
           />
-          {formik.touched.password && formik.errors.password ? (
-            <div style={{ color: "red" }}>{formik.errors.password}</div>
-          ) : null}
+          {formik.errors.email && submitted && (
+            <p className="error">{formik.errors.email}</p>
+          )}
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            name="mobileNumber"
+            value={formik.values.mobileNumber}
+            onChange={formik.handleChange}
+            placeholder="Mobile Number"
+            className={
+              formik.errors.mobileNumber && submitted ? "input-error" : ""
+            }
+          />
+          {formik.errors.mobileNumber && submitted && (
+            <p className="error">{formik.errors.mobileNumber}</p>
+          )}
+        </div>
+        <div className="form-group">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            placeholder="Password"
+            className={formik.errors.password && submitted ? "input-error" : ""}
+          />
+          <span
+            className="password-icon"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            <i className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></i>
+          </span>
+          {formik.errors.password && submitted && (
+            <p className="error">{formik.errors.password}</p>
+          )}
         </div>
         <div>
           <label>Confirm Password:</label>
           <input
-            type="password"
+            type={showConfirmPassword ? "text" : "password"}
             name="confirmPassword"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             value={formik.values.confirmPassword}
+            onChange={formik.handleChange}
+            placeholder="Confirm Password"
+            className={
+              formik.errors.confirmPassword && submitted ? "input-error" : ""
+            }
           />
-          {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-            <div style={{ color: "red" }}>{formik.errors.confirmPassword}</div>
-          ) : null}
+          <span
+            className="password-icon"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            <i
+              className={
+                showConfirmPassword ? "fas fa-eye-slash" : "fas fa-eye"
+              }
+            ></i>
+          </span>
+          {formik.errors.confirmPassword && submitted && (
+            <p className="error">{formik.errors.confirmPassword}</p>
+          )}
         </div>
         <button type="submit">Create Account</button>
       </form>
