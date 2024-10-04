@@ -16,7 +16,7 @@ const Login = () => {
       const storedUser = JSON.parse(localStorage.getItem("user"));
 
       if (!storedUser || storedUser.email !== values.email) {
-        formik.setErrors({ email: "You must register first." });
+        formik.setErrors({ email: "Invalid email. Please enter a registered email." });
         return;
       }
 
@@ -59,6 +59,10 @@ const Login = () => {
       borderRadius: "4px",
       border: "1px solid #ccc",
     },
+    error: {
+      color: "red",
+      marginTop: "5px",
+    },
     button: {
       width: "100%",
       padding: "10px",
@@ -67,11 +71,6 @@ const Login = () => {
       border: "none",
       borderRadius: "4px",
       cursor: "pointer",
-    },
-    error: {
-      color: "red",
-      marginBottom: "15px",
-      textAlign: "center",
     },
     signupLink: {
       textAlign: "center",
@@ -86,9 +85,6 @@ const Login = () => {
   return (
     <div style={styles.container}>
       <h2 style={styles.header}>Login</h2>
-      {/* Display error messages at the top, after the heading */}
-      {formik.errors.email && <div style={styles.error}>{formik.errors.email}</div>}
-      {formik.errors.password && <div style={styles.error}>{formik.errors.password}</div>}
       <form onSubmit={formik.handleSubmit}>
         <div style={styles.formGroup}>
           <label htmlFor="email" style={styles.label}>Email</label>
@@ -102,6 +98,8 @@ const Login = () => {
             required
             style={styles.input}
           />
+          {/* Error message for email */}
+          {formik.errors.email && <div style={styles.error}>{formik.errors.email}</div>}
         </div>
         <div style={styles.formGroup}>
           <label htmlFor="password" style={styles.label}>Password</label>
@@ -115,6 +113,8 @@ const Login = () => {
             required
             style={styles.input}
           />
+          {/* Error message for password */}
+          {formik.errors.password && <div style={styles.error}>{formik.errors.password}</div>}
         </div>
         <button type="submit" style={styles.button}>Login</button>
       </form>
