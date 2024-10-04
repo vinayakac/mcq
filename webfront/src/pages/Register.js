@@ -1,87 +1,67 @@
 import React, { useState } from "react";
+import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    mobileNumber: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      email: "",
+      mobileNumber: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validate: (values) => {
+      let errors = {};
 
-    // Remove error dynamically as the user corrects the input
-    setErrors((prevErrors) => {
-      let newErrors = { ...prevErrors };
-      if (name === "username" && value) delete newErrors.username;
-      if (
-        name === "email" &&
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
-          value
+      if (!values.username) {
+        errors.username = "Username is required";
+      }
+
+      if (!values.email) {
+        errors.email = "Email is required";
+      } else if (
+        !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
+          values.email
         )
-      )
-        delete newErrors.email;
-      if (name === "mobileNumber" && /^\d{10}$/.test(value))
-        delete newErrors.mobileNumber;
-      if (
-        name === "password" &&
-        /^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(value) // Updated regex here
-      )
-        delete newErrors.password;
-      if (name === "confirmPassword" && value === formData.password)
-        delete newErrors.confirmPassword;
-      return newErrors;
-    });
-  };
+      ) {
+        errors.email =
+          "Email is invalid (e.g., example@gmail.com or example.co)";
+      }
 
-  const validate = () => {
-    let tempErrors = {};
-    const { username, email, mobileNumber, password, confirmPassword } =
-      formData;
+      if (!values.mobileNumber) {
+        errors.mobileNumber = "Mobile number is required";
+      } else if (!/^\d{10}$/.test(values.mobileNumber)) {
+        errors.mobileNumber = "Mobile number must be 10 digits";
+      }
 
-    if (!username) tempErrors.username = "Username is required";
-    if (!email) tempErrors.email = "Email is required";
-    else if (
-      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
-        email
-      )
-    ) {
-      tempErrors.email =
-        "Email is invalid (e.g., example@gmail.com or example.co)";
-    }
-    if (!mobileNumber) tempErrors.mobileNumber = "Mobile number is required";
-    else if (!/^\d{10}$/.test(mobileNumber))
-      tempErrors.mobileNumber = "Mobile number must be 10 digits";
+      if (!values.password) {
+        errors.password = "Password is required";
+      } else if (
+        !/^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(values.password)
+      ) {
+        errors.password =
+          "Password must be at least 8 characters, contain one capital letter, one number, and one special character";
+      }
 
-    if (!password) tempErrors.password = "Password is required";
-    else if (
-      !/^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(password) // Updated regex here
-    ) {
-      tempErrors.password =
-        "Password must be at least 8 characters, contain one capital letter, one number, and one special character";
-    }
-    if (password !== confirmPassword)
-      tempErrors.confirmPassword = "Passwords do not match";
+      if (values.password !== values.confirmPassword) {
+        errors.confirmPassword = "Passwords do not match";
+      }
 
-    setErrors(tempErrors);
-    return Object.keys(tempErrors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      localStorage.setItem("user", JSON.stringify(formData));
+      return errors;
+    },
+    onSubmit: (values) => {
+      localStorage.setItem("user", JSON.stringify(values));
       alert("Registration successful");
       setTimeout(() => {
         navigate("/login");
       }, 1000);
+<<<<<<< HEAD
     }
 <<<<<<< HEAD
 
@@ -145,22 +125,32 @@ const Register = () => {
             }}
 =======
   };
+=======
+    },
+  });
+>>>>>>> develop
 
   return (
     <div className="register-container">
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
         <div className="form-group">
           <input
             type="text"
             name="username"
-            value={formData.username}
-            onChange={handleChange}
+            value={formik.values.username}
+            onChange={formik.handleChange}
             placeholder="Username"
+<<<<<<< HEAD
             className={errors.username ? "input-error" : ""}
 >>>>>>> develop
+=======
+            className={formik.errors.username ? "input-error" : ""}
+>>>>>>> develop
           />
-          {errors.username && <p className="error">{errors.username}</p>}
+          {formik.errors.username && (
+            <p className="error">{formik.errors.username}</p>
+          )}
         </div>
 <<<<<<< HEAD
         <div style={{ marginBottom: "10px" }}>
@@ -184,13 +174,19 @@ const Register = () => {
           <input
             type="email"
             name="email"
-            value={formData.email}
-            onChange={handleChange}
+            value={formik.values.email}
+            onChange={formik.handleChange}
             placeholder="Email"
+<<<<<<< HEAD
             className={errors.email ? "input-error" : ""}
 >>>>>>> develop
+=======
+            className={formik.errors.email ? "input-error" : ""}
+>>>>>>> develop
           />
-          {errors.email && <p className="error">{errors.email}</p>}
+          {formik.errors.email && (
+            <p className="error">{formik.errors.email}</p>
+          )}
         </div>
 <<<<<<< HEAD
         <div style={{ marginBottom: "10px" }}>
@@ -214,26 +210,39 @@ const Register = () => {
           <input
             type="text"
             name="mobileNumber"
-            value={formData.mobileNumber}
-            onChange={handleChange}
+            value={formik.values.mobileNumber}
+            onChange={formik.handleChange}
             placeholder="Mobile Number"
-            className={errors.mobileNumber ? "input-error" : ""}
+            className={formik.errors.mobileNumber ? "input-error" : ""}
           />
-          {errors.mobileNumber && (
-            <p className="error">{errors.mobileNumber}</p>
+          {formik.errors.mobileNumber && (
+            <p className="error">{formik.errors.mobileNumber}</p>
           )}
         </div>
         <div className="form-group">
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
-            value={formData.password}
-            onChange={handleChange}
+            value={formik.values.password}
+            onChange={formik.handleChange}
             placeholder="Password"
+<<<<<<< HEAD
             className={errors.password ? "input-error" : ""}
 >>>>>>> develop
+=======
+            className={formik.errors.password ? "input-error" : ""}
+>>>>>>> develop
           />
-          {errors.password && <p className="error">{errors.password}</p>}
+          <button
+            type="button"
+            className="toggle-password"
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+          {formik.errors.password && (
+            <p className="error">{formik.errors.password}</p>
+          )}
         </div>
 <<<<<<< HEAD
         <div style={{ marginBottom: "10px" }}>
@@ -255,16 +264,27 @@ const Register = () => {
 =======
         <div className="form-group">
           <input
-            type="password"
+            type={showConfirmPassword ? "text" : "password"}
             name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
+            value={formik.values.confirmPassword}
+            onChange={formik.handleChange}
             placeholder="Confirm Password"
+<<<<<<< HEAD
             className={errors.confirmPassword ? "input-error" : ""}
 >>>>>>> develop
+=======
+            className={formik.errors.confirmPassword ? "input-error" : ""}
+>>>>>>> develop
           />
-          {errors.confirmPassword && (
-            <p className="error">{errors.confirmPassword}</p>
+          <button
+            type="button"
+            className="toggle-password"
+            onClick={() => setShowConfirmPassword((prev) => !prev)}
+          >
+            {showConfirmPassword ? "Hide" : "Show"}
+          </button>
+          {formik.errors.confirmPassword && (
+            <p className="error">{formik.errors.confirmPassword}</p>
           )}
         </div>
 <<<<<<< HEAD
