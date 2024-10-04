@@ -8,11 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.21.2",
     "axios": "^1.7.7",
-<<<<<<< HEAD
-    "formic": "^0.0.10",
-=======
     "formik": "^2.4.6",
->>>>>>> 376362545d753e20b9391121794f75f507e89ab6
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",

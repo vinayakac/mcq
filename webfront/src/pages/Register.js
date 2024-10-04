@@ -1,151 +1,124 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import "./Register.css";
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    mobileNumber: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  // Yup validation schema
+  const validationSchema = Yup.object({
+    username: Yup.string()
+      .required("Username is required"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
+    mobileNumber: Yup.string()
+      .matches(/^\d{10}$/, "Mobile number must be 10 digits")
+      .required("Mobile number is required"),
+    password: Yup.string()
+      .min(8, "Password must be at least 8 characters")
+      .matches(/(?=.*[A-Z])/, "Must contain one uppercase letter")
+      .matches(/(?=.*\d)/, "Must contain one number")
+      .matches(/(?=.*[!@#$%^&*])/, "Must contain one special character")
+      .required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], "Passwords must match")
+      .required("Confirm Password is required"),
+  });
 
-    // Remove error dynamically as the user corrects the input
-    setErrors((prevErrors) => {
-      let newErrors = { ...prevErrors };
-      if (name === "username" && value) delete newErrors.username;
-      if (
-        name === "email" &&
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
-          value
-        )
-      )
-        delete newErrors.email;
-      if (name === "mobileNumber" && /^\d{10}$/.test(value))
-        delete newErrors.mobileNumber;
-      if (
-        name === "password" &&
-        /^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(value) // Updated regex here
-      )
-        delete newErrors.password;
-      if (name === "confirmPassword" && value === formData.password)
-        delete newErrors.confirmPassword;
-      return newErrors;
-    });
-  };
-
-  const validate = () => {
-    let tempErrors = {};
-    const { username, email, mobileNumber, password, confirmPassword } =
-      formData;
-
-    if (!username) tempErrors.username = "Username is required";
-    if (!email) tempErrors.email = "Email is required";
-    else if (
-      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
-        email
-      )
-    ) {
-      tempErrors.email =
-        "Email is invalid (e.g., example@gmail.com or example.co)";
-    }
-    if (!mobileNumber) tempErrors.mobileNumber = "Mobile number is required";
-    else if (!/^\d{10}$/.test(mobileNumber))
-      tempErrors.mobileNumber = "Mobile number must be 10 digits";
-
-    if (!password) tempErrors.password = "Password is required";
-    else if (
-      !/^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(password) // Updated regex here
-    ) {
-      tempErrors.password =
-        "Password must be at least 8 characters, contain one capital letter, one number, and one special character";
-    }
-    if (password !== confirmPassword)
-      tempErrors.confirmPassword = "Passwords do not match";
-
-    setErrors(tempErrors);
-    return Object.keys(tempErrors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      localStorage.setItem("user", JSON.stringify(formData));
+  // useFormik hook
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      email: "",
+      mobileNumber: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      localStorage.setItem("user", JSON.stringify(values));
       alert("Registration successful");
       setTimeout(() => {
         navigate("/login");
       }, 1000);
-    }
-  };
+    },
+  });
 
   return (
     <div className="register-container">
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
         <div className="form-group">
           <input
             type="text"
             name="username"
-            value={formData.username}
-            onChange={handleChange}
             placeholder="Username"
-            className={errors.username ? "input-error" : ""}
+            value={formik.values.username}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className={formik.touched.username && formik.errors.username ? "input-error" : ""}
           />
-          {errors.username && <p className="error">{errors.username}</p>}
+          {formik.touched.username && formik.errors.username && (
+            <p className="error">{formik.errors.username}</p>
+          )}
         </div>
         <div className="form-group">
           <input
             type="email"
             name="email"
-            value={formData.email}
-            onChange={handleChange}
             placeholder="Email"
-            className={errors.email ? "input-error" : ""}
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className={formik.touched.email && formik.errors.email ? "input-error" : ""}
           />
-          {errors.email && <p className="error">{errors.email}</p>}
+          {formik.touched.email && formik.errors.email && (
+            <p className="error">{formik.errors.email}</p>
+          )}
         </div>
         <div className="form-group">
           <input
             type="text"
             name="mobileNumber"
-            value={formData.mobileNumber}
-            onChange={handleChange}
             placeholder="Mobile Number"
-            className={errors.mobileNumber ? "input-error" : ""}
+            value={formik.values.mobileNumber}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className={formik.touched.mobileNumber && formik.errors.mobileNumber ? "input-error" : ""}
           />
-          {errors.mobileNumber && (
-            <p className="error">{errors.mobileNumber}</p>
+          {formik.touched.mobileNumber && formik.errors.mobileNumber && (
+            <p className="error">{formik.errors.mobileNumber}</p>
           )}
         </div>
         <div className="form-group">
           <input
             type="password"
             name="password"
-            value={formData.password}
-            onChange={handleChange}
             placeholder="Password"
-            className={errors.password ? "input-error" : ""}
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className={formik.touched.password && formik.errors.password ? "input-error" : ""}
           />
-          {errors.password && <p className="error">{errors.password}</p>}
+          {formik.touched.password && formik.errors.password && (
+            <p className="error">{formik.errors.password}</p>
+          )}
         </div>
         <div className="form-group">
           <input
             type="password"
             name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
             placeholder="Confirm Password"
-            className={errors.confirmPassword ? "input-error" : ""}
+            value={formik.values.confirmPassword}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className={formik.touched.confirmPassword && formik.errors.confirmPassword ? "input-error" : ""}
           />
-          {errors.confirmPassword && (
-            <p className="error">{errors.confirmPassword}</p>
+          {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+            <p className="error">{formik.errors.confirmPassword}</p>
           )}
         </div>
         <button type="submit" className="register-button">
