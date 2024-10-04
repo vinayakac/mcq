@@ -1,173 +1,127 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { z } from "zod";
 
-const Login = () => {
+// Validation schemas
+const loginSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+const registrationSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  email: z.string().email("Invalid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string().min(6, "Confirm Password must be at least 6 characters"),
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
+const AuthForm = ({ isLogin }) => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+  const [success, setSuccess] = useState("");
 
-  const validateEmail = (email) => {
-    const regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-    return regex.test(email);
-  };
-
-  const validatePassword = (password) => {
-    const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z\d\W_]{8,}$/;
-    return regex.test(password);
-  };
-
-  const handleLogin = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
 
-    // Retrieve user from localStorage
-    const storedUser = JSON.parse(localStorage.getItem("user"));
+    // Validate input with Zod
+    try {
+      if (isLogin) {
+        loginSchema.parse({ username, password });
 
-    if (!storedUser || storedUser.email !== email) {
-      setError("You must register first.");
-      return;
+        // Retrieve stored user data
+        const storedUserData = JSON.parse(localStorage.getItem("userData"));
+        if (!storedUserData) {
+          setError("No user registered. Please register first.");
+          return;
+        }
+
+        // Validate credentials
+        if (username !== storedUserData.username || password !== storedUserData.password) {
+          setError("Invalid username or password.");
+          return;
+        }
+
+        setSuccess("Login successful!");
+      } else {
+        registrationSchema.parse({ username, email, password, confirmPassword });
+
+        // Store data in local storage
+        const userData = { username, email, password };
+        localStorage.setItem("userData", JSON.stringify(userData));
+        setSuccess("Account created successfully!");
+      }
+
+      // Clear the form
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        setError(err.errors[0].message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     }
-
-    // Validate email and password
-    if (!validateEmail(email)) {
-      setError("Please enter a valid Gmail address (e.g., example@gmail.com).");
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      setError(
-        "Password must be at least 8 characters long, include at least one capital letter, one number, and one special character (or underscore)."
-      );
-      return;
-    }
-
-    if (storedUser.password !== password) {
-      setError("Invalid password. Please try again.");
-      return;
-    }
-
-    // If valid, redirect to the dashboard
-    navigate("/dashboard"); // Adjust this to the correct route for your app
-  };
-
-  // Inline styles for the login page
-  const styles = {
-    container: {
-      width: "300px",
-      margin: "100px auto",
-      padding: "30px",
-      backgroundColor: "#f4f4f4",
-      borderRadius: "8px",
-      boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-    },
-    header: {
-      textAlign: "center",
-      marginBottom: "20px",
-    },
-    formGroup: {
-      marginBottom: "15px",
-    },
-    label: {
-      display: "block",
-      marginBottom: "5px",
-      fontWeight: "bold",
-    },
-    input: {
-      width: "100%",
-      padding: "8px",
-      boxSizing: "border-box",
-      borderRadius: "4px",
-      border: "1px solid #ccc",
-    },
-    button: {
-      width: "100%",
-      padding: "10px",
-      backgroundColor: "#007bff",
-      color: "white",
-      border: "none",
-      borderRadius: "4px",
-      cursor: "pointer",
-      position: "relative",
-    },
-    buttonIcon: {
-      cursor: "pointer",
-      position: "absolute",
-      right: "10px",
-      top: "10px",
-      background: "none",
-      border: "none",
-    },
-    error: {
-      color: "red",
-      marginBottom: "15px",
-      textAlign: "center",
-    },
-    signupLink: {
-      textAlign: "center",
-      marginTop: "15px",
-    },
-    link: {
-      color: "#007bff",
-      textDecoration: "none",
-    },
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.header}>Login</h2>
-      {error && <div style={styles.error}>{error}</div>}
-      <form onSubmit={handleLogin}>
-        <div style={styles.formGroup}>
-          <label htmlFor="email" style={styles.label}>Email</label>
+    <div className="auth-form-container">
+      <h2>{isLogin ? "Login" : "Register"}</h2>
+      {error && <div className="error-message">{error}</div>}
+      {success && <div className="success-message">{success}</div>}
+      <form onSubmit={handleSubmit}>
+        {!isLogin && (
+          <>
+            <div>
+              <label>Email:</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required={!isLogin}
+              />
+            </div>
+            <div>
+              <label>Confirm Password:</label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required={!isLogin}
+              />
+            </div>
+          </>
+        )}
+        <div>
+          <label>Username:</label>
           <input
             type="text"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
-            style={styles.input}
           />
         </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="password" style={styles.label}>Password</label>
-          <div style={{ position: "relative" }}>
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-              style={styles.input}
-            />
-            <button
-              type="button"
-              style={styles.buttonIcon}
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "👁️" : "👁️‍🗨️"}
-            </button>
-          </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </div>
-        <button
-          type="submit"
-          style={styles.button}
-          onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
-          onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
-        >
-          Login
-        </button>
+        <button type="submit">{isLogin ? "Login" : "Create Account"}</button>
       </form>
-      <div style={styles.signupLink}>
-        <p>
-          Don't have an account? <a href="/register" style={styles.link}>Sign Up</a>
-        </p>
-      </div>
     </div>
   );
 };
 
-export default Login;
+export default AuthForm;

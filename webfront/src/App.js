@@ -1,7 +1,7 @@
 import "./App.css";
+import { Route, Routes } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import NoMatch from "./layouts/NoMatch";
-import { Route, Routes } from "react-router-dom";
 import AuthPageContainer from "./layouts/AuthPageContainer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -23,7 +23,7 @@ function App() {
             }
           />
           <Route path="login" element={<Login />} />
-          <Route path="Register" element={<Register />} />
+          <Route path="register" element={<Register />} />
           <Route path="*" element={<NoMatch />} />
         </Route>
 
@@ -37,7 +37,6 @@ function App() {
             }
           />
           <Route path="login" element={<AdminLogin />} />
-
           <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>

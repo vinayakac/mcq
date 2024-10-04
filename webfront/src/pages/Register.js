@@ -1,234 +1,98 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./Register.css";
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup"; // Import Yup for validation schema
 
-const Register = () => {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    mobileNumber: "",
-    password: "",
-    confirmPassword: "",
+const RegistrationForm = () => {
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: Yup.object({
+      username: Yup.string().required("Username is required"),
+      email: Yup.string().email("Invalid email format").required("Email is required"),
+      password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref("password"), null], "Passwords must match")
+        .required("Confirm Password is required"),
+    }),
+    onSubmit: (values) => {
+      // Store data in local storage
+      const userData = {
+        username: values.username,
+        email: values.email,
+        password: values.password, // In a real application, encrypt the password
+      };
+      localStorage.setItem("userData", JSON.stringify(userData));
+
+      // Reset form fields
+      formik.resetForm();
+      alert("Account created successfully!");
+    },
   });
-  const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-
-    // Remove error dynamically as the user corrects the input
-    setErrors((prevErrors) => {
-      let newErrors = { ...prevErrors };
-      if (name === "username" && value) delete newErrors.username;
-      if (
-        name === "email" &&
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
-          value
-        )
-      )
-        delete newErrors.email;
-      if (name === "mobileNumber" && /^\d{10}$/.test(value))
-        delete newErrors.mobileNumber;
-      if (
-        name === "password" &&
-        /^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(value) // Updated regex here
-      )
-        delete newErrors.password;
-      if (name === "confirmPassword" && value === formData.password)
-        delete newErrors.confirmPassword;
-      return newErrors;
-    });
-  };
-
-  const validate = () => {
-    let tempErrors = {};
-    const { username, email, mobileNumber, password, confirmPassword } =
-      formData;
-
-    if (!username) tempErrors.username = "Username is required";
-    if (!email) tempErrors.email = "Email is required";
-    else if (
-      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
-        email
-      )
-    ) {
-      tempErrors.email =
-        "Email is invalid (e.g., example@gmail.com or example.co)";
-    }
-    if (!mobileNumber) tempErrors.mobileNumber = "Mobile number is required";
-    else if (!/^\d{10}$/.test(mobileNumber))
-      tempErrors.mobileNumber = "Mobile number must be 10 digits";
-
-    if (!password) tempErrors.password = "Password is required";
-    else if (
-      !/^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(password) // Updated regex here
-    ) {
-      tempErrors.password =
-        "Password must be at least 8 characters, contain one capital letter, one number, and one special character";
-    }
-    if (password !== confirmPassword)
-      tempErrors.confirmPassword = "Passwords do not match";
-
-    setErrors(tempErrors);
-    return Object.keys(tempErrors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      localStorage.setItem("user", JSON.stringify(formData));
-      alert("Registration successful");
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
-    }
-<<<<<<< HEAD
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    // Store data in local storage
-    const userData = {
-      username,
-      email,
-      password, // Consider encrypting passwords in a real application
-    };
-
-    localStorage.setItem("userData", JSON.stringify(userData));
-
-    // Set success message
-    setSuccess("account created successfully!");
-    
-    // Clear the form
-    setUsername("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-  };
 
   return (
     <div style={{ maxWidth: "400px", margin: "0 auto", padding: "20px", border: "1px solid #ccc", borderRadius: "5px" }}>
       <h2>Create Account</h2>
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      {success && <div style={{ color: "green" }}>{success}</div>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
         <div>
           <label>Username:</label>
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
+            name="username"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.username}
           />
+          {formik.touched.username && formik.errors.username ? (
+            <div style={{ color: "red" }}>{formik.errors.username}</div>
+          ) : null}
         </div>
         <div>
           <label>Email:</label>
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            name="email"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.email}
           />
+          {formik.touched.email && formik.errors.email ? (
+            <div style={{ color: "red" }}>{formik.errors.email}</div>
+          ) : null}
         </div>
         <div>
           <label>Password:</label>
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+            name="password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
           />
+          {formik.touched.password && formik.errors.password ? (
+            <div style={{ color: "red" }}>{formik.errors.password}</div>
+          ) : null}
         </div>
         <div>
           <label>Confirm Password:</label>
           <input
             type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
+            name="confirmPassword"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.confirmPassword}
           />
+          {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+            <div style={{ color: "red" }}>{formik.errors.confirmPassword}</div>
+          ) : null}
         </div>
         <button type="submit">Create Account</button>
-=======
-  };
-
-  return (
-    <div className="register-container">
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            placeholder="Username"
-            className={errors.username ? "input-error" : ""}
-          />
-          {errors.username && <p className="error">{errors.username}</p>}
-        </div>
-        <div className="form-group">
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-            className={errors.email ? "input-error" : ""}
-          />
-          {errors.email && <p className="error">{errors.email}</p>}
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            name="mobileNumber"
-            value={formData.mobileNumber}
-            onChange={handleChange}
-            placeholder="Mobile Number"
-            className={errors.mobileNumber ? "input-error" : ""}
-          />
-          {errors.mobileNumber && (
-            <p className="error">{errors.mobileNumber}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Password"
-            className={errors.password ? "input-error" : ""}
-          />
-          {errors.password && <p className="error">{errors.password}</p>}
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            placeholder="Confirm Password"
-            className={errors.confirmPassword ? "input-error" : ""}
-          />
-          {errors.confirmPassword && (
-            <p className="error">{errors.confirmPassword}</p>
-          )}
-        </div>
-        <button type="submit" className="register-button">
-          Register
-        </button>
->>>>>>> develop
       </form>
     </div>
   );
 };
 
-<<<<<<< HEAD
 export default RegistrationForm;
-=======
-export default Register;
->>>>>>> develop
