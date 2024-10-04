@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import './Login.css'; // Import the CSS file
 
 // Zod validation schema
 const loginSchema = z.object({
@@ -17,116 +18,78 @@ const loginSchema = z.object({
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
+  const [error, setError] = useState({ email: "", password: "", general: "" });
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setError({ ...error, [name]: "" }); // Clear field-specific errors on input change
   };
 
   const handleLogin = (e) => {
     e.preventDefault();
-    setError("");
+    let hasError = false;
+
+    // Check for empty fields
+    if (!formData.email) {
+      setError((prev) => ({ ...prev, email: "Email is required." }));
+      hasError = true;
+    }
+    if (!formData.password) {
+      setError((prev) => ({ ...prev, password: "Password is required." }));
+      hasError = true;
+    }
+
+    if (hasError) return;
+
+    setError({ ...error, general: "" });
 
     // Validate with Zod
     const result = loginSchema.safeParse(formData);
     if (!result.success) {
-      setError(result.error.errors.map(err => err.message).join(", "));
+      setError((prev) => ({
+        ...prev,
+        general: result.error.errors.map((err) => err.message).join(", "),
+      }));
       return;
     }
 
-    // Retrieve user from localStorage
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
     if (!storedUser || storedUser.email !== formData.email) {
-      setError("You must register first.");
+      setError((prev) => ({ ...prev, general: "You must register first." }));
       return;
     }
 
     if (storedUser.password !== formData.password) {
-      setError("Invalid password. Please try again.");
+      setError((prev) => ({ ...prev, general: "Invalid password. Please try again." }));
       return;
     }
 
     // If valid, redirect to the dashboard
-    navigate("/dashboard"); // Adjust this to the correct route for your app
-  };
-
-  // Inline styles for the login page
-  const styles = {
-    container: {
-      width: "300px",
-      margin: "100px auto",
-      padding: "30px",
-      backgroundColor: "#f4f4f4",
-      borderRadius: "8px",
-      boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-    },
-    header: {
-      textAlign: "center",
-      marginBottom: "20px",
-    },
-    formGroup: {
-      marginBottom: "15px",
-    },
-    label: {
-      display: "block",
-      marginBottom: "5px",
-      fontWeight: "bold",
-    },
-    input: {
-      width: "100%",
-      padding: "8px",
-      boxSizing: "border-box",
-      borderRadius: "4px",
-      border: "1px solid #ccc",
-    },
-    button: {
-      width: "100%",
-      padding: "10px",
-      backgroundColor: "#007bff",
-      color: "white",
-      border: "none",
-      borderRadius: "4px",
-      cursor: "pointer",
-      position: "relative",
-    },
-    error: {
-      color: "red",
-      marginBottom: "15px",
-      textAlign: "center",
-    },
-    signupLink: {
-      textAlign: "center",
-      marginTop: "15px",
-    },
-    link: {
-      color: "#007bff",
-      textDecoration: "none",
-    },
+    navigate("/dashboard");
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.header}>Login</h2>
-      {error && <div style={styles.error}>{error}</div>}
+    <div className="login-container">
+      <h2 className="login-header">Login</h2>
+      {error.general && <div className="login-error">{error.general}</div>}
       <form onSubmit={handleLogin}>
-        <div style={styles.formGroup}>
-          <label htmlFor="email" style={styles.label}>Email</label>
+        <div className="form-group">
           <input
             type="text"
             id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Enter your email"
+            placeholder="Enter email"
             required
-            style={styles.input}
+            className="login-input"
           />
+          {error.email && <div className="field-error">{error.email}</div>}
         </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="password" style={styles.label}>Password</label>
+        <div className="form-group">
           <input
             type="password"
             id="password"
@@ -135,16 +98,17 @@ const Login = () => {
             onChange={handleChange}
             placeholder="Enter your password"
             required
-            style={styles.input}
+            className="login-input"
           />
+          {error.password && <div className="field-error">{error.password}</div>}
         </div>
-        <button type="submit" style={styles.button}>
+        <button type="submit" className="login-button">
           Login
         </button>
       </form>
-      <div style={styles.signupLink}>
+      <div className="signup-link">
         <p>
-          Don't have an account? <a href="/register" style={styles.link}>Sign Up</a>
+          Don't have an account? <a href="/register" className="login-link">Sign Up</a>
         </p>
       </div>
     </div>
