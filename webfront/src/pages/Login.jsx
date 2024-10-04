@@ -35,7 +35,7 @@ const Login = () => {
 
     // Check if email/username field is empty
     if (!formData.email) {
-      setErrors((prev) => ({ ...prev, email: "Email or Username is required." }));
+      setErrors((prev) => ({ ...prev, email: "Email is required." }));
       hasError = true;
     }
 
@@ -83,13 +83,13 @@ const Login = () => {
       {errors.general && <div className="login-error">{errors.general}</div>}
       <form onSubmit={handleLogin}>
         <FormInput
-          label="Email or Username"
+          label="Email"
           type="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
-          placeholder="Enter email or username"
-          error={errors.email} // Pass error message if the email/username field is empty
+          placeholder="Enter your email"
+          error={errors.email} // Pass error message if the email field is empty
         />
         <FormInput
           label="Password"
