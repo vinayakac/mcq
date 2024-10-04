@@ -1,6 +1,8 @@
-import React ,{useState} from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import FormInput from '../components/FormInput';
+
 import './Login.css'; // Import the CSS file
 
 // Zod validation schema
@@ -18,52 +20,56 @@ const loginSchema = z.object({
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState({ email: "", password: "", general: "" });
+  const [errors, setErrors] = useState({ email: "", password: "", general: "" });
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setError({ ...error, [name]: "" }); // Clear field-specific errors on input change
+    setErrors({ ...errors, [name]: "" }); // Clear field-specific errors on input change
   };
 
   const handleLogin = (e) => {
     e.preventDefault();
     let hasError = false;
 
-    // Check for empty fields
+    // Check if email/username field is empty
     if (!formData.email) {
-      setError((prev) => ({ ...prev, email: "Email is required." }));
+      setErrors((prev) => ({ ...prev, email: "Email or Username is required." }));
       hasError = true;
     }
+
+    // Check if password field is empty
     if (!formData.password) {
-      setError((prev) => ({ ...prev, password: "Password is required." }));
+      setErrors((prev) => ({ ...prev, password: "Password is required." }));
       hasError = true;
     }
 
-    if (hasError) return;
+    if (hasError) return; // Stop if there are errors
 
-    setError({ ...error, general: "" });
+    // Clear general errors
+    setErrors({ ...errors, general: "" });
 
     // Validate with Zod
     const result = loginSchema.safeParse(formData);
     if (!result.success) {
-      setError((prev) => ({
+      setErrors((prev) => ({
         ...prev,
         general: result.error.errors.map((err) => err.message).join(", "),
       }));
       return;
     }
 
+    // Check for user in local storage
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
     if (!storedUser || storedUser.email !== formData.email) {
-      setError((prev) => ({ ...prev, general: "You must register first." }));
+      setErrors((prev) => ({ ...prev, general: "You must register first." }));
       return;
     }
 
     if (storedUser.password !== formData.password) {
-      setError((prev) => ({ ...prev, general: "Invalid password. Please try again." }));
+      setErrors((prev) => ({ ...prev, general: "Invalid password. Please try again." }));
       return;
     }
 
@@ -74,38 +80,29 @@ const Login = () => {
   return (
     <div className="login-container">
       <h2 className="login-header">Login</h2>
-      {error.general && <div className="login-error">{error.general}</div>}
+      {errors.general && <div className="login-error">{errors.general}</div>}
       <form onSubmit={handleLogin}>
-        <div className="form-group">
-           <input
-            type="text"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter email"
-            required
-            className="login-input"
-          />
-          {error.email && <div className="field-error">{error.email}</div>}
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Enter your password"
-            required
-            className="login-input"
-          />
-          {error.password && <div className="field-error">{error.password}</div>}
-        </div>
+        <FormInput
+          label="Email or Username"
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Enter email or username"
+          error={errors.email} // Pass error message if the email/username field is empty
+        />
+        <FormInput
+          label="Password"
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Enter your password"
+          error={errors.password} // Pass error message if the password field is empty
+        />
         <button type="submit" className="login-button">
           Login
         </button>
-
       </form>
       <div className="signup-link">
         <p>
