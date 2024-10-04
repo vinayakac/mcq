@@ -1,30 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
+import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { z } from 'zod';
+import { z } from "zod";
+import './Login.css'; // Import the CSS file
 
+// Zod validation schema
 const loginSchema = z.object({
-  email: z
-    .string()
-    .min(3, 'Email must be at least 3 characters long')
-    .max(20, 'Email must be less than or equal to 20 characters')
-    .email('Please enter a valid email address')
-    .regex(/^[a-zA-Z0-9_.-]+$/, 'Email can only contain letters, numbers, underscores, hyphens, and dots'),
-  password: z
-    .string()
-    .min(8, 'Password must be at least 8 characters long')
-    .max(20, 'Password must be less than or equal to 20 characters')
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
-      '*Password must include at least one uppercase letter, one lowercase letter, one number, and one special character'
-    ),
+  email: z.string().email("Invalid email format").refine((value) => {
+    return value.endsWith("@gmail.com");
+  }, {
+    message: "Email must be a Gmail address.",
+  }),
+  password: z.string().min(8, "Password must be at least 8 characters long")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[0-9]/, "Password must contain at least one number")
+    .regex(/[\W_]/, "Password must contain at least one special character"),
 });
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState({ email: "", password: "", general: "" });
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
