@@ -23,7 +23,13 @@ function App() {
             }
           />
           <Route path="login" element={<Login />} />
+<<<<<<< HEAD
           <Route path="register" element={<Register />} />
+=======
+          <Route path="AdminLogin" element={<Login />} />
+
+          <Route path="Register" element={<Register />} />
+>>>>>>> develop
           <Route path="*" element={<NoMatch />} />
         </Route>
 

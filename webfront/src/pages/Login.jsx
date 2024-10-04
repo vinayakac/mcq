@@ -1,125 +1,118 @@
-import React, { useState } from "react";
+import React from "react";
+import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import './Login.css'; // Import the CSS file
 
-// Validation schemas
+// Zod validation schema
 const loginSchema = z.object({
-  username: z.string().min(1, "Username is required"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  email: z.string().email("Invalid email format").refine((value) => {
+    return value.endsWith("@gmail.com");
+  }, {
+    message: "Email must be a Gmail address.",
+  }),
+  password: z.string().min(8, "Password must be at least 8 characters long")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[0-9]/, "Password must contain at least one number")
+    .regex(/[\W_]/, "Password must contain at least one special character"),
 });
 
-const registrationSchema = z.object({
-  username: z.string().min(1, "Username is required"),
-  email: z.string().email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(6, "Confirm Password must be at least 6 characters"),
-}).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+const Login = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState({ email: "", password: "", general: "" });
+  const navigate = useNavigate();
 
-const AuthForm = ({ isLogin }) => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setError({ ...error, [name]: "" }); // Clear field-specific errors on input change
+  };
 
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    let hasError = false;
 
-    // Validate input with Zod
-    try {
-      if (isLogin) {
-        loginSchema.parse({ username, password });
-
-        // Retrieve stored user data
-        const storedUserData = JSON.parse(localStorage.getItem("userData"));
-        if (!storedUserData) {
-          setError("No user registered. Please register first.");
-          return;
-        }
-
-        // Validate credentials
-        if (username !== storedUserData.username || password !== storedUserData.password) {
-          setError("Invalid username or password.");
-          return;
-        }
-
-        setSuccess("Login successful!");
-      } else {
-        registrationSchema.parse({ username, email, password, confirmPassword });
-
-        // Store data in local storage
-        const userData = { username, email, password };
-        localStorage.setItem("userData", JSON.stringify(userData));
-        setSuccess("Account created successfully!");
-      }
-
-      // Clear the form
-      setUsername("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setError(err.errors[0].message);
-      } else {
-        setError("An unexpected error occurred.");
-      }
+    // Check for empty fields
+    if (!formData.email) {
+      setError((prev) => ({ ...prev, email: "Email is required." }));
+      hasError = true;
     }
+    if (!formData.password) {
+      setError((prev) => ({ ...prev, password: "Password is required." }));
+      hasError = true;
+    }
+
+    if (hasError) return;
+
+    setError({ ...error, general: "" });
+
+    // Validate with Zod
+    const result = loginSchema.safeParse(formData);
+    if (!result.success) {
+      setError((prev) => ({
+        ...prev,
+        general: result.error.errors.map((err) => err.message).join(", "),
+      }));
+      return;
+    }
+
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (!storedUser || storedUser.email !== formData.email) {
+      setError((prev) => ({ ...prev, general: "You must register first." }));
+      return;
+    }
+
+    if (storedUser.password !== formData.password) {
+      setError((prev) => ({ ...prev, general: "Invalid password. Please try again." }));
+      return;
+    }
+
+    // If valid, redirect to the dashboard
+    navigate("/dashboard");
   };
 
   return (
-    <div className="auth-form-container">
-      <h2>{isLogin ? "Login" : "Register"}</h2>
-      {error && <div className="error-message">{error}</div>}
-      {success && <div className="success-message">{success}</div>}
-      <form onSubmit={handleSubmit}>
-        {!isLogin && (
-          <>
-            <div>
-              <label>Email:</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required={!isLogin}
-              />
-            </div>
-            <div>
-              <label>Confirm Password:</label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required={!isLogin}
-              />
-            </div>
-          </>
-        )}
-        <div>
-          <label>Username:</label>
-          <input
+    <div className="login-container">
+      <h2 className="login-header">Login</h2>
+      {error.general && <div className="login-error">{error.general}</div>}
+      <form onSubmit={handleLogin}>
+        <div className="form-group">
+           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Enter email"
             required
+            className="login-input"
           />
+          {error.email && <div className="field-error">{error.email}</div>}
         </div>
-        <div>
-          <label>Password:</label>
+        <div className="form-group">
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Enter your password"
             required
+            className="login-input"
           />
+          {error.password && <div className="field-error">{error.password}</div>}
         </div>
-        <button type="submit">{isLogin ? "Login" : "Create Account"}</button>
+        <button type="submit" className="login-button">
+          Login
+        </button>
+
       </form>
+      <div className="signup-link">
+        <p>
+          Don't have an account? <a href="/register" className="login-link">Sign Up</a>
+        </p>
+      </div>
     </div>
   );
 };
