@@ -1,5 +1,4 @@
-import React from "react";
-import { useFormik } from "formik";
+import React ,{useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import './Login.css'; // Import the CSS file
@@ -22,138 +21,97 @@ const Login = () => {
   const [error, setError] = useState({ email: "", password: "", general: "" });
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    
-    // Reset previous errors
-    setErrors({});
-
-    // Validate form data using Zod schema
-    const result = loginSchema.safeParse({ email, password });
-
-    if (result.success) {
-      // If validation passes, log in and navigate
-      console.log("Logging in with", email, password);
-      navigate("/dashboard");
-    } else {
-      // If validation fails, set the errors
-      const formattedErrors = result.error.format();
-      setErrors(formattedErrors);
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setError({ ...error, [name]: "" }); // Clear field-specific errors on input change
   };
 
-  const styles = {
-    container: {
-      width: "300px",
-      margin: "100px auto",
-      padding: "30px",
-      backgroundColor: "#f4f4f4",
-      borderRadius: "8px",
-      boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-      backgroundImage: "url('https://cdn.wallpapersafari.com/0/62/TA4eir.jpg')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    },
-    header: {
-      textAlign: "center",
-      marginBottom: "20px",
-    },
-    formGroup: {
-      marginBottom: "15px",
-    },
-    label: {
-      display: "block",
-      marginBottom: "5px",
-      fontWeight: "bold",
-    },
-    input: {
-      width: "100%",
-      padding: "8px",
-      boxSizing: "border-box",
-      borderRadius: "4px",
-      border: "1px solid #ccc",
-    },
-    button: {
-      width: "100%",
-      padding: "10px",
-      backgroundColor: "#007bff",
-      color: "white",
-      border: "none",
-      borderRadius: "4px",
-      cursor: "pointer",
-    },
-    signupLink: {
-      textAlign: "center",
-      marginTop: "15px",
-    },
-    link: {
-      color: "#007bff",
-      textDecoration: "none",
-    },
-    eyeIcon: {
-      cursor: "pointer",
-      position: "absolute",
-      right: "10px",
-      top: "35px",
-    },
-    inputContainer: {
-      position: "relative",
-    },
-    error: {
-      color: "red",
-      marginBottom: "15px",
-      textAlign: "center",
-    },
+  const handleLogin = (e) => {
+    e.preventDefault();
+    let hasError = false;
+
+    // Check for empty fields
+    if (!formData.email) {
+      setError((prev) => ({ ...prev, email: "Email is required." }));
+      hasError = true;
+    }
+    if (!formData.password) {
+      setError((prev) => ({ ...prev, password: "Password is required." }));
+      hasError = true;
+    }
+
+    if (hasError) return;
+
+    setError({ ...error, general: "" });
+
+    // Validate with Zod
+    const result = loginSchema.safeParse(formData);
+    if (!result.success) {
+      setError((prev) => ({
+        ...prev,
+        general: result.error.errors.map((err) => err.message).join(", "),
+      }));
+      return;
+    }
+
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (!storedUser || storedUser.email !== formData.email) {
+      setError((prev) => ({ ...prev, general: "You must register first." }));
+      return;
+    }
+
+    if (storedUser.password !== formData.password) {
+      setError((prev) => ({ ...prev, general: "Invalid password. Please try again." }));
+      return;
+    }
+
+    // If valid, redirect to the dashboard
+    navigate("/dashboard");
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.header}>Login</h2>
+    <div className="login-container">
+      <h2 className="login-header">Login</h2>
+      {error.general && <div className="login-error">{error.general}</div>}
       <form onSubmit={handleLogin}>
-        {errors.email && <div style={styles.error}>{errors.email._errors[0]}</div>}
-        <div style={styles.formGroup}>
-          <label htmlFor="email" style={styles.label}>Username or Email</label>
-          <input
+        <div className="form-group">
+           <input
             type="text"
             id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your username or email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Enter email"
             required
-            style={styles.input}
+            className="login-input"
           />
+          {error.email && <div className="field-error">{error.email}</div>}
         </div>
-        {errors.password && <div style={styles.error}>{errors.password._errors[0]}</div>}
-        <div style={{ ...styles.formGroup, ...styles.inputContainer }}>
-          <label htmlFor="password" style={styles.label}>Password</label>
+        <div className=
+        
+        "form-group">
           <input
-            type={showPassword ? "text" : "password"}
+            type="password"
             id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
             placeholder="Enter your password"
             required
-            style={styles.input}
+            className="login-input"
           />
-          <span
-            style={styles.eyeIcon}
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
-          </span>
+          {error.password && <div className="field-error">{error.password}</div>}
         </div>
-        <button
-          type="submit"
-          style={styles.button}
-          onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
-          onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
-        >
+        <button type="submit" className="login-button">
           Login
         </button>
+
       </form>
-      <div style={styles.signupLink}>
+      <div className="signup-link">
         <p>
-          Don't have an account? <a href="/register" style={styles.link} onMouseOver={(e) => (e.target.style.textDecoration = "underline")} onMouseOut={(e) => (e.target.style.textDecoration = "none")}>Sign Up</a>
+          Don't have an account? <a href="/register" className="login-link">Sign Up</a>
         </p>
       </div>
     </div>

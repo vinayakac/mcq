@@ -130,6 +130,7 @@ const Register = () => {
   });
 >>>>>>> develop
 
+
   return (
     <div className="register-container">
       <h2>Register</h2>
@@ -314,5 +315,4 @@ const Register = () => {
 <<<<<<< HEAD
 export default RegistrationForm;
 =======
-export default Register;
->>>>>>> develop
+
