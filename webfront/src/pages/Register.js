@@ -6,6 +6,7 @@ import "./Register.css";
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [submitted, setSubmitted] = useState(false); // Track form submission
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -64,10 +65,16 @@ const Register = () => {
     },
   });
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true); // Mark form as submitted
+    formik.handleSubmit(e);
+  };
+
   return (
     <div className="register-container">
       <h2>Register</h2>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
           <input
             type="text"
@@ -75,9 +82,9 @@ const Register = () => {
             value={formik.values.username}
             onChange={formik.handleChange}
             placeholder="Username"
-            className={formik.errors.username ? "input-error" : ""}
+            className={formik.errors.username && submitted ? "input-error" : ""}
           />
-          {formik.errors.username && (
+          {formik.errors.username && submitted && (
             <p className="error">{formik.errors.username}</p>
           )}
         </div>
@@ -88,9 +95,9 @@ const Register = () => {
             value={formik.values.email}
             onChange={formik.handleChange}
             placeholder="Email"
-            className={formik.errors.email ? "input-error" : ""}
+            className={formik.errors.email && submitted ? "input-error" : ""}
           />
-          {formik.errors.email && (
+          {formik.errors.email && submitted && (
             <p className="error">{formik.errors.email}</p>
           )}
         </div>
@@ -101,9 +108,11 @@ const Register = () => {
             value={formik.values.mobileNumber}
             onChange={formik.handleChange}
             placeholder="Mobile Number"
-            className={formik.errors.mobileNumber ? "input-error" : ""}
+            className={
+              formik.errors.mobileNumber && submitted ? "input-error" : ""
+            }
           />
-          {formik.errors.mobileNumber && (
+          {formik.errors.mobileNumber && submitted && (
             <p className="error">{formik.errors.mobileNumber}</p>
           )}
         </div>
@@ -114,16 +123,15 @@ const Register = () => {
             value={formik.values.password}
             onChange={formik.handleChange}
             placeholder="Password"
-            className={formik.errors.password ? "input-error" : ""}
+            className={formik.errors.password && submitted ? "input-error" : ""}
           />
-          <button
-            type="button"
-            className="toggle-password"
-            onClick={() => setShowPassword((prev) => !prev)}
+          <span
+            className="password-icon"
+            onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? "Hide" : "Show"}
-          </button>
-          {formik.errors.password && (
+            <i className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></i>
+          </span>
+          {formik.errors.password && submitted && (
             <p className="error">{formik.errors.password}</p>
           )}
         </div>
@@ -134,16 +142,21 @@ const Register = () => {
             value={formik.values.confirmPassword}
             onChange={formik.handleChange}
             placeholder="Confirm Password"
-            className={formik.errors.confirmPassword ? "input-error" : ""}
+            className={
+              formik.errors.confirmPassword && submitted ? "input-error" : ""
+            }
           />
-          <button
-            type="button"
-            className="toggle-password"
-            onClick={() => setShowConfirmPassword((prev) => !prev)}
+          <span
+            className="password-icon"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           >
-            {showConfirmPassword ? "Hide" : "Show"}
-          </button>
-          {formik.errors.confirmPassword && (
+            <i
+              className={
+                showConfirmPassword ? "fas fa-eye-slash" : "fas fa-eye"
+              }
+            ></i>
+          </span>
+          {formik.errors.confirmPassword && submitted && (
             <p className="error">{formik.errors.confirmPassword}</p>
           )}
         </div>
