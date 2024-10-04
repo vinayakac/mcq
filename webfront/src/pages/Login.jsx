@@ -1,50 +1,50 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+
+// Zod validation schema
+const loginSchema = z.object({
+  email: z.string().email("Invalid email format").refine((value) => {
+    return value.endsWith("@gmail.com");
+  }, {
+    message: "Email must be a Gmail address.",
+  }),
+  password: z.string().min(8, "Password must be at least 8 characters long")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[0-9]/, "Password must contain at least one number")
+    .regex(/[\W_]/, "Password must contain at least one special character"),
+});
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const validateEmail = (email) => {
-    const regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-    return regex.test(email);
-  };
-
-  const validatePassword = (password) => {
-    const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z\d\W_]{8,}$/;
-    return regex.test(password);
-
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleLogin = (e) => {
     e.preventDefault();
-
     setError("");
+
+    // Validate with Zod
+    const result = loginSchema.safeParse(formData);
+    if (!result.success) {
+      setError(result.error.errors.map(err => err.message).join(", "));
+      return;
+    }
 
     // Retrieve user from localStorage
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
-    if (!storedUser || storedUser.email !== email) {
+    if (!storedUser || storedUser.email !== formData.email) {
       setError("You must register first.");
       return;
     }
 
-    if (!validateEmail(email)) {
-      setError("Please enter a valid Gmail address (e.g., example@gmail.com).");
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      setError(
-        "Password must be at least 8 characters long, include at least one capital letter, one number, and one special character (or underscore)."
-      );
-      return;
-    }
-
-    if (storedUser.password !== password) {
+    if (storedUser.password !== formData.password) {
       setError("Invalid password. Please try again.");
       return;
     }
@@ -53,65 +53,44 @@ const Login = () => {
     navigate("/dashboard"); // Adjust this to the correct route for your app
   };
 
+  // Inline styles for the login page
   const styles = {
     container: {
       width: "300px",
       margin: "100px auto",
       padding: "30px",
-      backgroundColor: "#f9f9f9",
+      backgroundColor: "#f4f4f4",
       borderRadius: "8px",
-      boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
-      fontFamily: "'Roboto', sans-serif",
+      boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
     },
     header: {
       textAlign: "center",
       marginBottom: "20px",
-      fontSize: "24px",
-      color: "#333",
     },
     formGroup: {
-      marginBottom: "20px",
+      marginBottom: "15px",
     },
     label: {
       display: "block",
       marginBottom: "5px",
       fontWeight: "bold",
-      fontSize: "14px",
-      color: "#333",
     },
     input: {
       width: "100%",
-      padding: "10px",
+      padding: "8px",
+      boxSizing: "border-box",
       borderRadius: "4px",
       border: "1px solid #ccc",
-      fontSize: "14px",
-      boxSizing: "border-box",
-    },
-    error: {
-      color: "red",
-      fontSize: "12px",
-      marginTop: "5px",
     },
     button: {
       width: "100%",
-      padding: "12px",
+      padding: "10px",
       backgroundColor: "#007bff",
       color: "white",
       border: "none",
       borderRadius: "4px",
-      fontSize: "16px",
       cursor: "pointer",
-
       position: "relative",
-
-    },
-    buttonIcon: {
-      cursor: "pointer",
-      position: "absolute",
-      right: "10px",
-      top: "10px",
-      background: "none",
-      border: "none",
     },
     error: {
       color: "red",
@@ -120,17 +99,11 @@ const Login = () => {
     },
     signupLink: {
       textAlign: "center",
-      marginTop: "20px",
-      fontSize: "14px",
+      marginTop: "15px",
     },
     link: {
       color: "#007bff",
       textDecoration: "none",
-      cursor: "pointer",
-      transition: "text-decoration 0.3s",
-    },
-    linkHover: {
-      textDecoration: "underline",
     },
   };
 
@@ -144,53 +117,34 @@ const Login = () => {
           <input
             type="text"
             id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
             placeholder="Enter your email"
-
             required
-
             style={styles.input}
           />
-          {emailError && <p style={styles.error}>{emailError}</p>}
         </div>
         <div style={styles.formGroup}>
           <label htmlFor="password" style={styles.label}>Password</label>
-
-          <div style={{ position: "relative" }}>
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-              style={styles.input}
-            />
-            <button
-              type="button"
-              style={styles.buttonIcon}
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "👁️" : "👁️‍🗨️"}
-            </button>
-          </div>
-
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Enter your password"
+            required
+            style={styles.input}
+          />
         </div>
-        <button
-          type="submit"
-          style={styles.button}
-          onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
-          onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
-        >
+        <button type="submit" style={styles.button}>
           Login
         </button>
       </form>
       <div style={styles.signupLink}>
         <p>
-
           Don't have an account? <a href="/register" style={styles.link}>Sign Up</a>
-
         </p>
       </div>
     </div>
