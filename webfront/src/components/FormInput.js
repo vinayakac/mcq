@@ -5,29 +5,22 @@ const FormInput = ({
   name,
   value,
   onChange,
+  onBlur,
   placeholder,
   error,
-  submitted,
-  showPasswordToggle = false,
-  showPassword = false,
-  togglePasswordVisibility,
 }) => {
   return (
-    <div className="form-group">
+    <div className="form-input-container">
       <input
-        type={showPasswordToggle && showPassword ? "text" : type}
+        type={type}
         name={name}
         value={value}
         onChange={onChange}
+        onBlur={onBlur} // Handle blur event
         placeholder={placeholder}
-        className={error && submitted ? "input-error" : ""}
+        className={error ? "error" : ""}
       />
-      {showPasswordToggle && (
-        <span className="password-icon" onClick={togglePasswordVisibility}>
-          <i className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></i>
-        </span>
-      )}
-      {error && submitted && <p className="error">{error}</p>}
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };
