@@ -10,15 +10,8 @@ import AdminLayout from "./layouts/AdminLayout"; // Import AdminLayout
 import AdminAuthPageContainer from "./layouts/AdminAuthPageContainer"; // Import AdminAuthPageContainer
 import AdminLogin from "./pages/admin/Login"; // Import AdminLogin page
 import Dashboard from "./components/Dashboard"; // Import Dashboard component
-import Courses from "./components/Courses"; // Import Courses component
 
 function App() {
-  const [showCurriculums, setShowCurriculums] = useState(false); // State for showing curriculums
-
-  const handleShowCurriculums = () => {
-    setShowCurriculums(true); // Function to set showCurriculums to true
-  };
-
   return (
     <div className="App">
       <Routes>
@@ -34,24 +27,8 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="admin-login" element={<AdminLogin />} />
           <Route path="register" element={<Register />} />
-          <Route
-            path="dashboard"
-            element={
-              <Dashboard
-                showCurriculums={showCurriculums}
-                onShowCurriculums={handleShowCurriculums}
-              />
-            }
-          />
-          <Route
-            path="/courses/:curriculumId"
-            element={
-              <Courses
-                showCurriculums={showCurriculums}
-                onShowCurriculums={handleShowCurriculums}
-              />
-            }
-          />
+          <Route path="dashboard" element={<Dashboard />} />
+
           <Route path="*" element={<NoMatch />} />
         </Route>
 
