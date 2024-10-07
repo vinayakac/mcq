@@ -1,0 +1,86 @@
+/* Container styling */
+.login-container {
+  width: 100%;
+  max-width: 400px; /* Limit the width of the form */
+  margin: 50px auto; /* Center the form vertically and horizontally */
+  padding: 20px;
+  border: 1px solid #ccc; /* Light border for the form */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  background-color: #ffffff; /* White background for the form */
+}
+
+/* Header styling */
+.login-header {
+  text-align: center; /* Center the header text */
+  margin-bottom: 20px; /* Space below the header */
+  font-size: 24px; /* Header font size */
+  color: #333; /* Dark text color */
+}
+
+/* Input field styling */
+.form-input {
+  margin-bottom: 15px; /* Space between input fields */
+}
+
+.form-input label {
+  display: block; /* Stack label above input */
+  margin-bottom: 5px; /* Space below label */
+  font-weight: bold; /* Bold label text */
+  color: #555; /* Slightly lighter color for the label */
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 90%; /* Full width of the input */
+  padding: 10px; /* Inner padding for input */
+  border: 1px solid #ccc; /* Light border for input */
+  border-radius: 4px; /* Rounded corners for input */
+  font-size: 16px; /* Font size for input text */
+}
+
+/* Error message styling */
+.input-error {
+  color: red; /* Red color for error messages */
+  font-size: 12px; /* Smaller font size for error */
+  margin-top: 5px; /* Space above error message */
+}
+
+/* General error message styling */
+.login-error {
+  color: red; /* Red color for general error messages */
+  margin-bottom: 15px; /* Space below general error */
+  text-align: center; /* Center the general error message */
+}
+
+/* Button styling */
+.login-button {
+  width: 100%; /* Full width button */
+  padding: 10px; /* Inner padding for button */
+  border: none; /* Remove default border */
+  border-radius: 20px; /* Rounded corners for button */
+  background-color: #6e45e2; /* Blue background color */
+  color: white; /* White text color */
+  font-size: 16px; /* Font size for button text */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.login-button:hover {
+  background-color: #6e45e2; /* Darker blue on hover */
+}
+
+/* Signup link styling */
+.signup-link {
+  text-align: center; /* Center the signup link text */
+  margin-top: 20px; /* Space above the signup link */
+}
+
+.signup-link a {
+  color: #007bff; /* Blue color for the link */
+  text-decoration: none; /* Remove underline */
+}
+
+.signup-link a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
