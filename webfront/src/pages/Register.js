@@ -1,103 +1,176 @@
-import React, { useState } from 'react';
-import FormInput from './FormInput'; // Adjust the path as necessary
-import FormInput from '../components/FormInput'; // Adjust the path based on your actual structure
+import React from "react";
+import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
+import "./Register.css";
+import FormInput from "../components/FormInput"; // Adjust the path if needed
 
+const Register = () => {
+  const navigate = useNavigate();
 
-const StudentForm = () => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    mobile: '',
-    password: '',
-    confirmPassword: '',
+  const formik = useFormik({
+    initialValues: {
+      studentName: "",
+      email: "",
+      mobileNumber: "",
+      password: "",
+      confirmPassword: "",
+      classLabel: "", // Adding class label
+    },
+    validate: (values) => {
+      let errors = {};
+
+      // Student Name validation
+      if (!values.studentName) {
+        errors.studentName = "Student Name is required";
+      } else if (values.studentName.length < 2) {
+        errors.studentName = "Student Name must be at least 2 characters long";
+      } else if (values.studentName.length > 30) {
+        errors.studentName = "Student Name cannot exceed 30 characters";
+      }
+
+      // Email validation
+      if (!values.email) {
+        errors.email = "Email is required";
+      } else if (
+        !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
+          values.email
+        )
+      ) {
+        errors.email = "Email is invalid (e.g., example@gmail.com)";
+      }
+
+      // Mobile number validation
+      if (!values.mobileNumber) {
+        errors.mobileNumber = "Mobile number is required";
+      } else if (!/^\d{10}$/.test(values.mobileNumber)) {
+        errors.mobileNumber = "Mobile number must be 10 digits";
+      }
+
+      // Password validation
+      if (!values.password) {
+        errors.password = "Password is required";
+      } else if (
+        !/^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(values.password)
+      ) {
+        errors.password =
+          "Password must be at least 8 characters, contain one capital letter, one number, and one special character";
+      }
+
+      // Confirm password validation
+      if (values.password !== values.confirmPassword) {
+        errors.confirmPassword = "Passwords do not match";
+      }
+
+      // Class label validation
+      if (!values.classLabel) {
+        errors.classLabel = "Class is required";
+      }
+
+      return errors;
+    },
+    onSubmit: (values) => {
+      localStorage.setItem("user", JSON.stringify(values));
+      alert("Registration successful");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    },
   });
 
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const validate = () => {
-    const newErrors = {};
-    // Simple validation logic
-    if (!formData.firstName) newErrors.firstName = 'First name is required';
-    if (!formData.lastName) newErrors.lastName = 'Last name is required';
-    if (!formData.email) newErrors.email = 'Email is required';
-    if (!formData.mobile) newErrors.mobile = 'Mobile number is required';
-    if (!formData.password) newErrors.password = 'Password is required';
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      // Submit the form or perform the desired action
-      console.log('Form data submitted:', formData);
-    }
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
-      <FormInput
-        type="text"
-        name="firstName"
-        value={formData.firstName}
-        onChange={handleChange}
-        placeholder="First Name"
-        error={errors.firstName}
-      />
-      <FormInput
-        type="text"
-        name="lastName"
-        value={formData.lastName}
-        onChange={handleChange}
-        placeholder="Last Name"
-        error={errors.lastName}
-      />
-      <FormInput
-        type="email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        placeholder="Email"
-        error={errors.email}
-      />
-      <FormInput
-        type="tel"
-        name="mobile"
-        value={formData.mobile}
-        onChange={handleChange}
-        placeholder="Mobile Number"
-        error={errors.mobile}
-      />
-      <FormInput
-        type="password"
-        name="password"
-        value={formData.password}
-        onChange={handleChange}
-        placeholder="Password"
-        error={errors.password}
-      />
-      <FormInput
-        type="password"
-        name="confirmPassword"
-        value={formData.confirmPassword}
-        onChange={handleChange}
-        placeholder="Confirm Password"
-        error={errors.confirmPassword}
-      />
-      <button type="submit">Submit</button>
-    </form>
+    <div className="register-container">
+      <h2>Register</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <input
+            type="text"
+            name="username"
+            value={formik.values.username}
+            onChange={formik.handleChange}
+            placeholder="Username"
+            className={formik.errors.username && submitted ? "input-error" : ""}
+          />
+          {formik.errors.username && submitted && (
+            <p className="error">{formik.errors.username}</p>
+          )}
+        </div>
+        <div className="form-group">
+          <input
+            type="email"
+            name="email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            placeholder="Email"
+            className={formik.errors.email && submitted ? "input-error" : ""}
+          />
+          {formik.errors.email && submitted && (
+            <p className="error">{formik.errors.email}</p>
+          )}
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            name="mobileNumber"
+            value={formik.values.mobileNumber}
+            onChange={formik.handleChange}
+            placeholder="Mobile Number"
+            className={
+              formik.errors.mobileNumber && submitted ? "input-error" : ""
+            }
+          />
+          {formik.errors.mobileNumber && submitted && (
+            <p className="error">{formik.errors.mobileNumber}</p>
+          )}
+        </div>
+        <div className="form-group">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            placeholder="Password"
+            className={formik.errors.password && submitted ? "input-error" : ""}
+          />
+          <span
+            className="password-icon"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            <i className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></i>
+          </span>
+          {formik.errors.password && submitted && (
+            <p className="error">{formik.errors.password}</p>
+          )}
+        </div>
+        <div className="form-group">
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            name="confirmPassword"
+            value={formik.values.confirmPassword}
+            onChange={formik.handleChange}
+            placeholder="Confirm Password"
+            className={
+              formik.errors.confirmPassword && submitted ? "input-error" : ""
+            }
+          />
+          <span
+            className="password-icon"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            <i
+              className={
+                showConfirmPassword ? "fas fa-eye-slash" : "fas fa-eye"
+              }
+            ></i>
+          </span>
+          {formik.errors.confirmPassword && submitted && (
+            <p className="error">{formik.errors.confirmPassword}</p>
+          )}
+        </div>
+        <button type="submit" className="register-button">
+          Register
+        </button>
+      </form>
+    </div>
   );
 };
 
