@@ -1,19 +1,24 @@
-import "./App.css";
-import Layout from "./layouts/Layout";
-import NoMatch from "./layouts/NoMatch";
-import { Route, Routes } from "react-router-dom";
-import AuthPageContainer from "./layouts/AuthPageContainer";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import AdminLayout from "./layouts/AdminLayout";
-import AdminAuthPageContainer from "./layouts/AdminAuthPageContainer";
-import AdminLogin from "./pages/admin/Login";
-import Dashboard from "./components/Dashboard";
-import Courses1To4 from "./components/Courses1To4";
-import Courses5To7 from "./components/Courses5To7";
-import Courses8To10 from "./components/Courses8To10";
+import React, { useState } from "react"; // Import React and useState
+import { Route, Routes } from "react-router-dom"; // Import Route and Routes
+import "./App.css"; // Import CSS styles
+import Layout from "./layouts/Layout"; // Import Layout
+import NoMatch from "./layouts/NoMatch"; // Import NoMatch component
+import AuthPageContainer from "./layouts/AuthPageContainer"; // Import AuthPageContainer
+import Login from "./pages/Login"; // Import Login page
+import Register from "./pages/Register"; // Import Register page
+import AdminLayout from "./layouts/AdminLayout"; // Import AdminLayout
+import AdminAuthPageContainer from "./layouts/AdminAuthPageContainer"; // Import AdminAuthPageContainer
+import AdminLogin from "./pages/admin/Login"; // Import AdminLogin page
+import Dashboard from "./components/Dashboard"; // Import Dashboard component
+import Courses from "./components/Courses"; // Import Courses component
 
 function App() {
+  const [showCurriculums, setShowCurriculums] = useState(false); // State for showing curriculums
+
+  const handleShowCurriculums = () => {
+    setShowCurriculums(true); // Function to set showCurriculums to true
+  };
+
   return (
     <div className="App">
       <Routes>
@@ -22,18 +27,31 @@ function App() {
             index
             element={
               <AuthPageContainer>
-                <div>auth page</div>
+                <div>Auth Page</div>
               </AuthPageContainer>
             }
           />
           <Route path="login" element={<Login />} />
-          <Route path="AdminLogin" element={<Login />} />
-
-          <Route path="Register" element={<Register />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="/courses1-4" element={<Courses1To4 />} />
-          <Route path="/courses5-7" element={<Courses5To7 />} />
-          <Route path="/courses8-10" element={<Courses8To10 />} />
+          <Route path="admin-login" element={<AdminLogin />} />
+          <Route path="register" element={<Register />} />
+          <Route
+            path="dashboard"
+            element={
+              <Dashboard
+                showCurriculums={showCurriculums}
+                onShowCurriculums={handleShowCurriculums}
+              />
+            }
+          />
+          <Route
+            path="/courses/:curriculumId"
+            element={
+              <Courses
+                showCurriculums={showCurriculums}
+                onShowCurriculums={handleShowCurriculums}
+              />
+            }
+          />
           <Route path="*" element={<NoMatch />} />
         </Route>
 
@@ -42,12 +60,11 @@ function App() {
             index
             element={
               <AdminAuthPageContainer>
-                <div>Admin auth page</div>
+                <div>Admin Auth Page</div>
               </AdminAuthPageContainer>
             }
           />
           <Route path="login" element={<AdminLogin />} />
-
           <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>
