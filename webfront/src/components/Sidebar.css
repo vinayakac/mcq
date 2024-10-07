@@ -1,0 +1,32 @@
+/* src/components/Sidebar.css */
+.sidebar {
+  width: 200px; /* Set width for sidebar */
+  background-color: #f4f4f4; /* Background color */
+  padding: 20px; /* Padding */
+  border-right: 1px solid #ddd; /* Right border */
+  height: 100vh; /* Full height */
+}
+
+.sidebar h2 {
+  margin: 0 0 15px; /* Margin for heading */
+}
+
+.button-container {
+  display: flex; /* Flexbox for buttons */
+  flex-direction: column; /* Stack buttons vertically */
+}
+
+.curriculum-button {
+  margin: 10px 0; /* Spacing between buttons */
+  padding: 10px; /* Padding for buttons */
+  border: none; /* Remove default border */
+  background-color: #007bff; /* Button color */
+  color: white; /* Button text color */
+  cursor: pointer; /* Pointer cursor on hover */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+.curriculum-button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
