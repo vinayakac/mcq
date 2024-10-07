@@ -1,5 +1,4 @@
-import React from "react";
-import { useFormik } from "formik";
+import React, { useState } from "react"; // Combine the imports
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import './Login.css'; // Import the CSS file
@@ -78,7 +77,7 @@ const Login = () => {
       {error.general && <div className="login-error">{error.general}</div>}
       <form onSubmit={handleLogin}>
         <div className="form-group">
-           <input
+          <input
             type="text"
             id="email"
             name="email"
@@ -106,7 +105,6 @@ const Login = () => {
         <button type="submit" className="login-button">
           Login
         </button>
-
       </form>
       <div className="signup-link">
         <p>
@@ -117,4 +115,4 @@ const Login = () => {
   );
 };
 
-export default AuthForm;
+export default Login; // Ensure correct export
