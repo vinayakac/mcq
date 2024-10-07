@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const navigate = useNavigate();
 
-  // Formik initial values and submit handler
+  
   const formik = useFormik({
     initialValues: {
       email: "",
