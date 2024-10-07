@@ -1,5 +1,6 @@
 import React from "react";
 
+
 const FormInput = ({
   type = "text",
   name,
@@ -21,6 +22,7 @@ const FormInput = ({
         className={error ? "error" : ""}
       />
       {error && <div className="error-message">{error}</div>}
+
     </div>
   );
 };

@@ -23,6 +23,8 @@ function App() {
             }
           />
           <Route path="login" element={<Login />} />
+          <Route path="AdminLogin" element={<Login />} />
+
           <Route path="Register" element={<Register />} />
           <Route path="*" element={<NoMatch />} />
         </Route>
