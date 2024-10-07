@@ -1,0 +1,43 @@
+import React from "react";
+import PropTypes from "prop-types";
+import "./FormInput.css"; // Assume we have some CSS for styling
+import Registe from "Register.js";
+const FormInput = ({ label, name, type, value, onChange, onBlur, error, touched, placeholder }) => {
+  return (
+    <div className="form-group">
+      <label htmlFor={name}>{label}</label>
+      <input
+        id={name}
+        name={name}
+        type={type}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        placeholder={placeholder}
+        className={touched && error ? "input-error" : ""}
+      />
+      {touched && error && <p className="error">{error}</p>}
+    </div>
+  );
+};
+
+FormInput.propTypes = {
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
+  error: PropTypes.string,
+  touched: PropTypes.bool,
+  placeholder: PropTypes.string,
+};
+
+FormInput.defaultProps = {
+  type: "text",
+  error: null,
+  touched: false,
+  placeholder: "",
+};
+
+export default FormInput;
