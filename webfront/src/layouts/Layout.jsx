@@ -1,27 +1,29 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "../components/Sidebar.js"; // Ensure the correct import path for Sidebar
+import Sidebar from "../components/Sidebar"; // Ensure the correct import path for Sidebar
 
-const Layout = ({ showSidebar }) => {
+const Layout = () => {
   return (
     <div style={styles.container}>
-      {showSidebar && <Sidebar />} {/* Sidebar will always be shown if showSidebar is true */}
+      <Sidebar />
+
       <div style={styles.content}>
-        <Outlet /> {/* This will render the nested routes' content */}
+        <Outlet /> {/* This renders the child components/pages */}
       </div>
     </div>
   );
 };
 
-// Styles for Layout
 const styles = {
   container: {
-    display: "flex",
+    display: "flex", // Use flexbox to align items
+    minHeight: "100vh", // Ensure the container takes full viewport height
   },
   content: {
-    flex: 1,
-    marginLeft: "250px", // This margin ensures the content doesn't overlap the sidebar
+    marginLeft: "250px", // Leave space for the sidebar
     padding: "20px",
+    flex: 1, // Allow the content area to take the remaining space
+    overflowY: "auto", // Allow scrolling in the content area
   },
 };
 

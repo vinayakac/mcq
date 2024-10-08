@@ -12,7 +12,7 @@ import Dashboard from "./components/Dashboard";
 import ExamList from "./components/ExamList";
 import Curriculums from "./components/Curriculums"; // Import the new Curriculums component
 import CurriculumDetail from "./components/CurriculumDetail"; // Import the CurriculumDetail component
-import CourseDetail from "./components/CourseDetail";
+import QuestionList from "./components/QuestionList";
 
 function App() {
   return (
@@ -37,6 +37,7 @@ function App() {
         <Route element={<Layout showSidebar={true} />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="exam-list" element={<ExamList />} />
+          <Route path="/exam/:examNumber" element={<QuestionList />} />
           <Route path="curriculums" element={<Curriculums />} />{" "}
           {/* New route */}
           <Route
@@ -44,7 +45,6 @@ function App() {
             element={<CurriculumDetail />}
           />{" "}
           {/* New route for details */}
-          <Route path="/course-detail/:course" element={<CourseDetail />} />
         </Route>
 
         {/* Admin Pages */}

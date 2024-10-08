@@ -1,195 +1,179 @@
 import React from "react";
-import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
 import "./Register.css";
-import FormInput from "../components/FormInput"; // Adjust the path if needed
 
 const Register = () => {
   const navigate = useNavigate();
 
+  // Yup validation schema
+  const validationSchema = Yup.object({
+    studentName: Yup.string().required("Student name is required"),
+    class: Yup.string().required("Please choose a class"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
+    mobileNumber: Yup.string()
+      .matches(/^\d{10}$/, "Mobile number must be 10 digits")
+      .required("Mobile number is required"),
+    password: Yup.string()
+      .min(8, "Password must be at least 8 characters")
+      .matches(/(?=.*[A-Z])/, "Must contain one uppercase letter")
+      .matches(/(?=.*\d)/, "Must contain one number")
+      .matches(/(?=.[!@#$%^&])/, "Must contain one special character")
+      .required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Confirm Password is required"),
+  });
+
+  // useFormik hook
   const formik = useFormik({
     initialValues: {
       studentName: "",
+      class: "",
       email: "",
       mobileNumber: "",
       password: "",
       confirmPassword: "",
-      classLabel: "", // Adding class label
     },
-    validate: (values) => {
-      let errors = {};
-
-      // Student Name validation
-      if (!values.studentName) {
-        errors.studentName = "Student Name is required";
-      } else if (values.studentName.length < 2) {
-        errors.studentName = "Student Name must be at least 2 characters long";
-      } else if (values.studentName.length > 30) {
-        errors.studentName = "Student Name cannot exceed 30 characters";
-      }
-
-      // Email validation
-      if (!values.email) {
-        errors.email = "Email is required";
-      } else if (
-        !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co|net|org|edu|gov|mil|info|biz)$/.test(
-          values.email
-        )
-      ) {
-        errors.email = "Email is invalid (e.g., example@gmail.com)";
-      }
-
-      // Mobile number validation
-      if (!values.mobileNumber) {
-        errors.mobileNumber = "Mobile number is required";
-      } else if (!/^\d{10}$/.test(values.mobileNumber)) {
-        errors.mobileNumber = "Mobile number must be 10 digits";
-      }
-
-      // Password validation
-      if (!values.password) {
-        errors.password = "Password is required";
-      } else if (
-        !/^(?=.[A-Z])(?=.\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(values.password)
-      ) {
-        errors.password =
-          "Password must be at least 8 characters, contain one capital letter, one number, and one special character";
-      }
-
-      // Confirm password validation
-      if (values.password !== values.confirmPassword) {
-        errors.confirmPassword = "Passwords do not match";
-      }
-
-      // Class label validation
-      if (!values.classLabel) {
-        errors.classLabel = "Class is required";
-      }
-
-      return errors;
-    },
+    validationSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
     onSubmit: (values) => {
       localStorage.setItem("user", JSON.stringify(values));
       alert("Registration successful");
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
+      // setTimeout(() => {
+      //   navigate("/login");
+      // }, 1000);
     },
   });
 
   return (
     <div className="register-container">
-      <h2 className="register-header">Register</h2>
-      <form onSubmit={formik.handleSubmit} className="register-form">
-        {/* Student Name */}
+      <h2>Register</h2>
+      <form onSubmit={formik.handleSubmit}>
         <div className="form-group">
-          <label htmlFor="studentName" className="form-label">
-            Student Name
-          </label>
-          <FormInput
-            name="studentName"
+          <label htmlFor="studentName">Student Name</label>
+          <input
             type="text"
+            name="studentName"
+            id="studentName"
+            placeholder="Enter Student Name"
             value={formik.values.studentName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            placeholder="Enter Student Name"
-            error={formik.touched.studentName && formik.errors.studentName}
+            className={
+              formik.touched.studentName && formik.errors.studentName
+                ? "input-error"
+                : ""
+            }
           />
+          {formik.touched.studentName && formik.errors.studentName && (
+            <p className="error">{formik.errors.studentName}</p>
+          )}
         </div>
-
-        {/* Email */}
         <div className="form-group">
-          <label htmlFor="email" className="form-label">
-            Email
-          </label>
-          <FormInput
-            name="email"
+          <label htmlFor="email">Email</label>
+          <input
             type="email"
+            name="email"
+            id="email"
+            placeholder="Enter Email"
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            placeholder="Enter Email"
-            error={formik.touched.email && formik.errors.email}
+            className={
+              formik.touched.email && formik.errors.email ? "input-error" : ""
+            }
           />
+          {formik.touched.email && formik.errors.email && (
+            <p className="error">{formik.errors.email}</p>
+          )}
         </div>
-
-        {/* Mobile Number */}
         <div className="form-group">
-          <label htmlFor="mobileNumber" className="form-label">
-            Mobile Number
-          </label>
-          <FormInput
-            name="mobileNumber"
+          <label htmlFor="class">Class</label>
+          <select
+            name="class"
+            id="class"
+            value={formik.values.class}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className={
+              formik.touched.class && formik.errors.class ? "input-error" : ""
+            }
+          >
+            <option value="">Choose Class</option>
+            <option value="1-4">1st to 4th</option>
+            <option value="5-7">5th to 7th</option>
+            <option value="8-10">8th to 10th</option>
+          </select>
+          {formik.touched.class && formik.errors.class && (
+            <p className="error">{formik.errors.class}</p>
+          )}
+        </div>
+        <div className="form-group">
+          <label htmlFor="mobileNumber">Mobile Number</label>
+          <input
             type="text"
+            name="mobileNumber"
+            id="mobileNumber"
+            placeholder="Enter Mobile Number"
             value={formik.values.mobileNumber}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            placeholder="Enter Mobile Number"
-            error={formik.touched.mobileNumber && formik.errors.mobileNumber}
-          />
-        </div>
-
-        {/* Class Label */}
-        <div className="form-group">
-          <label htmlFor="classLabel" className="form-label">
-            Class
-          </label>
-          <select
-            name="classLabel"
-            value={formik.values.classLabel}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            className={`form-input ${
-              formik.touched.classLabel && formik.errors.classLabel
-                ? "error"
+            className={
+              formik.touched.mobileNumber && formik.errors.mobileNumber
+                ? "input-error"
                 : ""
-            }`}
-          >
-            <option value="" label="Select class" />
-            <option value="1-4" label="1-4" />
-            <option value="5-7" label="5-7" />
-            <option value="8-10" label="8-10" />
-          </select>
-
-          {formik.touched.classLabel && formik.errors.classLabel && (
-            <div className="error-message">{formik.errors.classLabel}</div>
+            }
+          />
+          {formik.touched.mobileNumber && formik.errors.mobileNumber && (
+            <p className="error">{formik.errors.mobileNumber}</p>
           )}
         </div>
-
-        {/* Password */}
         <div className="form-group">
-          <label htmlFor="password" className="form-label">
-            Password
-          </label>
-          <FormInput
-            name="password"
+          <label htmlFor="password">Password</label>
+          <input
             type="password"
+            name="password"
+            id="password"
+            placeholder="Enter Password"
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            placeholder="Enter Password"
-            error={formik.touched.password && formik.errors.password}
+            className={
+              formik.touched.password && formik.errors.password
+                ? "input-error"
+                : ""
+            }
           />
+          {formik.touched.password && formik.errors.password && (
+            <p className="error">{formik.errors.password}</p>
+          )}
         </div>
-
-        {/* Confirm Password */}
         <div className="form-group">
-          <label htmlFor="confirmPassword" className="form-label">
-            Confirm Password
-          </label>
-          <FormInput
-            name="confirmPassword"
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
             type="password"
+            name="confirmPassword"
+            id="confirmPassword"
+            placeholder="Confirm Password"
             value={formik.values.confirmPassword}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            placeholder="Confirm Password"
-            error={
+            className={
               formik.touched.confirmPassword && formik.errors.confirmPassword
+                ? "input-error"
+                : ""
             }
           />
+          {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+            <p className="error">{formik.errors.confirmPassword}</p>
+          )}
         </div>
-
         <button type="submit" className="register-button">
           Register
         </button>

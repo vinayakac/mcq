@@ -1,54 +1,90 @@
-.register-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+body {
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(135deg, #6e45e2 0%, #88d3ce 100%);
+  margin: 5;
+  padding: 5;
 }
 
-.register-header {
-  text-align: center;
-  margin-bottom: 20px;
+.register-container {
+  width: 350px; /* Fixed width for the form container */
+  margin: 100px auto; /* Center the form */
+  padding: 55px; /* Padding around the form */
+  background-color: #fff; /* Background color of the form */
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  border-radius: 25px; /* Rounded corners */
+  text-align: center; /* Center text */
+}
+
+h2 {
+  font-size: 26px; /* Font size for heading */
+  margin-bottom: 20px; /* Margin below heading */
+  color: #333; /* Color for heading */
+  text-transform: uppercase; /* Uppercase letters */
+  letter-spacing: 1.5px; /* Spacing between letters */
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px; /* Margin below each form group */
+  text-align: left; /* Align text to the left for labels */
 }
 
-.form-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+.form-group label {
+  display: block; /* Ensure label takes the full width */
+  font-size: 16px; /* Uniform label size */
+  margin-bottom: 20px; /* Margin below label */
+  color: #333; /* Color for label */
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-select {
-  width: 100%; /* Ensures the select field matches the input fields */
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box; /* Ensures padding and border are included in the total width */
+.form-group input,
+.form-group select {
+  width: 100%; /* Full width of the parent */
+  max-width: 450px; /* Fixed max width for all inputs and select */
+  padding: 12px; /* Padding inside inputs and select */
+  border-radius: 10px; /* Rounded corners */
+  border: 1px solid #ddd; /* Light gray border */
+  background: #f5f5f5; /* Light background */
+  transition: 0.3s; /* Smooth transition */
+  outline: none; /* Removes outline on focus */
+  font-size: 16px; /* Font size */
 }
 
-input.error,
-select.error {
-  border-color: red; /* Highlight border in red on error */
+.form-group input:focus,
+.form-group select:focus {
+  background-color: #fff; /* Change background on focus */
+  border-color: #6e45e2; /* Change border color on focus */
 }
 
-.error-message {
-  color: red; /* Display error messages in red */
-  margin-top: 5px;
+.input-error {
+  border-color: red; /* Red border for error */
 }
+
 .register-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
+  width: 100%; /* Full width for button */
+  max-width: 350px; /* Match button width with inputs */
+  padding: 12px; /* Same padding as inputs */
+  border: none; /* No border */
+  border-radius: 5px; /* Same border radius */
+  background-color: #6e45e2; /* Button color */
+  color: #fff; /* Text color */
+  font-size: 16px; /* Font size for button */
+  cursor: pointer; /* Pointer on hover */
+  transition: background-color 0.3s; /* Transition for hover */
+}
+
+.register-button:hover {
+  background-color: #5741d9; /* Darker shade on hover */
+}
+
+.error {
+  color: red; /* Error text color */
+  font-size: 12px; /* Error text size */
+  margin-top: 5px; /* Spacing above error text */
+  text-align: left; /* Left align error text */
+}
+
+@media screen and (max-width: 500px) {
+  .register-container {
+    width: 200%; /* Responsive container width */
+    margin: 100px auto; /* Center the container */
+  }
 }

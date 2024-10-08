@@ -21,37 +21,31 @@ const Sidebar = () => {
       <div style={styles.sidebar}>
         <nav style={styles.nav}>
           <ul style={styles.list}>
-            {/* Dashboard link */}
             <li style={styles.listItem}>
               <Link to="/dashboard" style={styles.link}>
                 Dashboard
               </Link>
             </li>
-            {/* Curriculums link */}
             <li style={styles.listItem}>
               <Link to="/curriculums" style={styles.link}>
                 Curriculums
               </Link>
             </li>
-            {/* Courses link */}
             <li style={styles.listItem}>
               <Link to="/courses" style={styles.link}>
                 Courses
               </Link>
             </li>
-            {/* Exams link */}
             <li style={styles.listItem}>
               <Link to="/exam-list" style={styles.link}>
                 Exams
               </Link>
             </li>
-            {/* Students link */}
             <li style={styles.listItem}>
               <Link to="/students" style={styles.link}>
                 Students
               </Link>
             </li>
-            {/* Logout button */}
             <li style={styles.listItem}>
               <button onClick={handleLogout} style={styles.logoutLink}>
                 Logout
@@ -67,15 +61,17 @@ const Sidebar = () => {
 // Styles for the Sidebar
 const styles = {
   sidebar: {
-    position: "fixed",
+    position: "fixed", // Keeps the sidebar in a fixed position
     top: 0,
     left: 0,
     width: "250px",
-    height: "100%",
+    height: "100vh", // Full height of the viewport
     backgroundColor: "#343a40",
     color: "white",
     padding: "20px",
     boxShadow: "2px 0 5px rgba(0, 0, 0, 0.5)",
+    zIndex: 1000, // Ensures the sidebar is on top
+    overflowY: "auto", // Allows the sidebar content to scroll if it overflows
   },
   nav: {
     marginTop: "20px",
@@ -83,21 +79,25 @@ const styles = {
   list: {
     listStyleType: "none",
     padding: 0,
+    margin: 0, // Reset margin to avoid unwanted spacing
   },
   listItem: {
-    marginBottom: "10px",
+    marginBottom: "20px",
   },
   link: {
     color: "white",
     textDecoration: "none",
-    fontSize: "1rem",
+    fontSize: "1.1rem",
+    display: "block",
+    padding: "10px 0",
+    transition: "color 0.3s ease",
   },
   logoutLink: {
     background: "none",
     color: "white",
     border: "none",
     cursor: "pointer",
-    fontSize: "1rem",
+    fontSize: "1.1rem",
     padding: 0,
     textDecoration: "underline",
   },

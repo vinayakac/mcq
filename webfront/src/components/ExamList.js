@@ -8,7 +8,7 @@ const ExamList = () => {
 
   // Function to navigate to the exam
   const handleExamClick = (examNumber) => {
-    navigate(`/exam/${examNumber}`); // Corrected: Use backticks for template literal
+    navigate(`/exam/${examNumber}`); // Navigate to the QuestionList component
   };
 
   return (
