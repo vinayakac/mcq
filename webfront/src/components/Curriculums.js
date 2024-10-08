@@ -1,4 +1,3 @@
-// src/components/Curriculums.js
 import React, { useState, useEffect } from "react";
 import "./Curriculums.css"; // Importing CSS for styling
 import Courses from "./Courses"; // Import Courses component

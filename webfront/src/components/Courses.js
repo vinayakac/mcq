@@ -1,4 +1,3 @@
-// src/components/Courses.js
 import React, { useState } from "react";
 import CourseDetails from "./CourseDetails"; // Import the CourseDetails component
 import "./Courses.css"; // Import the CSS file
