@@ -4,11 +4,11 @@ import "./Students.css"; // Import the CSS file
 
 // Initial sample student data
 const studentsData = {
-  Math: ["Alice Johnson", "Bob Smith", "Charlie Brown"],
-  Science: ["David Wilson", "Eva Green", "Frank Wright"],
-  History: ["Grace Hall", "Henry Adams", "Ivy Clark"],
-  Geography: ["Jack King", "Lily Scott", "Mason Lee"],
-  Biology: ["Nora White", "Oliver Green", "Paula Blue"],
+  Typing: ["Alice Johnson", "Bob Smith", "Charlie Brown"],
+  Drawing: ["David Wilson", "Eva Green", "Frank Wright"],
+  Computer: ["Grace Hall", "Henry Adams", "Ivy Clark"],
+  PHP: ["Jack King", "Lily Scott", "Mason Lee"],
+  Python: ["Nora White", "Oliver Green", "Paula Blue"],
 };
 
 function Students() {

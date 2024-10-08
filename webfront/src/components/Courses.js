@@ -4,11 +4,11 @@ import CourseDetails from "./CourseDetails"; // Import the CourseDetails compone
 import "./Courses.css"; // Import the CSS file
 
 const initialCourses = [
-  { name: "Math", curriculum: "1-4 class" },
-  { name: "Science", curriculum: "1-4 class" },
-  { name: "History", curriculum: "5-7 class" },
-  { name: "Geography", curriculum: "5-7 class" },
-  { name: "Biology", curriculum: "8-10 class" },
+  { name: "Typing", curriculum: "1-4 class" },
+  { name: "Drawing", curriculum: "1-4 class" },
+  { name: "Computer", curriculum: "5-7 class" },
+  { name: "PHP", curriculum: "5-7 class" },
+  { name: "Python", curriculum: "8-10 class" },
 ];
 
 function Courses({ curriculum }) {
