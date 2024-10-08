@@ -55,7 +55,7 @@ input[type="password"] {
 
 /* Button styling */
 .login-button {
-  width: 100%; /* Full width button */
+  width: 97%; /* Full width button */
   padding: 10px; /* Inner padding for button */
   border: none; /* Remove default border */
   border-radius: 20px; /* Rounded corners for button */
