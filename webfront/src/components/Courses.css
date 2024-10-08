@@ -1,0 +1,50 @@
+.courses {
+  background-color: #f5f5f5; /* Light gray background */
+  padding: 20px; /* Space around the content */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.courses h2 {
+  color: #333; /* Dark text for the heading */
+  margin-bottom: 15px; /* Space below the heading */
+}
+
+.courses ul {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove default padding */
+}
+
+.courses li {
+  background-color: #ffffff; /* White background for list items */
+  padding: 10px; /* Space inside each list item */
+  margin-bottom: 10px; /* Space between list items */
+  border-radius: 5px; /* Rounded corners for list items */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.courses li:hover {
+  background-color: #e3f2fd; /* Light blue on hover */
+}
+
+.courses input {
+  padding: 10px; /* Space inside the input */
+  margin-right: 10px; /* Space between input and button */
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 5px; /* Rounded corners for the input */
+}
+
+.courses button {
+  padding: 10px 15px; /* Space inside the button */
+  background-color: #1976d2; /* Dark blue background for the button */
+  color: white; /* White text for the button */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.courses button:hover {
+  background-color: #0d47a1; /* Darker blue on hover */
+}

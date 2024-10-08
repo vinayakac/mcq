@@ -1,11 +1,25 @@
-import { Outlet } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
+import './Layout.css'; // Ensure you have appropriate CSS for styling
 
-function Layout() {
+const Layout = ({ children }) => {
   return (
-    <div style={{ overflow: "hidden" }}>
-      <Outlet />
+    <div className="layout">
+      <nav className="sidebar">
+        <h2>MCQ APP</h2>
+        <ul>
+          <li><Link to="/dashboard">Dashboard</Link></li>
+          <li><Link to="/curriculums">Curriculums</Link></li>
+          <li><Link to="/courses">Courses</Link></li>
+          <li><Link to="/exams">Exams</Link></li>
+          <li><Link to="/students">Students</Link></li>
+        </ul>
+      </nav>
+      <main className="content">
+        {children}
+      </main>
     </div>
   );
-}
+};
 
 export default Layout;
