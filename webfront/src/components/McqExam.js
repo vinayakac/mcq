@@ -12,12 +12,17 @@ function McqExam() {
   const [selectedAnswers, setSelectedAnswers] = useState({}); // To store selected answers
   const [score, setScore] = useState(null); // To store the score after submission
   const [results, setResults] = useState([]); // To store results for each question
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // To track the current question
 
   const handleChange = (questionIndex, selectedOption) => {
     setSelectedAnswers((prev) => ({
       ...prev,
       [questionIndex]: selectedOption,
     }));
+  };
+
+  const handleNextQuestion = () => {
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   };
 
   const handleSubmit = (e) => {
@@ -35,58 +40,74 @@ function McqExam() {
   return (
     <div>
       <h1>{exam} Questions</h1>
-      <form onSubmit={handleSubmit}>
-        {questions.length > 0 ? (
-          questions.map((questionData, index) => {
-            const userAnswer = selectedAnswers[index];
-            const isCorrect = results[index]?.isCorrect;
-
-            return (
-              <div key={index} className="question">
-                <p>{questionData.question}</p>
-                <ul>
-                  {questionData.options.map((option, optionIndex) => {
+      {questions.length > 0 ? (
+        <>
+          <form onSubmit={handleSubmit}>
+            <div className="question">
+              <p>
+                Question {currentQuestionIndex + 1}/{questions.length}:{" "}
+                {questions[currentQuestionIndex].question}
+              </p>
+              <ul>
+                {questions[currentQuestionIndex].options.map(
+                  (option, optionIndex) => {
+                    const userAnswer = selectedAnswers[currentQuestionIndex];
+                    const isCorrect = results[currentQuestionIndex]?.isCorrect;
                     let optionClass = ""; // Default class
+
                     // Determine the class based on user answer and correctness
                     if (userAnswer === option) {
                       optionClass = isCorrect ? "correct" : "incorrect"; // Correct or incorrect
                     } else if (
                       isCorrect === false &&
-                      option === questionData.answer
+                      option === questions[currentQuestionIndex].answer
                     ) {
                       optionClass = "correct"; // Show the correct answer
                     }
+
                     return (
                       <li key={optionIndex} className={optionClass}>
                         <label>
                           <input
                             type="radio"
-                            name={`question-${index}`} // Group by question index
+                            name={`question-${currentQuestionIndex}`} // Group by question index
                             value={option}
                             checked={userAnswer === option} // Check if this option is selected
-                            onChange={() => handleChange(index, option)} // Handle answer selection
+                            onChange={() =>
+                              handleChange(currentQuestionIndex, option)
+                            } // Handle answer selection
                             disabled={score !== null} // Disable radio buttons after submission
                           />
                           {option}
                         </label>
                       </li>
                     );
-                  })}
-                </ul>
-              </div>
-            );
-          })
-        ) : (
-          <p>No questions available for this exam.</p>
-        )}
-        <button type="submit">Submit Answers</button>
-      </form>
-      {score !== null && (
-        <h2>
-          Your Score: {score}/{questions.length}
-        </h2>
-      )}{" "}
-      {/* Display the score */}
+                  }
+                )}
+              </ul>
+            </div>
+
+            {/* Show "Next Question" button if not on the last question */}
+            {currentQuestionIndex < questions.length - 1 && (
+              <button type="button" onClick={handleNextQuestion}>
+                Next Question
+              </button>
+            )}
+            {/* Show "Submit Answers" button if on the last question */}
+            {currentQuestionIndex === questions.length - 1 && (
+              <button type="submit">Submit Answers</button>
+            )}
+          </form>
+
+          {score !== null && (
+            <h2>
+              Your Score: {score}/{questions.length}
+            </h2>
+          )}
+        </>
+      ) : (
+        <p>No questions available for this exam.</p>
+      )}
     </div>
   );
 }
