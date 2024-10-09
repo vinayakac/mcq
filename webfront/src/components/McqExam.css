@@ -27,13 +27,15 @@
   }
   
   button {
-    background-color: #4caf50;
-    color: white;
+    background-color:paleturquoise;
+    color: black;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
+    width: 150px; 
+  height: 40px; 
   }
   
   button:hover {
-    background-color: #45a049;
+    background-color: powderblue;
   }

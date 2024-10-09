@@ -32,6 +32,8 @@
     border: none;
     padding: 5px 10px;
     cursor: pointer;
+    width: 120px; 
+    height: 40px; 
   }
   
   button:hover {

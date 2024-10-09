@@ -37,8 +37,8 @@
   
   .courses button {
     padding: 10px 15px; /* Space inside the button */
-    background-color: #1976d2; /* Dark blue background for the button */
-    color: white; /* White text for the button */
+    background-color:paleturquoise; /* Dark blue background for the button */
+    color: black; /* White text for the button */
     border: none; /* No border */
     border-radius: 5px; /* Rounded corners */
     cursor: pointer; /* Change cursor to pointer on hover */
@@ -46,5 +46,5 @@
   }
   
   .courses button:hover {
-    background-color: #0d47a1; /* Darker blue on hover */
+    background-color:powderblue; /* Darker blue on hover */
   }

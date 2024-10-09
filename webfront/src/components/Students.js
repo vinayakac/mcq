@@ -4,21 +4,21 @@ import "./Students.css"; // Import the CSS file
 
 // Initial sample student data with course and standard
 const studentsData = [
-  { name: "Alice Johnson", course: "Typing", standard: "1" },
-  { name: "Bob Smith", course: "Typing", standard: "1" },
-  { name: "Charlie Brown", course: "Typing", standard: "1" },
-  { name: "David Wilson", course: "Drawing", standard: "2" },
-  { name: "Eva Green", course: "Drawing", standard: "2" },
-  { name: "Frank Wright", course: "Drawing", standard: "2" },
-  { name: "Grace Hall", course: "Computer", standard: "3" },
-  { name: "Henry Adams", course: "Computer", standard: "3" },
-  { name: "Ivy Clark", course: "Computer", standard: "3" },
-  { name: "Jack King", course: "PHP", standard: "4" },
-  { name: "Lily Scott", course: "PHP", standard: "4" },
-  { name: "Mason Lee", course: "PHP", standard: "4" },
-  { name: "Nora White", course: "Python", standard: "5" },
-  { name: "Oliver Green", course: "Python", standard: "5" },
-  { name: "Paula Blue", course: "Python", standard: "5" },
+  { name: "Akshata", course: "Typing", standard: "1" },
+  { name: "Rekha", course: "Typing", standard: "1" },
+  { name: "santosh", course: "Typing", standard: "1" },
+  { name: "Ishwar", course: "Drawing", standard: "2" },
+  { name: "Nagaratna", course: "Drawing", standard: "2" },
+  { name: "Shilpa", course: "Drawing", standard: "2" },
+  { name: "Chandu", course: "Computer", standard: "3" },
+  { name: "Bhumiks", course: "Computer", standard: "3" },
+  { name: "Swati", course: "Computer", standard: "3" },
+  { name: "Jyoyi", course: "PHP", standard: "4" },
+  { name: "Teju", course: "PHP", standard: "4" },
+  { name: "Vidya", course: "PHP", standard: "4" },
+  { name: "Raksha", course: "Python", standard: "5" },
+  { name: "Poorvi", course: "Python", standard: "5" },
+  { name: "Keerti", course: "Python", standard: "5" },
 ];
 
 function Students() {

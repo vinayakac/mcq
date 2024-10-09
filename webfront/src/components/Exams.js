@@ -9,23 +9,23 @@ function Exams({ course }) {
   const examsData = {
     Typing: {
       exams: ["Typing Exam 1", "Typing Exam 2"],
-      students: ["Alice Johnson", "Bob Smith", "Charlie Brown"],
+      students: ["Akshata", "Santosh", "Rekha"],
     },
     Drawing: {
       exams: ["Drawing Exam 1", "Drawing Exam 2"],
-      students: ["David Wilson", "Eva Green", "Frank Wright"],
+      students: ["Nagaratna", "ishwar", "Shilpa"],
     },
     Computer: {
       exams: ["Computer Exam 1", "Computer Exam 2"],
-      students: ["Grace Hall", "Henry Adams", "Ivy Clark"],
+      students: ["Chandana", "Bhumika", "Swati"],
     },
     PHP: {
       exams: ["PHP Exam 1", "PHP Exam 2"],
-      students: ["Jack King", "Lily Scott", "Mason Lee"],
+      students: ["Jyoyi", "Teju", "Vidya"],
     },
     Python: {
       exams: ["Python Exam 1", "Python Exam 2"],
-      students: ["Nora White", "Oliver Green", "Paula Blue"],
+      students: ["Poorvi", "Raksha", "Keerti"],
     },
   };
 

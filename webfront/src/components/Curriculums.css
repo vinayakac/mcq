@@ -27,15 +27,15 @@
   .add-curriculum button {
     padding: 10px 15px; /* Add padding for the button */
     border: none; /* Remove default border */
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white; /* Text color */
+    background-color: paleturquoise;; /* Bootstrap primary color */
+    color: black; /* Text color */
     border-radius: 4px; /* Rounded corners */
     cursor: pointer; /* Pointer cursor */
     transition: background-color 0.3s; /* Smooth background color change */
   }
   
   .add-curriculum button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
+    background-color: powderblue; /* Darker shade on hover */
   }
   
   .curriculums-list {
