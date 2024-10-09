@@ -50,14 +50,16 @@ const Register = () => {
       if (!values.password) {
         errors.password = "Password is required";
       } else if (
-        !/^(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/.test(values.password)
+        !/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(values.password)
       ) {
         errors.password =
           "Password must be at least 8 characters, contain one capital letter, one number, and one special character";
       }
 
       // Confirm password validation
-      if (values.password !== values.confirmPassword) {
+      if (!values.confirmPassword) {
+        errors.confirmPassword = "Confirm Password is required";
+      } else if (values.password !== values.confirmPassword) {
         errors.confirmPassword = "Passwords do not match";
       }
 
@@ -139,12 +141,16 @@ const Register = () => {
             value={formik.values.classLabel}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className={`form-input ${formik.touched.classLabel && formik.errors.classLabel ? "error" : ""}`}
+            className={`form-input ${
+              formik.touched.classLabel && formik.errors.classLabel
+                ? "error"
+                : ""
+            }`}
           >
             <option value="" label="Select class" />
             <option value="1-4" label="1-4" />
             <option value="5-7" label="5-7" />
-            <option value="8-10" label="8-10" /> {/* Removed misplaced comma */}
+            <option value="8-10" label="8-10" />
           </select>
 
           {formik.touched.classLabel && formik.errors.classLabel && (
@@ -180,7 +186,9 @@ const Register = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             placeholder="Confirm Password"
-            error={formik.touched.confirmPassword && formik.errors.confirmPassword}
+            error={
+              formik.touched.confirmPassword && formik.errors.confirmPassword
+            }
           />
         </div>
 

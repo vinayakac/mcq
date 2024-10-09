@@ -1,15 +1,25 @@
+/* Register.css */
+
 .register-container {
+  width: 100%;
   max-width: 400px;
-  margin: 0 auto;
+  margin: auto;
   padding: 20px;
   background-color: #f9f9f9;
-  border-radius: 5px;
+  border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .register-header {
   text-align: center;
   margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group {
@@ -17,38 +27,45 @@
 }
 
 .form-label {
-  display: block;
   margin-bottom: 5px;
   font-weight: bold;
+  color: #555;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-select {
-  width: 100%; /* Ensures the select field matches the input fields */
+.form-input {
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box; /* Ensures padding and border are included in the total width */
+  font-size: 16px;
 }
 
-input.error,
-select.error {
-  border-color: red; /* Highlight border in red on error */
+.form-input.error {
+  border-color: #e74c3c;
 }
 
 .error-message {
-  color: red; /* Display error messages in red */
+  color: #e74c3c;
+  font-size: 12px;
   margin-top: 5px;
 }
+
 .register-button {
-  width: 100%;
   padding: 10px;
-  background-color: #007bff;
+  background-color: #3498db;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+  background-color: #2980b9;
+}
+
+.register-button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
 }

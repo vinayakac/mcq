@@ -1,0 +1,87 @@
+/* CurriculumDetail.css */
+.curriculum-detail-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .details {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  .sub-header {
+    font-size: 1.5rem;
+    color: #444;
+    margin-bottom: 10px;
+  }
+  
+  .course-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .course-table th,
+  .course-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .radio-input {
+    margin-right: 10px;
+  }
+  
+  .link-button,
+  .add-button,
+  .back-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .link-button:hover,
+  .add-button:hover,
+  .back-button:hover {
+    background-color: #2980b9;
+  }
+  
+  .add-course-container {
+    display: flex;
+    margin-top: 20px;
+  }
+  
+  .input-field {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .button-container {
+    margin-top: 20px;
+  }
+  
+  .error {
+    color: red;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    text-align: center;
+  }
+  

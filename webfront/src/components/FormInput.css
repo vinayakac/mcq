@@ -1,18 +1,31 @@
 .form-input {
-    margin-bottom: 16px;
-  }
-  
-  .input-error {
-    border: 1px solid red;
-  }
-  
-  .error-message {
-    color: red;
-    font-size: 12px;
-  }
-  
-  .required-star {
-    color: red;
-    margin-left: 4px;
-  }
-  
+  margin-bottom: 16px;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #007bff; /* Adjust color as needed */
+}
+
+.input-error {
+  border: 1px solid red; /* Style for error input */
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+}
+
+.required-star {
+  color: red;
+}
