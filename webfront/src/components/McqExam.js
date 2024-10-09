@@ -25,13 +25,17 @@ function McqExam() {
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   };
 
+  const handlePreviousQuestion = () => {
+    setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     let totalScore = 0;
     const newResults = questions.map((questionData, index) => {
       const isCorrect = selectedAnswers[index] === questionData.answer;
       if (isCorrect) totalScore += 1;
-      return { questionData, isCorrect }; // Store the question data and if it's correct
+      return { questionData, isCorrect }; // Store the question data and whether it's correct
     });
     setScore(totalScore); // Set the final score
     setResults(newResults); // Store the results
@@ -53,16 +57,17 @@ function McqExam() {
                   (option, optionIndex) => {
                     const userAnswer = selectedAnswers[currentQuestionIndex];
                     const isCorrect = results[currentQuestionIndex]?.isCorrect;
+                    const correctAnswer =
+                      questions[currentQuestionIndex].answer;
                     let optionClass = ""; // Default class
 
                     // Determine the class based on user answer and correctness
-                    if (userAnswer === option) {
-                      optionClass = isCorrect ? "correct" : "incorrect"; // Correct or incorrect
-                    } else if (
-                      isCorrect === false &&
-                      option === questions[currentQuestionIndex].answer
-                    ) {
-                      optionClass = "correct"; // Show the correct answer
+                    if (score !== null) {
+                      if (option === correctAnswer) {
+                        optionClass = "correct"; // Show correct answer in green
+                      } else if (userAnswer === option) {
+                        optionClass = "incorrect"; // Show incorrect answer in red
+                      }
                     }
 
                     return (
@@ -87,6 +92,12 @@ function McqExam() {
               </ul>
             </div>
 
+            {/* Show "Previous Question" button if not on the first question */}
+            {currentQuestionIndex > 0 && (
+              <button type="button" onClick={handlePreviousQuestion}>
+                Previous Question
+              </button>
+            )}
             {/* Show "Next Question" button if not on the last question */}
             {currentQuestionIndex < questions.length - 1 && (
               <button type="button" onClick={handleNextQuestion}>
