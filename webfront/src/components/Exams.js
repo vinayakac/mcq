@@ -1,12 +1,10 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./Exams.css"; // Import the CSS file
+import "./Exams.css";
 
 function Exams({ course }) {
   const navigate = useNavigate();
 
-  // Example exams and students for each course
   const examsData = {
     Typing: {
       exams: ["Typing Exam 1", "Typing Exam 2"],
@@ -31,18 +29,15 @@ function Exams({ course }) {
   };
 
   const selectedCourse = examsData[course];
-  const allCourses = Object.entries(examsData); // Get all courses with exams and students
+  const allCourses = Object.entries(examsData);
 
-  // Function to navigate to MCQ page when an exam is clicked
   const handleExamClick = (exam) => {
-    navigate(`/mcq/${exam}`); // Assuming the route for MCQ questions is "/mcq/:exam"
+    navigate(`/mcq/${exam}`); // Navigate to the MCQ page with the exam name
   };
 
   return (
     <div className="exams">
       <h2>{course ? `Exams for ${course}` : "All Exams"}</h2>
-
-      {/* Display a table with Course, Exams, and Student List columns */}
       <table>
         <thead>
           <tr>

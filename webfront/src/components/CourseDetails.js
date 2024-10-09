@@ -1,57 +1,59 @@
+import React from "react";
+import { useParams } from "react-router-dom";
 
-// src/components/CourseDetails.js
-import React, { useState } from "react";
-import Exams from "./Exams"; // Import the Exams component
-import "./CourseDetails.css"; // Import the CSS file
-
-// Initial sample student data
-const initialStudentsData = {
-  Typing: ["Jyoti", "Smith", "Chandu"],
-  Drawing: ["Swati", "maruti", "Teju"],
-  Computer: ["shyama", "shilpa", "Bindu"],
-  PHP: ["vidhya", "veda", "smarth"],
-  Python: ["sharat", "Rajat", "kavya"],
+const studentsData = {
+  Painting: ["jyo", "maruti"],
+  Typing: ["shyama", "vidya"],
+  "Basic Computer Skills": ["teju", "gourish"],
+  "Advanced Software Applications": ["swati", "veda"],
+  "Introduction to Programming": ["Bindu", "chandu"],
+  "Data Structures": ["smarth", "shilpa"],
+  Algorithms: ["preeti", "sonu"],
+  "Web Development": ["rajat", "kavya"],
 };
 
-function CourseDetails({ course }) {
-  const [students, setStudents] = useState(initialStudentsData[course] || []);
-  const [newStudent, setNewStudent] = useState("");
+const examsData = {
+  Painting: ["Painting Exam 1", "drawing Exam "],
+  Typing: ["Typing Exam 1", " speed Typing Exam 2"],
+  "Basic Computer Skills": ["Basic Skills Exam"],
+  "Advanced Software Applications": ["Advanced Exam 1"],
+  "Introduction computer": ["computer basics Exam"],
+  "Introduction to Programming": ["Intro Exam"],
+  "Excel":["Excel Exam"],
+  "Powerpoint":["power point Exam"],
+  "Data Structures": ["DS Exam"],
+  "Algorithms": ["Algorithm Exam"],
+  "Web Development": ["Web Dev Exam"],
+};
 
-  // Function to handle adding a new student
-  const addStudent = () => {
-    if (newStudent.trim() !== "") {
-      setStudents((prevStudents) => [...prevStudents, newStudent.trim()]);
-      setNewStudent(""); // Clear input after adding
-    }
-  };
+function CourseDetails() {
+  const { course } = useParams(); // Get course name from URL params
 
   return (
-    <div className="course-details">
+    <div>
       <h2>Details for {course}</h2>
 
-      {/* Show students enrolled in the selected course */}
-      <h3>Students in {course}</h3>
+      <h3>Students enrolled:</h3>
       <ul>
-        {students.length > 0 ? (
-          students.map((student, index) => <li key={index}>{student}</li>)
+        {studentsData[course] ? (
+          studentsData[course].map((student, index) => (
+            <li key={index}>{student}</li>
+          ))
         ) : (
           <li>No students enrolled in this course.</li>
         )}
       </ul>
 
-      {/* Input form to add a new student */}
-      <div className="add-student">
-        <input
-          type="text"
-          value={newStudent}
-          onChange={(e) => setNewStudent(e.target.value)}
-          placeholder="Add new student"
-        />
-        <button onClick={addStudent}>Add Student</button>
-      </div>
-
-      {/* Show exams for the selected course */}
-      <Exams course={course} />
+      <h3>Exams:</h3>
+      <ul>
+        {examsData[course] ? (
+          examsData[course].map((exam, index) => (
+            <li key={index}>{exam}</li>
+          ))
+        ) : (
+          <li>No exams available for this course.</li>
+        )}
+      </ul>
     </div>
   );
 }
