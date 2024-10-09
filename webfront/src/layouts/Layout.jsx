@@ -1,30 +1,25 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
-import Sidebar from "../components/Sidebar"; // Ensure the correct import path for Sidebar
+import { Link } from "react-router-dom";
+import './Layout.css'; // Ensure you have appropriate CSS for styling
 
-const Layout = () => {
+const Layout = ({ children }) => {
   return (
-    <div style={styles.container}>
-      <Sidebar />
-
-      <div style={styles.content}>
-        <Outlet /> {/* This renders the child components/pages */}
-      </div>
+    <div className="layout">
+      <nav className="sidebar">
+        <h2>MCQ APP</h2>
+        <ul>
+          <li><Link to="/dashboard">Dashboard</Link></li>
+          <li><Link to="/curriculums">Curriculums</Link></li>
+          <li><Link to="/courses">Courses</Link></li>
+          <li><Link to="/exams">Exams</Link></li>
+          <li><Link to="/students">Students</Link></li>
+        </ul>
+      </nav>
+      <main className="content">
+        {children}
+      </main>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    display: "flex", // Use flexbox to align items
-    minHeight: "100vh", // Ensure the container takes full viewport height
-  },
-  content: {
-    marginLeft: "250px", // Leave space for the sidebar
-    padding: "20px",
-    flex: 1, // Allow the content area to take the remaining space
-    overflowY: "auto", // Allow scrolling in the content area
-  },
 };
 
 export default Layout;

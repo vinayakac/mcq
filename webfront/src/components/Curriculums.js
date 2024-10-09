@@ -1,112 +1,68 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "./Sidebar"; // Adjust the path as necessary
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import "./Curriculums.css"; // Importing CSS for styling
+import Courses from "./Courses"; // Import Courses component
+import CourseDetails from "./CourseDetails"; // Import CourseDetails component
 
-const Curriculums = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+const initialCurriculumsData = ["1-4 class", "5-7 class", "8-10 class"]; // Updated curriculums
 
-  useEffect(() => {
-    const sidebarState = localStorage.getItem("isSidebarOpen");
-    setSidebarOpen(sidebarState === "true");
-  }, []);
+function Curriculums() {
+  const [curriculums, setCurriculums] = useState(initialCurriculumsData);
+  const [newCurriculum, setNewCurriculum] = useState("");
+  const [selectedCurriculum, setSelectedCurriculum] = useState(null); // State for the selected curriculum
+  const [selectedCourse, setSelectedCourse] = useState(null); // State for the selected course
 
-  const toggleSidebar = () => {
-    setSidebarOpen((prevState) => {
-      const newState = !prevState;
-      localStorage.setItem("isSidebarOpen", newState);
-      return newState;
-    });
+  const addCurriculum = () => {
+    if (newCurriculum.trim() && !curriculums.includes(newCurriculum.trim())) {
+      setCurriculums([...curriculums, newCurriculum.trim()]);
+      setNewCurriculum("");
+    }
   };
 
-  const navigate = useNavigate();
+  const handleCurriculumClick = (curriculum) => {
+    setSelectedCurriculum(curriculum); // Set the selected curriculum
+    setSelectedCourse(null); // Reset the selected course when changing curriculum
+  };
 
-  // Sample data for the course details
-  const courses = [
-    {
-      id: 1,
-      name: "1-4 Class",
-      description: "Basic skills and introductory subjects.",
-    },
-    {
-      id: 2,
-      name: "5-7 Class",
-      description: "Intermediate subjects including science and math.",
-    },
-    {
-      id: 3,
-      name: "8-10 Class",
-      description: "Advanced topics and preparation for high school.",
-    },
-  ];
-
-  const handleCourseClick = (courseId) => {
-    navigate(`/curriculums/${courseId}`); // Navigate to the detail page for the selected course
+  const handleCourseSelect = (course) => {
+    setSelectedCourse(course); // Set the selected course
   };
 
   return (
-    <div style={styles.container}>
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <h1 style={styles.header}>Curriculums</h1>
-      <div style={styles.card}>
-        <h2>Available Courses</h2>
-        <ul style={styles.courseList}>
-          {courses.map((course) => (
-            <li key={course.id} style={styles.courseItem}>
-              <h3>{course.name}</h3>
-              <p>{course.description}</p>
-              <button
-                style={styles.courseButton}
-                onClick={() => handleCourseClick(course.id)}
-              >
-                View Detail for {course.name}
-              </button>
-            </li>
-          ))}
-        </ul>
+    <div className="curriculums-container">
+      <h2>Curriculums</h2>
+      <div className="add-curriculum">
+        <input
+          type="text"
+          value={newCurriculum}
+          onChange={(e) => setNewCurriculum(e.target.value)}
+          placeholder="Add new curriculum"
+        />
+        <button onClick={addCurriculum}>Add Curriculum</button>
       </div>
+      <ul className="curriculums-list">
+        {curriculums.map((curriculum, index) => (
+          <li
+            key={index}
+            className="curriculum-item"
+            onClick={() => handleCurriculumClick(curriculum)}
+          >
+            {curriculum}
+          </li>
+        ))}
+      </ul>
+
+      {/* Show Courses component when a curriculum is selected */}
+      {selectedCurriculum && (
+        <Courses
+          curriculum={selectedCurriculum}
+          onCourseSelect={handleCourseSelect}
+        />
+      )}
+
+      {/* Show CourseDetails component when a course is selected */}
+      {selectedCourse && <CourseDetails course={selectedCourse} />}
     </div>
   );
-};
-
-// Styles for the Curriculums component
-const styles = {
-  container: {
-    padding: "20px",
-    textAlign: "center",
-  },
-  header: {
-    fontSize: "2rem",
-    marginBottom: "10px",
-  },
-  card: {
-    backgroundColor: "#f4f4f4",
-    padding: "20px",
-    borderRadius: "8px",
-    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-    margin: "20px auto",
-    width: "80%",
-  },
-  courseList: {
-    listStyleType: "none",
-    padding: 0,
-  },
-  courseItem: {
-    backgroundColor: "#f8f9fa",
-    padding: "15px",
-    margin: "10px 0",
-    borderRadius: "5px",
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
-  },
-  courseButton: {
-    padding: "10px 20px",
-    fontSize: "1rem",
-    backgroundColor: "#5bc0de",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    marginTop: "10px",
-  },
-};
+}
 
 export default Curriculums;
