@@ -42,3 +42,10 @@
 h2 {
   margin-top: 0;
 }
+.logout-link {
+  color: #ff4d4d; /* Change the color for the logout link */
+}
+
+.logout-link:hover {
+  text-decoration: underline; /* Underline on hover */
+}

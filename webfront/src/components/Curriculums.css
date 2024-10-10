@@ -1,7 +1,7 @@
 .curriculums-container {
   padding: 20px;
   background-color: #f9f9f9; /* Light background */
-  border-radius: 8px; /* Rounded corners */
+  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
@@ -11,47 +11,53 @@ h2 {
 }
 
 .add-curriculum {
-  display: flex; /* Use flexbox for alignment */
-  justify-content: center; /* Center items horizontally */
-  margin-bottom: 20px; /* Space below the input */
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .add-curriculum input {
-  padding: 10px; /* Add padding */
-  border: 1px solid #ccc; /* Border for the input */
-  border-radius: 4px; /* Rounded corners */
-  margin-right: 10px; /* Space between input and button */
-  flex: 1; /* Take available space */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  flex: 1;
 }
 
 .add-curriculum button {
-  padding: 10px 15px; /* Add padding for the button */
-  border: none; /* Remove default border */
-  background-color: #007bff; /* Bootstrap primary color */
-  color: white; /* Text color */
-  border-radius: 4px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor */
-  transition: background-color 0.3s; /* Smooth background color change */
+  padding: 10px 15px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .add-curriculum button:hover {
-  background-color: #0056b3; /* Darker shade on hover */
+  background-color: #0056b3;
 }
 
 .curriculums-list {
-  list-style-type: none; /* Remove default bullets */
+  list-style-type: none;
   padding: 0;
 }
 
 .curriculum-item {
   padding: 15px;
-  border: 1px solid #ccc; /* Add border for better visibility */
-  margin: 10px 0; /* Space between items */
-  border-radius: 4px; /* Rounded corners */
+  border: 1px solid #ccc;
+  margin: 10px 0;
+  border-radius: 4px;
   background-color: #e0f7fa; /* Light blue background */
-  transition: background-color 0.3s; /* Smooth background color change */
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .curriculum-item:hover {
-  background-color: #b2ebf2; /* Slightly darker on hover */
+  background-color: #b2ebf2;
+}
+
+.curriculum-item.selected {
+  background-color: #007bff; /* Highlighted background for selected item */
+  color: white; /* White text for contrast */
 }

@@ -29,6 +29,11 @@ function Courses({ curriculum }) {
     localStorage.setItem("courses", JSON.stringify(courses));
   }, [courses]);
 
+  // Reset selected course when curriculum changes
+  useEffect(() => {
+    setSelectedCourse(null); // Clear selected course
+  }, [curriculum]);
+
   // Filter courses based on the selected curriculum
   const filteredCourses = curriculum
     ? courses.filter((course) => course.curriculum === curriculum)
@@ -42,14 +47,26 @@ function Courses({ curriculum }) {
   // Function to handle adding a new course
   const handleAddCourse = (e) => {
     e.preventDefault(); // Prevent form submission from refreshing the page
-    if (newCourseName && newCourseCurriculum) {
+    const trimmedCourseName = newCourseName.trim();
+    const trimmedCourseCurriculum = newCourseCurriculum.trim();
+    if (
+      trimmedCourseName &&
+      trimmedCourseCurriculum &&
+      !courses.some(
+        (course) =>
+          course.name === trimmedCourseName &&
+          course.curriculum === trimmedCourseCurriculum
+      )
+    ) {
       const newCourse = {
-        name: newCourseName.trim(),
-        curriculum: newCourseCurriculum.trim(),
+        name: trimmedCourseName,
+        curriculum: trimmedCourseCurriculum,
       };
       setCourses((prevCourses) => [...prevCourses, newCourse]); // Add the new course
       setNewCourseName(""); // Clear the input fields
       setNewCourseCurriculum(""); // Clear the curriculum input
+    } else {
+      alert("Course already exists or input fields are empty!");
     }
   };
 
@@ -59,7 +76,13 @@ function Courses({ curriculum }) {
       <ul>
         {filteredCourses.length > 0 ? (
           filteredCourses.map((course, index) => (
-            <li key={index} onClick={() => handleCourseSelect(course.name)}>
+            <li
+              key={index}
+              onClick={() => handleCourseSelect(course.name)}
+              className={
+                selectedCourse === course.name ? "selected-course" : ""
+              }
+            >
               {course.name} {/* Show only the course name */}
             </li>
           ))

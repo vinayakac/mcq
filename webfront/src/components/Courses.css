@@ -48,3 +48,7 @@
 .courses button:hover {
   background-color: #0d47a1; /* Darker blue on hover */
 }
+.courses li.selected-course {
+  background-color: #bbdefb; /* Light blue background for the selected course */
+  color: #0d47a1; /* Darker text color for selected course */
+}

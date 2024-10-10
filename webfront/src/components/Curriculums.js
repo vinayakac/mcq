@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import "./Curriculums.css"; // Importing CSS for styling
-import Courses from "./Courses"; // Import Courses component
-import CourseDetails from "./CourseDetails"; // Import CourseDetails component
+import React, { useState } from "react";
+import "./Curriculums.css";
+import Courses from "./Courses";
+import CourseDetails from "./CourseDetails";
 
-const initialCurriculumsData = ["1-4 class", "5-7 class", "8-10 class"]; // Updated curriculums
+const initialCurriculumsData = ["1-4 class", "5-7 class", "8-10 class"];
 
 function Curriculums() {
   const [curriculums, setCurriculums] = useState(initialCurriculumsData);
   const [newCurriculum, setNewCurriculum] = useState("");
-  const [selectedCurriculum, setSelectedCurriculum] = useState(null); // State for the selected curriculum
-  const [selectedCourse, setSelectedCourse] = useState(null); // State for the selected course
+  const [selectedCurriculum, setSelectedCurriculum] = useState(null);
+  const [selectedCourse, setSelectedCourse] = useState(null);
 
   const addCurriculum = () => {
     if (newCurriculum.trim() && !curriculums.includes(newCurriculum.trim())) {
@@ -19,12 +19,13 @@ function Curriculums() {
   };
 
   const handleCurriculumClick = (curriculum) => {
-    setSelectedCurriculum(curriculum); // Set the selected curriculum
-    setSelectedCourse(null); // Reset the selected course when changing curriculum
+    setSelectedCurriculum(curriculum);
+    setSelectedCourse(null);
   };
 
+  // Add this function to handle course selection
   const handleCourseSelect = (course) => {
-    setSelectedCourse(course); // Set the selected course
+    setSelectedCourse(course);
   };
 
   return (
@@ -43,7 +44,9 @@ function Curriculums() {
         {curriculums.map((curriculum, index) => (
           <li
             key={index}
-            className="curriculum-item"
+            className={`curriculum-item ${
+              selectedCurriculum === curriculum ? "selected" : ""
+            }`}
             onClick={() => handleCurriculumClick(curriculum)}
           >
             {curriculum}
@@ -51,15 +54,13 @@ function Curriculums() {
         ))}
       </ul>
 
-      {/* Show Courses component when a curriculum is selected */}
       {selectedCurriculum && (
         <Courses
           curriculum={selectedCurriculum}
-          onCourseSelect={handleCourseSelect}
+          onCourseSelect={handleCourseSelect} // Use handleCourseSelect here
         />
       )}
 
-      {/* Show CourseDetails component when a course is selected */}
       {selectedCourse && <CourseDetails course={selectedCourse} />}
     </div>
   );
