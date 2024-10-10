@@ -1,31 +1,58 @@
-// src/components/Students.js
 import React, { useState } from "react";
 import "./Students.css"; // Import the CSS file
 
-// Initial sample student data with course and standard
+// Initial sample student data with id, course, age, gender, and standard
 const studentsData = [
-  { name: "Akshata", course: "Typing", standard: "1" },
-  { name: "Rekha", course: "Typing", standard: "1" },
-  { name: "santosh", course: "Typing", standard: "1" },
-  { name: "Ishwar", course: "Drawing", standard: "2" },
-  { name: "Nagaratna", course: "Drawing", standard: "2" },
-  { name: "Shilpa", course: "Drawing", standard: "2" },
-  { name: "Chandu", course: "Computer", standard: "3" },
-  { name: "Bhumiks", course: "Computer", standard: "3" },
-  { name: "Swati", course: "Computer", standard: "3" },
-  { name: "Jyoyi", course: "PHP", standard: "4" },
-  { name: "Teju", course: "PHP", standard: "4" },
-  { name: "Vidya", course: "PHP", standard: "4" },
-  { name: "Raksha", course: "Python", standard: "5" },
-  { name: "Poorvi", course: "Python", standard: "5" },
-  { name: "Keerti", course: "Python", standard: "5" },
+  {
+    id: 1,
+    name: "Akshata",
+    course: "Typing",
+    age: 7,
+    gender: "Female",
+    standard: "1",
+  },
+  {
+    id: 2,
+    name: "Rekha",
+    course: "Typing",
+    age: 8,
+    gender: "Female",
+    standard: "1",
+  },
+  {
+    id: 3,
+    name: "Santosh",
+    course: "Typing",
+    age: 9,
+    gender: "Male",
+    standard: "1",
+  },
+  {
+    id: 4,
+    name: "Ishwar",
+    course: "Drawing",
+    age: 10,
+    gender: "Male",
+    standard: "2",
+  },
+  {
+    id: 5,
+    name: "Nagaratna",
+    course: "Drawing",
+    age: 9,
+    gender: "Female",
+    standard: "2",
+  },
 ];
 
 function Students() {
   const [students, setStudents] = useState(studentsData);
   const [newStudent, setNewStudent] = useState("");
   const [newCourse, setNewCourse] = useState("");
+  const [newAge, setNewAge] = useState("");
+  const [newGender, setNewGender] = useState("");
   const [newStandard, setNewStandard] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Function to handle adding a new student
   const handleAddStudent = (e) => {
@@ -33,46 +60,72 @@ function Students() {
     if (
       newStudent.trim() !== "" &&
       newCourse.trim() !== "" &&
+      newAge.trim() !== "" &&
+      newGender.trim() !== "" &&
       newStandard.trim() !== ""
     ) {
       const student = {
+        id: students.length + 1, // Generate a new ID
         name: newStudent.trim(),
         course: newCourse.trim(),
+        age: parseInt(newAge.trim()),
+        gender: newGender.trim(),
         standard: newStandard.trim(),
       };
       setStudents((prevStudents) => [...prevStudents, student]);
       // Clear input fields after adding
       setNewStudent("");
       setNewCourse("");
+      setNewAge("");
+      setNewGender("");
       setNewStandard("");
     }
   };
+
+  // Filter students based on search query
+  const filteredStudents = students.filter((student) =>
+    student.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="students">
       <h2>All Students</h2>
 
+      {/* Search input */}
+      <input
+        type="text"
+        placeholder="Search by name..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+
       {/* Table to display students */}
       <table>
         <thead>
           <tr>
+            <th>ID</th>
             <th>Name</th>
             <th>Course</th>
-            <th>Standard</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Class</th>
           </tr>
         </thead>
         <tbody>
-          {students.length > 0 ? (
-            students.map((student, index) => (
-              <tr key={index}>
+          {filteredStudents.length > 0 ? (
+            filteredStudents.map((student) => (
+              <tr key={student.id}>
+                <td>{student.id}</td>
                 <td>{student.name}</td>
                 <td>{student.course}</td>
+                <td>{student.age}</td>
+                <td>{student.gender}</td>
                 <td>{student.standard}</td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="3">No students available.</td>
+              <td colSpan="6">No students found.</td>
             </tr>
           )}
         </tbody>
@@ -92,6 +145,20 @@ function Students() {
           value={newCourse}
           onChange={(e) => setNewCourse(e.target.value)}
           placeholder="Enter course"
+          required
+        />
+        <input
+          type="number"
+          value={newAge}
+          onChange={(e) => setNewAge(e.target.value)}
+          placeholder="Enter age"
+          required
+        />
+        <input
+          type="text"
+          value={newGender}
+          onChange={(e) => setNewGender(e.target.value)}
+          placeholder="Enter gender"
           required
         />
         <input

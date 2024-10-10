@@ -6,7 +6,7 @@ import "./Sidebar.css"; // Import sidebar styles
 function Sidebar() {
   return (
     <div className="sidebar">
-      <h3>MCQ APP</h3>
+      <h3>MCQ APP APPLICATION</h3>
       <ul>
         <li>
           <Link to="/dashboard">Dashboard</Link>

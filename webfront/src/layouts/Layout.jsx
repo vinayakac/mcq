@@ -1,18 +1,53 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import './Layout.css'; // Ensure you have appropriate CSS for styling
 
 const Layout = ({ children }) => {
   return (
     <div className="layout">
       <nav className="sidebar">
-        <h2>MCQ APP</h2>
+        <h3>MCQ APPLICATION</h3>
         <ul>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-          <li><Link to="/curriculums">Curriculums</Link></li>
-          <li><Link to="/courses">Courses</Link></li>
-          <li><Link to="/exams">Exams</Link></li>
-          <li><Link to="/students">Students</Link></li>
+          <li>
+            <NavLink 
+              to="/dashboard" 
+              activeClassName="active"
+            >
+              Dashboard
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              to="/curriculums" 
+              activeClassName="active"
+            >
+              Curriculums
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              to="/courses" 
+              activeClassName="active"
+            >
+              Courses
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              to="/exams" 
+              activeClassName="active"
+            >
+              Exams
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              to="/students" 
+              activeClassName="active"
+            >
+              Students
+            </NavLink>
+          </li>
         </ul>
       </nav>
       <main className="content">

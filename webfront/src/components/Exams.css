@@ -27,7 +27,8 @@
   }
   
   button {
-    background-color: #4caf50;
+    
+    background-color: paleturquoise;
     color: white;
     border: none;
     padding: 5px 10px;
@@ -37,5 +38,5 @@
   }
   
   button:hover {
-    background-color: #45a049;
+    background-color: paleturquoise;
   }
