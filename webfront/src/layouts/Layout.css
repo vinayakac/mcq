@@ -1,51 +1,63 @@
+/* src/components/Layout.css */
+
+* {
+  box-sizing: border-box; /* Ensure padding and border are included in element's total width and height */
+  margin: 0; /* Reset default margin */
+  padding: 0; /* Reset default padding */
+}
+
+html,
+body {
+  height: 100%; /* Full height for the body */
+}
+
 .layout {
-  display: flex;
+  display: flex; /* Flexbox layout for sidebar and content */
+  height: 100vh; /* Full height of the viewport */
 }
 
 .sidebar {
-  width: 250px;
-  background-color: #4e73df;
-  color: white;
+  width: 200px; /* Set width for the sidebar */
+  background-color: #f4f4f4; /* Background color */
   padding: 20px;
-  height: 100vh;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Fix the sidebar position */
+  height: 100%; /* Full height */
+  overflow-y: auto; /* Allow vertical scrolling if needed */
 }
 
 .sidebar h2 {
-  margin: 0 0 20px;
+  margin-bottom: 20px; /* Spacing below the header */
 }
 
 .sidebar ul {
-  list-style: none;
-  padding: 0;
+  list-style: none; /* Remove bullet points */
 }
 
-.sidebar ul li {
-  margin: 15px 0;
+.sidebar li {
+  margin: 15px 0; /* Spacing between items */
 }
 
-.sidebar ul li a {
-  color: white;
-  text-decoration: none;
+.sidebar a {
+  text-decoration: none; /* Remove underline */
+  color: #333; /* Link color */
 }
 
-.sidebar ul li a:hover {
-  text-decoration: underline;
+.sidebar .logout-link {
+  color: #e74c3c; /* Logout link color */
+}
+
+.sidebar .logout-link:hover {
+  text-decoration: underline; /* Underline on hover */
 }
 
 .content {
-  flex: 1;
+  margin-left: 220px; /* Add margin to the left to prevent content overlap with the sidebar */
   padding: 20px;
-  background-color: #f8f9fc;
-}
-
-h2 {
-  margin-top: 0;
-}
-.logout-link {
-  color: #ff4d4d; /* Change the color for the logout link */
-}
-
-.logout-link:hover {
-  text-decoration: underline; /* Underline on hover */
+  overflow-y: auto; /* Allow vertical scrolling for content */
+  height: calc(
+    100vh - 40px
+  ); /* Set height to fit the viewport with some padding */
+  max-height: 1000vh; /* Set max height to 50% of the viewport */
+  width: calc(100% - 220px); /* Set width of the content area */
 }
