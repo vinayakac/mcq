@@ -1,59 +1,68 @@
 /* src/components/Curriculums.css */
-
 .curriculums-container {
+  max-width: 600px;
+  margin: 0 auto;
+  height: 500vh;
   padding: 20px;
-  background-color: #f9f9f9; /* Light background */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
-
-h2 {
-  text-align: center; /* Center the heading */
-  color: #333; /* Darker text color */
+  background-color: #dfecec;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .add-curriculum {
-  display: flex; /* Use flexbox for alignment */
-  justify-content: center; /* Center items horizontally */
-  margin-bottom: 20px; /* Space below the input */
+  display: flex;
+  margin-bottom: 20px;
 }
 
 .add-curriculum input {
-  padding: 10px; /* Add padding */
-  border: 1px solid #ccc; /* Border for the input */
-  border-radius: 4px; /* Rounded corners */
-  margin-right: 10px; /* Space between input and button */
-  flex: 1; /* Take available space */
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #0f0e0e;
+  border-radius: 4px;
 }
 
 .add-curriculum button {
-  padding: 10px 15px; /* Add padding for the button */
-  border: none; /* Remove default border */
-  background-color: #82dcdf; /* Bootstrap primary color */
-  color: white; /* Text color */
-  border-radius: 4px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor */
-  transition: background-color 0.3s; /* Smooth background color change */
+  margin-left: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .add-curriculum button:hover {
-  background-color: #69cfd3; /* Darker shade on hover */
+  background-color: #0056b3;
 }
 
 .curriculums-list {
-  list-style-type: none; /* Remove default bullets */
+  list-style-type: none;
   padding: 0;
+  display: grid; /* Use grid for layout */
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Responsive columns */
+  gap: 10px; /* Space between boxes */
 }
 
 .curriculum-item {
-  padding: 15px;
-  border: 1px solid #ccc; /* Add border for better visibility */
-  margin: 10px 0; /* Space between items */
-  border-radius: 4px; /* Rounded corners */
-  background-color: #e0f7fa; /* Light blue background */
-  transition: background-color 0.3s; /* Smooth background color change */
+  background-color: #fff;
+  border: 1px solid #110f0f;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  transition: box-shadow 0.3s;
+  cursor: pointer;
 }
 
 .curriculum-item:hover {
-  background-color: #b2ebf2; /* Slightly darker on hover */
+  box-shadow: 0 4px 10px #89bd2ae0;
+}
+
+.delete-icon {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.delete-icon:hover {
+  color: red;
 }

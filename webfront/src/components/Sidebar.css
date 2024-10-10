@@ -1,72 +1,20 @@
-.layout {
-  display: flex;
-}
-
-.sidebar {
-  width: 250px; 
-  height: auto; 
-  background-color: rgb(233, 0, 0);
-  color: #040607; 
-  padding: 20px; 
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); 
-  position: relative; /* Change this if you want it to scroll */
-  overflow-y: auto; 
-  max-height: 100vh; /* Limit height to the viewport */
-}
-
-.sidebar h3 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px; 
-  color: palevioletred; 
-}
-
-.sidebar ul {
-  list-style-type: none; 
-  padding: 0; 
-}
-
-.sidebar li {
-  margin: 15px 0; 
-  transition: background 0.3s; 
-}
-
-.sidebar li:hover {
-  background-color: rgb(0, 0, 0); 
-  border-radius: 5px; 
-}
-
 .sidebar a {
   text-decoration: none; 
-  color: #040607; 
+  position: fixed;
+  color: #050404; /* Default text color */
   font-size: 18px; 
   display: block; 
-  padding: 10px; 
+  padding: 10px; /* Padding inside links */
+  border-radius: 5px; /* Rounded corners for links */
+  transition: color 0.3s; /* Smooth color transition */
 }
 
 .sidebar a:hover {
-  color: #62b6a5; 
+  color: #dd2209; /* Change text color on hover */
 }
 
 .sidebar a.active {
-  font-weight: bold; 
-  color: #161d22; 
-}
-
-.submenu {
-  padding-left: 20px; 
-  display: none; 
-}
-
-.sidebar li.open .submenu {
-  display: block; 
-}
-
-.submenu a {
-  font-size: 16px; 
-  color: hsl(320, 96%, 48%); 
-}
-
-.submenu a:hover {
-  color: #e60e0e; 
+  font-weight: bold; /* Make active link bold */
+  background-color: rgba(0, 0, 0, 0.5); /* Dark background for active link */
+  color: #bae717; /* Text color for active link */
 }

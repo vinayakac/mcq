@@ -1,14 +1,16 @@
-
 import React, { useState } from "react";
 import "./Curriculums.css";
-import Courses from "./Courses"; // Import Courses component
+import Courses from "./Courses"; 
+import CourseDetails from "./CourseDetails"; 
 
-const initialCurriculumsData = ["1-4 class", "5-7 class", "8-10 class"]; // Updated curriculums
+const initialCurriculumsData = ["1-4 class", "5-7 class", "8-10 class"]; 
 
 function Curriculums() {
   const [curriculums, setCurriculums] = useState(initialCurriculumsData);
   const [newCurriculum, setNewCurriculum] = useState("");
-  const [selectedCurriculum, setSelectedCurriculum] = useState(null);
+  const [selectedCurriculum, setSelectedCurriculum] = useState(null); 
+  const [selectedCourse, setSelectedCourse] = useState(null); 
+  const [showDelete, setShowDelete] = useState(null); 
 
   const addCurriculum = () => {
     if (newCurriculum.trim() && !curriculums.includes(newCurriculum.trim())) {
@@ -18,7 +20,22 @@ function Curriculums() {
   };
 
   const handleCurriculumClick = (curriculum) => {
-    setSelectedCurriculum(curriculum); // Set the selected curriculum
+    setSelectedCurriculum(curriculum);
+    setSelectedCourse(null);
+    setShowDelete(null);
+  };
+
+  const handleDoubleClick = (curriculum) => {
+    setShowDelete(curriculum);
+  };
+
+  const confirmDelete = (curriculum) => {
+    setCurriculums(curriculums.filter((c) => c !== curriculum));
+    setShowDelete(null);
+  };
+
+  const handleCourseSelect = (course) => {
+    setSelectedCourse(course);
   };
 
   return (
@@ -39,16 +56,32 @@ function Curriculums() {
             key={index}
             className="curriculum-item"
             onClick={() => handleCurriculumClick(curriculum)}
+            onDoubleClick={() => handleDoubleClick(curriculum)}
           >
             {curriculum}
+            {showDelete === curriculum && (
+              <span
+                className="delete-icon"
+                onClick={() => confirmDelete(curriculum)}
+                role="button"
+                tabIndex="0"
+                onKeyPress={() => confirmDelete(curriculum)}
+              >
+                🗑️
+              </span>
+            )}
           </li>
         ))}
       </ul>
 
-      {/* Show Courses component when a curriculum is selected */}
       {selectedCurriculum && (
-        <Courses curriculum={selectedCurriculum} />
+        <Courses
+          curriculum={selectedCurriculum}
+          onCourseSelect={handleCourseSelect}
+        />
       )}
+
+      {selectedCourse && <CourseDetails course={selectedCourse} />}
     </div>
   );
 }

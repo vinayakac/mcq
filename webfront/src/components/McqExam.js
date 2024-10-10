@@ -9,10 +9,10 @@ function McqExam() {
 
   // Get the questions for the specific exam
   const questions = mcqData[exam] || [];
-  const [selectedAnswers, setSelectedAnswers] = useState({}); // To store selected answers
-  const [score, setScore] = useState(null); // To store the score after submission
-  const [results, setResults] = useState([]); // To store results for each question
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // To track the current question
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [score, setScore] = useState(null);
+  const [results, setResults] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const handleChange = (questionIndex, selectedOption) => {
     setSelectedAnswers((prev) => ({
@@ -22,7 +22,11 @@ function McqExam() {
   };
 
   const handleNextQuestion = () => {
-    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    setCurrentQuestionIndex((prevIndex) => Math.min(prevIndex + 1, questions.length - 1));
+  };
+
+  const handlePreviousQuestion = () => {
+    setCurrentQuestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
   };
 
   const handleSubmit = (e) => {
@@ -31,14 +35,14 @@ function McqExam() {
     const newResults = questions.map((questionData, index) => {
       const isCorrect = selectedAnswers[index] === questionData.answer;
       if (isCorrect) totalScore += 1;
-      return { questionData, isCorrect }; // Store the question data and if it's correct
+      return { questionData, isCorrect };
     });
-    setScore(totalScore); // Set the final score
-    setResults(newResults); // Store the results
+    setScore(totalScore);
+    setResults(newResults);
   };
 
   return (
-    <div>
+    <div className="mcq-exam">
       <h1>{exam} Questions</h1>
       {questions.length > 0 ? (
         <>
@@ -49,43 +53,42 @@ function McqExam() {
                 {questions[currentQuestionIndex].question}
               </p>
               <ul>
-                {questions[currentQuestionIndex].options.map(
-                  (option, optionIndex) => {
-                    const userAnswer = selectedAnswers[currentQuestionIndex];
-                    const isCorrect = results[currentQuestionIndex]?.isCorrect;
-                    let optionClass = ""; // Default class
+                {questions[currentQuestionIndex].options.map((option, optionIndex) => {
+                  const userAnswer = selectedAnswers[currentQuestionIndex];
+                  const isCorrect = results[currentQuestionIndex]?.isCorrect;
+                  let optionClass = "";
 
-                    // Determine the class based on user answer and correctness
-                    if (userAnswer === option) {
-                      optionClass = isCorrect ? "correct" : "incorrect"; // Correct or incorrect
-                    } else if (
-                      isCorrect === false &&
-                      option === questions[currentQuestionIndex].answer
-                    ) {
-                      optionClass = "correct"; // Show the correct answer
-                    }
-
-                    return (
-                      <li key={optionIndex} className={optionClass}>
-                        <label>
-                          <input
-                            type="radio"
-                            name={`question-${currentQuestionIndex}`} // Group by question index
-                            value={option}
-                            checked={userAnswer === option} // Check if this option is selected
-                            onChange={() =>
-                              handleChange(currentQuestionIndex, option)
-                            } // Handle answer selection
-                            disabled={score !== null} // Disable radio buttons after submission
-                          />
-                          {option}
-                        </label>
-                      </li>
-                    );
+                  if (userAnswer === option) {
+                    optionClass = isCorrect ? "correct" : "incorrect";
+                  } else if (isCorrect === false && option === questions[currentQuestionIndex].answer) {
+                    optionClass = "correct"; 
                   }
-                )}
+
+                  return (
+                    <li key={optionIndex} className={optionClass}>
+                      <label>
+                        <input
+                          type="radio"
+                          name={`question-${currentQuestionIndex}`}
+                          value={option}
+                          checked={userAnswer === option}
+                          onChange={() => handleChange(currentQuestionIndex, option)}
+                          disabled={score !== null} 
+                        />
+                        {option}
+                      </label>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
+
+            {/* Show "Previous Question" button if not on the first question */}
+            {currentQuestionIndex > 0 && (
+              <button type="button" onClick={handlePreviousQuestion}>
+                Previous Question
+              </button>
+            )}
 
             {/* Show "Next Question" button if not on the last question */}
             {currentQuestionIndex < questions.length - 1 && (
@@ -93,6 +96,7 @@ function McqExam() {
                 Next Question
               </button>
             )}
+
             {/* Show "Submit Answers" button if on the last question */}
             {currentQuestionIndex === questions.length - 1 && (
               <button type="submit">Submit Answers</button>
@@ -100,9 +104,19 @@ function McqExam() {
           </form>
 
           {score !== null && (
-            <h2>
-              Your Score: {score}/{questions.length}
-            </h2>
+            <div className="score-container">
+              <h2>
+                Your Score: {score}/{questions.length}
+              </h2>
+              <h3>Answers:</h3>
+              <ul>
+                {results.map((result, index) => (
+                  <li key={index} className={result.isCorrect ? "correct" : "incorrect"}>
+                    Q{index + 1}: {result.questionData.answer} (Your answer: {selectedAnswers[index]})
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </>
       ) : (

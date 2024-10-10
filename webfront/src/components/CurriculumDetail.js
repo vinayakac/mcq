@@ -1,58 +1,28 @@
-// src/components/CourseDetails.js
-import React, { useState } from "react";
-import Exams from "./Exams"; // Import the Exams component
-import "./CourseDetails.css"; // Import the CSS file
+// src/components/ClassDetails.js
+import React from 'react';
+import { useParams, Link } from 'react-router-dom';
 
-// Initial sample student data
-const initialStudentsData = {
-  Math: ["Alice Johnson", "Bob Smith", "Charlie Brown"],
-  Science: ["David Wilson", "Eva Green", "Frank Wright"],
-  History: ["Grace Hall", "Henry Adams", "Ivy Clark"],
-  Geography: ["Jack King", "Lily Scott", "Mason Lee"],
-  Biology: ["Nora White", "Oliver Green", "Paula Blue"],
-};
+const CurriculumDetails = () => {
+  const { classId } = useParams();
 
-function CourseDetails({ course }) {
-  const [students, setStudents] = useState(initialStudentsData[course] || []);
-  const [newStudent, setNewStudent] = useState("");
-
-  // Function to handle adding a new student
-  const addStudent = () => {
-    if (newStudent.trim() !== "") {
-      setStudents((prevStudents) => [...prevStudents, newStudent.trim()]);
-      setNewStudent(""); // Clear input after adding
-    }
+  const courses = {
+    '1-4': ['Painting', 'Typing', 'CSS'],
+    '5-7': ['Math', 'Science', 'English'],
+    '8-10': ['Physics', 'Chemistry', 'Biology'],
   };
 
   return (
-    <div className="course-details">
-      <h2>Details for {course}</h2>
-
-      {/* Show students enrolled in the selected course */}
-      <h3>Students in {course}</h3>
+    <div>
+      <h2>Class {classId}</h2>
       <ul>
-        {students.length > 0 ? (
-          students.map((student, index) => <li key={index}>{student}</li>)
-        ) : (
-          <li>No students enrolled in this course.</li>
-        )}
+        {courses[classId].map(course => (
+          <li key={course}>
+            <Link to={`/courses/${course}`}>{course}</Link>
+          </li>
+        ))}
       </ul>
-
-      {/* Input form to add a new student */}
-      <div className="add-student">
-        <input
-          type="text"
-          value={newStudent}
-          onChange={(e) => setNewStudent(e.target.value)}
-          placeholder="Add new student"
-        />
-        <button onClick={addStudent}>Add Student</button>
-      </div>
-
-      {/* Show exams for the selected course */}
-      <Exams course={course} />
     </div>
   );
-}
+};
 
-export default CourseDetails;
+export default CurriculumDetails;
