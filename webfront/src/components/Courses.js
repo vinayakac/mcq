@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CourseDetails from "./CourseDetails"; // Import the CourseDetails component
+import Exams from "./Exams"; // Import the Exams component
 import "./Courses.css"; // Import the CSS file
 
 const initialCourses = [
@@ -12,9 +12,9 @@ const initialCourses = [
 
 function Courses({ curriculum }) {
   const [courses, setCourses] = useState(initialCourses);
-  const [selectedCourse, setSelectedCourse] = useState(null);
   const [newCourseName, setNewCourseName] = useState("");
   const [newCourseCurriculum, setNewCourseCurriculum] = useState("");
+  const [selectedExamsCourse, setSelectedExamsCourse] = useState(null); // State to hold the course for showing exams
 
   // Load courses from localStorage on component mount
   useEffect(() => {
@@ -29,20 +29,10 @@ function Courses({ curriculum }) {
     localStorage.setItem("courses", JSON.stringify(courses));
   }, [courses]);
 
-  // Reset selected course when curriculum changes
-  useEffect(() => {
-    setSelectedCourse(null); // Clear selected course
-  }, [curriculum]);
-
   // Filter courses based on the selected curriculum
   const filteredCourses = curriculum
     ? courses.filter((course) => course.curriculum === curriculum)
     : courses; // Show all courses if no curriculum is selected
-
-  // Function to handle course selection
-  const handleCourseSelect = (courseName) => {
-    setSelectedCourse(courseName); // Set the selected course
-  };
 
   // Function to handle adding a new course
   const handleAddCourse = (e) => {
@@ -70,6 +60,11 @@ function Courses({ curriculum }) {
     }
   };
 
+  // Function to handle the "Take Exam" button click
+  const handleTakeExam = (courseName) => {
+    setSelectedExamsCourse(courseName); // Set the selected course for showing exams
+  };
+
   return (
     <div className="courses">
       <h2>Courses for Curriculum {curriculum || "All"}</h2>
@@ -78,23 +73,25 @@ function Courses({ curriculum }) {
           <tr>
             <th>Course Name</th>
             <th>Curriculum</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {filteredCourses.length > 0 ? (
             filteredCourses.map((course, index) => (
-              <tr
-                key={index}
-                onClick={() => handleCourseSelect(course.name)}
-                className={selectedCourse === course.name ? "selected-course" : ""}
-              >
+              <tr key={index}>
                 <td>{course.name}</td>
                 <td>{course.curriculum}</td>
+                <td>
+                  <button onClick={() => handleTakeExam(course.name)}>
+                    Take Exam
+                  </button>
+                </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="2">No courses available for this curriculum.</td>
+              <td colSpan="3">No courses available for this curriculum.</td>
             </tr>
           )}
         </tbody>
@@ -121,8 +118,8 @@ function Courses({ curriculum }) {
         </form>
       )}
 
-      {/* Render CourseDetails when a course is selected */}
-      {selectedCourse && <CourseDetails course={selectedCourse} />}
+      {/* Render Exams component if a course is selected for taking exams */}
+      {selectedExamsCourse && <Exams course={selectedExamsCourse} />}
     </div>
   );
 }

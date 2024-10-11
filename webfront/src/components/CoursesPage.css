@@ -1,0 +1,90 @@
+/* Overall container for the Courses page */
+.courses-page-container {
+  padding: 30px;
+  background-color: #f5f7fa; /* Light background for contrast */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  transition: transform 0.3s, box-shadow 0.3s; /* Transition for hover effect */
+  margin: 20px; /* Margin around the container */
+}
+
+/* Centered content with max width */
+.main-content {
+  margin: 0 auto; /* Center align content */
+  max-width: 800px; /* Maximum width for the content */
+}
+
+/* Title styling */
+.courses-page-container h2 {
+  font-size: 32px; /* Larger font size for the title */
+  margin-bottom: 20px;
+  color: #2c3e50; /* Darker text color */
+  text-align: center; /* Center the title */
+  font-family: "Helvetica Neue", sans-serif; /* Clean font */
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse; /* Merge borders */
+  margin-bottom: 30px; /* Space below the table */
+}
+
+/* Table headers and cells */
+th,
+td {
+  padding: 15px; /* Padding for cells */
+  text-align: left; /* Align text to the left */
+  border-bottom: 1px solid #ecf0f1; /* Light border */
+}
+
+th {
+  background-color: green; /* Blue header */
+  color: white; /* White text in the header */
+  font-weight: bold; /* Bold text for the header */
+}
+
+tr:hover {
+  background-color: #ecf0f1; /* Light gray on row hover */
+  transform: translateY(-2px); /* Lift row slightly on hover */
+  transition: transform 0.2s; /* Transition for scale effect */
+}
+
+/* Button styling */
+button {
+  background-color: green; /* Orange button */
+  color: white; /* White text on the button */
+  border: none; /* Remove default border */
+  padding: 12px 20px; /* Padding for the button */
+  border-radius: 8px; /* More rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s, transform 0.2s; /* Transition effect */
+}
+
+button:hover {
+  background-color: green; /* Darker orange on hover */
+  transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+/* Centered message styling */
+p {
+  text-align: center; /* Center align the message */
+  color: #7f8c8d; /* Medium grey text for messages */
+  font-style: italic; /* Italicize message text */
+  margin-top: 20px; /* Space above the message */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+  .courses-page-container {
+    padding: 20px; /* Adjust padding */
+  }
+
+  h2 {
+    font-size: 24px; /* Smaller font size for title */
+  }
+
+  table {
+    font-size: 14px; /* Adjust font size for table */
+  }
+}

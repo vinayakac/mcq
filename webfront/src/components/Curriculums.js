@@ -1,7 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import "./Curriculums.css"; // Import the CSS file
-import Courses from "./Courses";
-import CourseDetails from "./CourseDetails";
 
 // Initial data for curriculums including names and descriptions
 const initialCurriculumsData = [
@@ -20,8 +19,7 @@ function Curriculums() {
   const [curriculums, setCurriculums] = useState(initialCurriculumsData);
   const [newCurriculum, setNewCurriculum] = useState("");
   const [newDescription, setNewDescription] = useState(""); // For new description
-  const [selectedCurriculum, setSelectedCurriculum] = useState(null);
-  const [selectedCourse, setSelectedCourse] = useState(null);
+  const navigate = useNavigate(); // Hook for navigation
 
   // Function to add a new curriculum and description
   const addCurriculum = () => {
@@ -37,16 +35,6 @@ function Curriculums() {
       setNewCurriculum("");
       setNewDescription("");
     }
-  };
-
-  const handleCurriculumClick = (curriculum) => {
-    setSelectedCurriculum(curriculum);
-    setSelectedCourse(null);
-  };
-
-  // Function to handle course selection
-  const handleCourseSelect = (course) => {
-    setSelectedCourse(course);
   };
 
   return (
@@ -72,36 +60,25 @@ function Curriculums() {
           <tr>
             <th>Curriculum</th>
             <th>Description</th>
+            <th>View Courses</th> {/* New column for viewing courses */}
           </tr>
         </thead>
         <tbody>
           {curriculums.map((curriculum, index) => (
-            <tr
-              key={index}
-              className={`curriculum-item ${
-                selectedCurriculum === curriculum.name ? "selected" : ""
-              }`}
-              onClick={() => handleCurriculumClick(curriculum.name)}
-            >
+            <tr key={index}>
               <td>{curriculum.name}</td>
               <td>{curriculum.description}</td>
+              <td>
+                <button
+                  onClick={() => navigate(`/courses/${curriculum.name}`)} // Navigate to CoursesPage
+                >
+                  View Courses
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      {selectedCurriculum && (
-        <div className="courses-section">
-          {" "}
-          {/* New div for spacing */}
-          <Courses
-            curriculum={selectedCurriculum}
-            onCourseSelect={handleCourseSelect} // Use handleCourseSelect here
-          />
-        </div>
-      )}
-
-      {selectedCourse && <CourseDetails course={selectedCourse} />}
     </div>
   );
 }

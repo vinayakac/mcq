@@ -12,6 +12,7 @@ import Courses from "./components/Courses";
 import Exams from "./components/Exams";
 import Students from "./components/Students";
 import McqExam from "./components/McqExam";
+import CoursesPage from "./components/CoursesPage";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
             </Layout>
           }
         />
+        <Route path="/courses/:curriculumName" element={<CoursesPage />} />
         <Route
           path="courses"
           element={

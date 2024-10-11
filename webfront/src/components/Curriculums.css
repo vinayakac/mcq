@@ -1,76 +1,52 @@
 .curriculums-container {
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Light grey shadow */
-  border-radius: 8px; /* Optional: Rounded corners for the container */
-  background-color: white; /* Ensure background is white to see the shadow */
+  background-color: #f9f9f9; /* Light background color */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .add-curriculum {
-  margin-bottom: 20px;
-  display: flex; /* Use flexbox for alignment */
-  align-items: center; /* Vertically center items */
+  margin-bottom: 20px; /* Space below the add curriculum section */
 }
 
 .add-curriculum input {
-  margin-right: 10px; /* Space between input fields */
-  padding: 5px; /* Padding inside input fields */
-  width: 500px; /* Adjust width as needed */
-  height: 60px; /* Height for input fields */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light grey shadow for input fields */
-  border: 1px solid #ccc; /* Optional: Border for input fields */
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #00796b; /* Teal border for input fields */
+  border-radius: 5px; /* Rounded corners for input fields */
+  width: 200px; /* Fixed width for input fields */
 }
 
 .add-curriculum button {
-  margin-bottom: 20px;
-  height: 60px; /* Match the height of input fields */
-  padding: 0 20px; /* Padding inside button */
-  background-color: green; /* Background color of the button */
-  color: white; /* Text color for the button */
-  border: none; /* Remove default border */
+  padding: 8px 12px; /* Space inside button */
+  background-color: green; /* Teal button background */
+  color: white; /* White text for button */
+  border: none; /* No border for button */
   border-radius: 5px; /* Rounded corners for button */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition for hover effect */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light grey shadow for button */
+  cursor: pointer; /* Change cursor on hover */
 }
 
 .add-curriculum button:hover {
-  background-color: darkgreen; /* Darker color on hover */
-}
-
-.add-curriculum input:last-child {
-  margin-right: 0; /* Remove right margin for the last input */
+  background-color: #004d40; /* Darker teal on hover */
 }
 
 .curriculums-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
+  width: 100%; /* Full width for the table */
+  border-collapse: collapse; /* Collapse borders for cleaner look */
+}
+
+.curriculums-table th,
+.curriculums-table td {
+  padding: 12px; /* Space inside cells */
+  text-align: left; /* Align text to the left */
+  border: 1px solid #ddd; /* Light gray border */
 }
 
 .curriculums-table th {
-  background-color: green; /* Header background color */
-  color: white; /* Header text color */
-  padding: 10px; /* Space inside header cells */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light grey shadow for table header */
+  background-color: green; /* Teal background for header */
+  color: white; /* White text for header */
 }
 
-.curriculums-table td {
-  border: 1px solid skyblue; /* Border color for table cells */
-  padding: 10px; /* Space inside each cell */
-  text-align: left; /* Left align text */
-  cursor: pointer; /* Change cursor to pointer on hover */
-}
-
-.curriculum-item.selected {
-  background-color: #007bff; /* Highlight color for selected item */
-  color: white; /* Text color for selected item */
-}
-
-.curriculum-item:hover {
-  background-color: #f0f0f0; /* Hover effect color */
-}
-
-/* New styles for the courses section */
-.courses-section {
-  margin-top: 20px; /* Adjust the value to control the gap */
+.curriculums-table tr:hover {
+  background-color: #e0f7fa; /* Light cyan on row hover */
 }
