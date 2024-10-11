@@ -73,23 +73,32 @@ function Courses({ curriculum }) {
   return (
     <div className="courses">
       <h2>Courses for Curriculum {curriculum || "All"}</h2>
-      <ul>
-        {filteredCourses.length > 0 ? (
-          filteredCourses.map((course, index) => (
-            <li
-              key={index}
-              onClick={() => handleCourseSelect(course.name)}
-              className={
-                selectedCourse === course.name ? "selected-course" : ""
-              }
-            >
-              {course.name} {/* Show only the course name */}
-            </li>
-          ))
-        ) : (
-          <li>No courses available for this curriculum.</li>
-        )}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Course Name</th>
+            <th>Curriculum</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredCourses.length > 0 ? (
+            filteredCourses.map((course, index) => (
+              <tr
+                key={index}
+                onClick={() => handleCourseSelect(course.name)}
+                className={selectedCourse === course.name ? "selected-course" : ""}
+              >
+                <td>{course.name}</td>
+                <td>{course.curriculum}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="2">No courses available for this curriculum.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
 
       {/* Show add course form only when no curriculum is selected */}
       {!curriculum && (

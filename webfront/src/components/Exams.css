@@ -14,10 +14,16 @@ td {
   border: 1px solid #ddd;
 }
 
-th,
+th {
+  background-color: #4caf50; /* Green background for table header */
+  color: white; /* White text color for table header */
+  padding: 8px; /* Space inside header cells */
+  text-align: left; /* Align text to the left */
+}
+
 td {
-  padding: 8px;
-  text-align: left;
+  padding: 8px; /* Space inside each cell */
+  text-align: left; /* Left align text */
   vertical-align: top; /* Ensures proper alignment for multiple students */
 }
 
