@@ -1,86 +1,134 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+import FormInput from "../components/FormInput";
 
-export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+import "./Login.css"; // Import the CSS file
+
+// Zod validation schema
+const loginSchema = z.object({
+  email: z
+    .string()
+    .email("Invalid email format")
+    .refine(
+      (value) => {
+        return value.endsWith("@gmail.com");
+      },
+      {
+        message: "Email must be a Gmail address.",
+      }
+    ),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters long")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[0-9]/, "Password must contain at least one number")
+    .regex(/[\W_]/, "Password must contain at least one special character"),
+});
+
+const Login = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+    general: "",
+  });
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: "" }); // Clear field-specific errors on input change
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log('Email:', email, 'Password:', password);
-  };
+    let hasError = false;
 
-  const styles = {
-    container: {
-      maxWidth: '400px',
-      margin: '50px auto',
-      padding: '20px',
-      border: '1px solid #ccc',
-      borderRadius: '8px',
-      boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-      backgroundColor: '#fff',
-    },
-    heading: {
-      textAlign: 'center',
-      marginBottom: '20px',
-    },
-    form: {
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    formGroup: {
-      marginBottom: '15px',
-    },
-    label: {
-      marginBottom: '5px',
-      fontWeight: 'bold',
-    },
-    input: {
-      padding: '10px',
-      border: '1px solid #ccc',
-      borderRadius: '4px',
-    },
-    button: {
-      padding: '10px',
-      border: 'none',
-      borderRadius: '4px',
-      backgroundColor: '#007bff',
-      color: 'white',
-      fontSize: '16px',
-      cursor: 'pointer',
-    },
-    buttonHover: {
-      backgroundColor: '#0056b3',
-    },
+    // Check if email/username field is empty
+    if (!formData.email) {
+      setErrors((prev) => ({ ...prev, email: "Email is required." }));
+      hasError = true;
+    }
+
+    // Check if password field is empty
+    if (!formData.password) {
+      setErrors((prev) => ({ ...prev, password: "Password is required." }));
+      hasError = true;
+    }
+
+    if (hasError) return; // Stop if there are errors
+
+    // Clear general errors
+    setErrors({ ...errors, general: "" });
+
+    // Validate with Zod
+    const result = loginSchema.safeParse(formData);
+    if (!result.success) {
+      setErrors((prev) => ({
+        ...prev,
+        general: result.error.errors.map((err) => err.message).join(", "),
+      }));
+      return;
+    }
+
+    // Check for user in local storage
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (!storedUser || storedUser.email !== formData.email) {
+      setErrors((prev) => ({ ...prev, general: "You must register first." }));
+      return;
+    }
+
+    if (storedUser.password !== formData.password) {
+      setErrors((prev) => ({
+        ...prev,
+        general: "Invalid password. Please try again.",
+      }));
+      return;
+    }
+
+    // If valid, redirect to the dashboard
+    navigate("/dashboard");
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>Login</h2>
-      <form onSubmit={handleLogin} style={styles.form}>
-        <div style={styles.formGroup}>
-          <label htmlFor="email" style={styles.label}>Email Address:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={styles.input}
-          />
-        </div>
-        <div style={styles.formGroup}>
-          <label htmlFor="password" style={styles.label}>  Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={styles.input}
-          />
-        </div>
-        <button type="submit" style={styles.button}>Login</button>
+    <div className="login-container">
+      <h2 className="login-header">Login</h2>
+      {errors.general && <div className="login-error">{errors.general}</div>}
+      <form onSubmit={handleLogin}>
+        <FormInput
+          label="Email"
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Enter your email"
+          error={errors.email} // Pass error message if the email field is empty
+        />
+        <FormInput
+          label="Password"
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Enter your password"
+          error={errors.password} // Pass error message if the password field is empty
+        />
+        <button type="submit" className="login-button">
+          Login
+        </button>
       </form>
+      <div className="signup-link">
+        <p>
+          Don't have an account?{" "}
+          <a href="/register" className="login-link">
+            Sign Up
+          </a>
+        </p>
+      </div>
     </div>
   );
-}
+};
+
+export default Login;
