@@ -1,20 +1,26 @@
+.sidebar {
+  width: 250px; /* Width of the sidebar */
+  background-color: #2c3e50; /* Dark background color */
+  color: white; /* Text color */
+  height: 100vh; /* Full height */
+  padding: 20px; /* Padding around the content */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Shadow effect */
+}
+
 .sidebar a {
-  text-decoration: none; 
-  position: fixed;
-  color: #050404; /* Default text color */
-  font-size: 18px; 
-  display: block; 
-  padding: 10px; /* Padding inside links */
-  border-radius: 5px; /* Rounded corners for links */
-  transition: color 0.3s; /* Smooth color transition */
+  display: block; /* Make links block-level */
+  color: white; /* Text color */
+  text-decoration: none; /* Remove underline */
+  padding: 15px; /* Padding for links */
+  margin: 10px 0; /* Space between links */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s; /* Smooth background color transition */
 }
 
 .sidebar a:hover {
-  color: #dd2209; /* Change text color on hover */
+  background-color: #34495e; /* Darker background on hover */
 }
 
-.sidebar a.active {
-  font-weight: bold; /* Make active link bold */
-  background-color: rgba(0, 0, 0, 0.5); /* Dark background for active link */
-  color: #bae717; /* Text color for active link */
+.active {
+  background-color: #2980b9; /* Active link background color */
 }

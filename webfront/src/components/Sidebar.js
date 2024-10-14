@@ -14,7 +14,7 @@ const Sidebar = () => {
       <NavLink to="/courses" activeClassName="active">
         Courses
       </NavLink>
-      <NavLink to="/exams" activeClassName="active">
+      <NavLink to="/mcq-exams" activeClassName="active">
         Exams
       </NavLink>
       <NavLink to="/students" activeClassName="active">

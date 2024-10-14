@@ -1,109 +1,175 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import "./Exams.css";
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
+import './Exams.css'; // Optional: add styles for Exam component
 
-function Exams({ course }) {
-  const navigate = useNavigate();
+const Exams = () => {
+  const location = useLocation();
 
-  const examsData = {
-    Typing: {
-      exams: ["Typing Exam 1", "Typing Exam 2"],
-      students: ["Alice Johnson", "Bob Smith", "Charlie Brown"],
-    },
-    Drawing: {
-      exams: ["Drawing Exam 1", "Drawing Exam 2"],
-      students: ["David Wilson", "Eva Green", "Frank Wright"],
-    },
-    Computer: {
-      exams: ["Computer Exam 1", "Computer Exam 2"],
-      students: ["Grace Hall", "Henry Adams", "Ivy Clark"],
-    },
-    PHP: {
-      exams: ["PHP Exam 1", "PHP Exam 2"],
-      students: ["Jack King", "Lily Scott", "Mason Lee"],
-    },
-    Python: {
-      exams: ["Python Exam 1", "Python Exam 2"],
-      students: ["Nora White", "Oliver Green", "Paula Blue"],
-    },
+  // Extracting the exam data from the location state
+  const { selectedCourse, questionsData, examNumber } = location.state || {};
+
+  // Memoize the questions array to avoid unnecessary re-calculations
+  const questions = useMemo(() => {
+    return selectedCourse && questionsData[selectedCourse] ? questionsData[selectedCourse] : [];
+  }, [selectedCourse, questionsData]);
+
+  // State to track selected answers
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  // State to track the score
+  const [score, setScore] = useState(null);
+  // State to track correct and incorrect answers
+  const [resultDetails, setResultDetails] = useState([]);
+  // State to track the current question index
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  // State for timing-related variables
+  const [timeRemaining, setTimeRemaining] = useState(90); // e.g., 90 seconds for the exam
+  const [warning, setWarning] = useState(false);
+
+  // Get the current question based on the currentQuestionIndex
+  const currentQuestion = questions[currentQuestionIndex];
+
+  // Memoize the handleSubmit function to avoid re-creation on every render
+  const handleSubmit = useCallback(() => {
+    let calculatedScore = 0;
+    const results = [];
+
+    // Calculate score
+    questions.forEach(question => {
+      const isCorrect = selectedAnswers[question.id] === question.correctAnswer;
+      if (isCorrect) {
+        calculatedScore += 1;
+      }
+
+      results.push({
+        id: question.id,
+        correctAnswer: question.correctAnswer,
+        selectedAnswer: selectedAnswers[question.id],
+        isCorrect,
+      });
+    });
+
+    setScore(calculatedScore);
+    setResultDetails(results);
+  }, [questions, selectedAnswers]);
+
+  // Timer useEffect to manage the exam time and trigger warnings
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeRemaining(prevTime => {
+        if (prevTime <= 1) {
+          clearInterval(timer);
+          handleSubmit(); // Auto-submit when time is up
+          return 0; // Prevent going negative
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    if (timeRemaining <= 30 && !warning) {
+      setWarning(true); // Show warning when 30 seconds are left
+    }
+
+    return () => clearInterval(timer);
+  }, [timeRemaining, warning, handleSubmit]);
+
+  // Function to handle answer selection
+  const handleAnswerChange = (questionId, answerId) => {
+    setSelectedAnswers(prevAnswers => ({
+      ...prevAnswers,
+      [questionId]: answerId,
+    }));
   };
 
-  const selectedCourse = examsData[course];
-  const allCourses = Object.entries(examsData);
-
-  const handleExamClick = (exam) => {
-    navigate(`/mcq/${exam}`); // Navigate to the MCQ page with the exam name
+  // Function to handle "Next" button click
+  const handleNext = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
   };
+
+  // Function to handle "Previous" button click
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    }
+  };
+
+  // Early return if there's no valid course or questions
+  if (!questions.length) {
+    return <div>No exam data available.</div>;
+  }
 
   return (
-    <div className="exams">
-      <h2>{course ? `Exams for ${course}` : "All Exams"}</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Course</th>
-            <th>Exams</th>
-            <th>Student List</th>
-          </tr>
-        </thead>
-        <tbody>
-          {course ? (
-            selectedCourse && selectedCourse.exams.length > 0 ? (
-              selectedCourse.exams.map((exam, index) => (
-                <tr key={index}>
-                  <td>{course}</td>
-                  <td>
-                    <button onClick={() => handleExamClick(exam)}>
-                      {exam}
-                    </button>
-                  </td>
-                  <td>
-                    <ul>
-                      {selectedCourse.students.map((student, studentIndex) => (
-                        <li key={studentIndex}>{student}</li>
-                      ))}
-                    </ul>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="3">No exams available for this course.</td>
-              </tr>
-            )
-          ) : allCourses.length > 0 ? (
-            allCourses.map(([courseName, courseData], courseIndex) => (
-              <React.Fragment key={courseIndex}>
-                {courseData.exams.map((exam, examIndex) => (
-                  <tr key={examIndex}>
-                    {examIndex === 0 && (
-                      <td rowSpan={courseData.exams.length}>{courseName}</td>
-                    )}
-                    <td>
-                      <button onClick={() => handleExamClick(exam)}>
-                        {exam}
-                      </button>
-                    </td>
-                    <td>
-                      <ul>
-                        {courseData.students.map((student, studentIndex) => (
-                          <li key={studentIndex}>{student}</li>
-                        ))}
-                      </ul>
-                    </td>
-                  </tr>
-                ))}
-              </React.Fragment>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="3">No exams available.</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+    <div className="exam-section">
+      <h2>{`${selectedCourse} Exam ${examNumber}`}</h2>
+
+      {/* Timer display */}
+      <div className="timer">
+        {warning ? (
+          <p style={{ color: 'red' }}>Hurry up! Only {timeRemaining} seconds left!</p>
+        ) : (
+          <p>Time Remaining: {timeRemaining} seconds</p>
+        )}
+      </div>
+
+      {/* Display the current question */}
+      <div className="question-box">
+        <p className="question">{currentQuestion.question}</p>
+        <ul className="options">
+          {currentQuestion.options.map(option => (
+            <li key={option.id} className="option">
+              <label>
+                <input
+                  type="radio"
+                  name={`question-${currentQuestion.id}`} // Corrected name
+                  value={option.id}
+                  checked={selectedAnswers[currentQuestion.id] === option.id}
+                  onChange={() => handleAnswerChange(currentQuestion.id, option.id)}
+                />
+                {option.text}
+              </label>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Previous button */}
+      {currentQuestionIndex > 0 && (
+        <button className="previous-question-button" onClick={handlePrevious}>
+          Previous
+        </button>
+      )}
+
+      {/* Display the "Next" button if not on the last question */}
+      {currentQuestionIndex < questions.length - 1 && (
+        <button className="next-question-button" onClick={handleNext}>
+          Next
+        </button>
+      )}
+
+      {/* Display the submit button on the last question */}
+      {currentQuestionIndex === questions.length - 1 && (
+        <button className="submit-exam-button" onClick={handleSubmit}>
+          Submit Exam
+        </button>
+      )}
+
+      {/* Display the score on the screen after submission */}
+      {score !== null && (
+        <div className="score-display">
+          <h3>Your Score: {score} out of {questions.length}</h3>
+          <h4>Results:</h4>
+          <ul>
+            {resultDetails.map(result => (
+              <li key={result.id}>
+                Question ID: {result.id} - Correct Answer: {result.correctAnswer}, Your Answer: {result.selectedAnswer} - {result.isCorrect ? 'Correct' : 'Incorrect'}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default Exams;

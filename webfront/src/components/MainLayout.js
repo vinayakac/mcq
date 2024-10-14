@@ -1,9 +1,9 @@
 // src/layouts/Layout.js
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import './Layout.css'; // Add your CSS file for styles
+import './MainLayout.css'; // Add your CSS file for styles
 
-const Layout = ({ children }) => {
+const MainLayout = ({ children }) => {
   return (
     <div className="layout">
       <aside className="sidebar">
@@ -21,10 +21,6 @@ const Layout = ({ children }) => {
             </li>
             <li>
               <NavLink to="/exams" activeClassName="active">Exams</NavLink>
-            </li> 
-            
-            <li>
-              <NavLink to="/mcqexams" activeClassName="active">MCQExams</NavLink>
             </li>
             <li>
               <NavLink to="/students" activeClassName="active">Students</NavLink>
@@ -39,4 +35,4 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout;
+export default MainLayout;

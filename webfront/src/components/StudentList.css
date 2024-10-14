@@ -1,0 +1,33 @@
+.student-list {
+    padding: 20px;
+  }
+  
+  .student-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px; /* Space between boxes */
+  }
+  
+  .student-box {
+    border: 1px solid #ccc; /* Border for the box */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Padding inside the box */
+    width: 10000px; /* Width of each student box */
+    text-align: center; /* Centered text */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow */
+  }
+  
+  .exam-button {
+    margin-top: 10px; /* Space above the button */
+    background-color: #28a745; /* Green button */
+    color: white; /* Text color */
+    border: none; /* No border */
+    padding: 10px 15px; /* Padding for the button */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+  }
+  
+  .exam-button:hover {
+    background-color: hsl(230, 100%, 67%); /* Darker green on hover */
+  }
+  

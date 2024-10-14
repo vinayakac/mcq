@@ -1,39 +1,97 @@
-.exams {
-  margin: 20px;
+.exam-section {
+  width: 60%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-table {
-  width:120%;
-  border-collapse: collapse;
-  margin-top: 20px;
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
 }
 
-table,
-th,
-td {
+.question-box {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #fff;
   border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-th,
-td {
-  padding: 8px;
-  text-align: left;
-  vertical-align: top; /* Ensures proper alignment for multiple students */
+.question {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
-ul {
-  padding-left: 20px;
-  margin: 0;
+.options {
+  list-style-type: none;
+  padding-left: 0;
 }
 
-button {
+.option {
+  margin-bottom: 10px;
+}
+
+.option input[type="radio"] {
+  margin-right: 10px;
+}
+
+.timer {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.timer.warning {
+  color: red;
+}
+
+.previous-question-button, 
+.next-question-button, 
+.submit-exam-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin: 5px;
   background-color: #4caf50;
   color: white;
   border: none;
-  padding: 5px 10px;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-button:hover {
+.previous-question-button:hover, 
+.next-question-button:hover, 
+.submit-exam-button:hover {
   background-color: #45a049;
+}
+
+.score-display {
+  text-align: center;
+  background-color: #e6f7ff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.score-display h3 {
+  color: #333;
+}
+
+.score-display ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.score-display li {
+  background-color: #f1f1f1;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px
 }

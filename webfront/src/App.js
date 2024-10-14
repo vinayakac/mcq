@@ -1,72 +1,50 @@
-// src/App.js
-import React from "react";
-import { Route, Routes, Navigate } from "react-router-dom"; // Import Navigate for redirection
 import "./App.css";
-import Layout from "./layouts/Layout"; // Layout with Sidebar
 import NoMatch from "./layouts/NoMatch";
+import { Route, Routes } from "react-router-dom";
+import AuthPageContainer from "./layouts/AuthPageContainer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./components/Dashboard";
-import Curriculums from "./components/Curriculums";
-import Courses from "./components/Courses";
-import Exams from "./components/Exams";
-import Students from "./components/Students";
-import McqExam from "./components/McqExam";
+import Dashboard from './components/Dashboard';
+import Curriculums from './components/Curriculums';
+import CourseDetails from './components/CourseDetails'; 
+import MCQExams from './components/MCQExams';
+import Students from './components/Students';
+import Exams from './components/Exams';
+import StudentList from './components/StudentList';
+import ExamPage from './components/ExamPage'; // Ensure the path is correct
+import Courses from './components/Courses'; // Ensure the path is correct
+import MainLayout from './components/MainLayout'; // Import MainLayout
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route
-          path="/"
-          element={<Navigate to="/login" />} // Redirect root path to login
-        />
-        <Route
-          path="login"
-          element={<Login />} // Show the login page first
-        />
-        <Route
-          path="dashboard"
-          element={
-            <Layout>
-              <Dashboard />
-            </Layout>
-          }
-        />
-        <Route
-          path="curriculums"
-          element={
-            <Layout>
-              <Curriculums />
-            </Layout>
-          }
-        />
-        <Route
-          path="courses"
-          element={
-            <Layout>
-              <Courses />
-            </Layout>
-          }
-        />
-        <Route
-          path="exams"
-          element={
-            <Layout>
-              <Exams />
-            </Layout>
-          }
-        />
-        <Route path="/mcq/:exam" element={<McqExam />} />
-        <Route
-          path="students"
-          element={
-            <Layout>
-              <Students />
-            </Layout>
-          }
-        />
+        {/* Authentication Routes */}
+        <Route path="/" element={<AuthPageContainer><div>Auth Page</div></AuthPageContainer>} />
+        <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+
+        {/* Dashboard and its nested routes */}
+        <Route path="/" element={<MainLayout />}></Route>
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route path="curriculums" element={<Curriculums />} />
+          <Route path="courses" element={<CourseDetails />} />
+          <Route path="mcq-exams" element={<MCQExams />} />
+          <Route path="students" element={<Students />} />
+
+          {/* Dynamic routes for specific classes and courses */}
+          <Route path="courses/:classRange" element={<Courses />} />
+          <Route path="students/:course" element={<StudentList />} />
+          <Route path="exam/:course" element={<ExamPage />} /> {/* Dynamic exam route */}
+          
+          {/* Default route for /dashboard */}
+          <Route index element={<div>Dashboard Home</div>} /> {/* Placeholder content */}
+        </Route>
+
+        {/* Other routes */}
+        <Route path="/exams" element={<Exams />} />
+
+        {/* Catch-all for undefined routes */}
         <Route path="*" element={<NoMatch />} />
       </Routes>
     </div>

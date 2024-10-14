@@ -1,68 +1,98 @@
-/* src/components/Curriculums.css */
-.curriculums-container {
-  max-width: 600px;
-  margin: 0 auto;
-  height: 500vh;
+.curriculums {
   padding: 20px;
-  background-color: #dfecec;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #f4f6f9; /* Light background for contrast */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 800px; /* Max width for better readability */
+  margin: auto; /* Center the layout */
+
 }
 
-.add-curriculum {
-  display: flex;
-  margin-bottom: 20px;
+
+h2, h3, h4 {
+  color: #25233a; /* Darker color for headings */
 }
 
-.add-curriculum input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #0f0e0e;
-  border-radius: 4px;
+.class-range-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px; /* Space below table */
 }
 
-.add-curriculum button {
-  margin-left: 10px;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.class-range-table th, .class-range-table td {
+  padding: 15px; /* Padding for table cells */
+  text-align: left; /* Align text to the left */
+  border: 1px solid #7a6e6e; /* Light border */
 }
 
-.add-curriculum button:hover {
-  background-color: #0056b3;
+.class-range-table th {
+  background-color: #419be4; /* Header background */
+  color: white; /* Header text color */
 }
 
-.curriculums-list {
-  list-style-type: none;
-  padding: 0;
-  display: grid; /* Use grid for layout */
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Responsive columns */
-  gap: 10px; /* Space between boxes */
+.class-range-table tbody tr:hover {
+  background-color: #b8e6e6; /* Highlight row on hover */
+  cursor: pointer; /* Pointer on hover */
 }
 
-.curriculum-item {
-  background-color: #fff;
-  border: 1px solid #110f0f;
-  border-radius: 8px;
+.course-box {
+  margin-top: 20px; /* Space above course box */
   padding: 20px;
-  text-align: center;
-  transition: box-shadow 0.3s;
-  cursor: pointer;
+  background-color: #ffffff; /* White background for course section */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* Shadow effect */
 }
 
-.curriculum-item:hover {
-  box-shadow: 0 4px 10px #89bd2ae0;
+.course-item {
+  padding: 15px;
+  border: 1px solid #d1d1d1; /* Border for course items */
+  border-radius: 5px; /* Rounded corners */
+  margin-bottom: 10px; /* Space between items */
+  transition: background-color 0.3s; /* Smooth transition */
 }
 
-.delete-icon {
-  cursor: pointer;
-  margin-left: 10px;
+.course-item:hover {
+  background-color: #f3f59c; /* Highlight on hover */
+  cursor: pointer; /* Pointer on hover */
 }
 
-.delete-icon:hover {
-  color: red;
+.add-course-button, .add-class-button {
+  background-color: #27ae60; /* Button color */
+  color: white; /* Button text color */
+  border: none; /* No border */
+  padding: 10px 15px; /* Padding for buttons */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer on hover */
+  transition: background-color 0.3s; /* Smooth transition */
+  margin-top: 10px; /* Space above buttons */
+}
+
+.add-course-button:hover, .add-class-button:hover {
+  background-color: #219653; /* Darker shade on hover */
+}
+
+.course-form, .class-form {
+  background-color: #f9f9f9; /* Light background for forms */
+  padding: 20px;
+  border-radius: 8px; /* Rounded corners */
+  margin-top: 15px; /* Space above forms */
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* Shadow effect */
+}
+
+.course-form label, .class-form label {
+  display: block; /* Make labels block-level */
+  margin-bottom: 10px; /* Space below labels */
+  font-weight: bold; /* Bold font for labels */
+}
+
+.course-form input, .course-form textarea, .class-form input {
+  width: 100%; /* Full width */
+  padding: 10px; /* Padding for inputs */
+  border: 1px solid #cde5e9; /* Light border */
+  border-radius: 5px; /* Rounded corners */
+  margin-bottom: 15px; /* Space below inputs */
+}
+
+.course-form button, .class-form button {
+  margin-right: 10px; /* Space between buttons */
 }

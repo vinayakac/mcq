@@ -1,40 +1,79 @@
-/* src/components/CourseDetails.css */
 .course-details {
   padding: 20px;
-  display: flexbox;
-  background-color: #f9f9f9; /* Light background */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  margin-top: 20px; /* Space from top */
+  background-color: #f9f9f9;
 }
-
-.course-details h3 {
-  color: #333; /* Darker text color */
-  margin-bottom: 15px; /* Space below heading */
+.add-course-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
-
-.course-details-table {
-  width: 100%; /* Full width */
-  border-collapse: collapse; /* Remove spacing between borders */
+.add-course-button:hover {
+  background-color: #0056b3;
 }
-
-.course-details-table th,
-.course-details-table td {
-  border: 1px solid #ccc; /* Border for table cells */
-  padding: 10px; /* Padding for table cells */
-  text-align: left; /* Align text to the left */
-  display: flexbox;
+/* Form container to add a box around the form */
+.form-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
-
-.course-details-table th {
-  background-color: #007bff; /* Header background color */
-  color: white; /* Header text color */
+.course-form label {
+  display: block;
+  margin-bottom: 10px;
 }
-
-.course-details-table tr:nth-child(even) {
-  background-color: #f2f2f2; /* Light background for even rows */
+.course-form input,
+.course-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
-
-.course-details-table tr:hover {
-  background-color: #e0f7fa; /* Highlight row on hover */
+.submit-button,
+.cancel-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+.submit-button {
+  background-color: #28a745;
+}
+.submit-button:hover {
+  background-color: #218838;
+}
+.cancel-button {
+  background-color: #dc3545;
+  margin-left: 10px;
+}
+.cancel-button:hover {
+  background-color: #c82333;
+}
+/* Course details container to box each course */
+.courses-container {
+  margin-top: 30px;
+}
+.course-item {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+.course-item h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+.course-item p {
+  margin: 10px 0 0;
+  color: #666;
 }
