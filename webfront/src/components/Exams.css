@@ -1,0 +1,48 @@
+/* Exams.css */
+
+.exams {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.exams-header {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.exams-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.exams-th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  background-color: #e0e0e0;
+}
+
+.exams-td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.add-exam {
+  margin-top: 10px;
+}
+
+.input {
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.button {
+  padding: 5px 10px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}

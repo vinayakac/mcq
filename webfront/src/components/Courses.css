@@ -1,0 +1,76 @@
+/* Courses.css */
+
+.courses {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2em;
+  color: #333;
+  border-bottom: 2px solid #4CAF50;
+  padding-bottom: 10px;
+}
+
+.coursesTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.th, .td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+  transition: background-color 0.3s ease;
+}
+
+.th {
+  background-color: #4CAF50; /* Green background for header */
+  color: white; /* White text for header */
+  font-weight: bold;
+}
+
+.tableRow:hover .td {
+  background-color: #f1f1f1; /* Light gray on row hover */
+}
+
+.td {
+  cursor: pointer; /* Pointer cursor for clickable cells */
+}
+
+.no-courses {
+  text-align: center;
+  color: #999; /* Gray color for no courses message */
+  font-style: italic;
+}
+
+/* Additional styles for responsive design */
+@media (max-width: 600px) {
+  .courses {
+    padding: 10px;
+  }
+
+  .header {
+    font-size: 1.5em;
+  }
+
+  .th, .td {
+    padding: 10px;
+  }
+}
+.add-course-form {
+  margin-bottom: 20px; /* Space between form and table */
+}
+
+.add-course-form input {
+  margin-right: 10px; /* Space between input and button */
+}
+
+.add-course-form button {
+  padding: 5px 10px; /* Button padding */
+}

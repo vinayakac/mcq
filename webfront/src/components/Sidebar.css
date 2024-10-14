@@ -1,0 +1,51 @@
+
+/* src/components/Sidebar.css */
+
+.sidebar {
+  width: 250px;
+  background-color: #4e73df;
+  color: white;
+  padding: 20px;
+  height: 100vh;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h3 {
+  margin: 0 0 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s; /* Add transition for color change */
+}
+
+.sidebar ul li a:hover {
+  text-decoration: underline;
+}
+
+.logout-link {
+  color: #ff4d4d; /* Change the color for the logout link */
+  font-weight: bold; /* Make it bold */
+}
+
+/* Optional hover effect for logout link */
+.logout-link:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+/* src/components/Sidebar.css */
+
+/* Active link styling */
+.sidebar a.active {
+  background-color: #2ecc71; /* Highlight color for active link */
+  color: #fff; /* Change text color for better contrast */
+}

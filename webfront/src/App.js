@@ -1,47 +1,32 @@
-import "./App.css";
-import Layout from "./layouts/Layout";
-import NoMatch from "./layouts/NoMatch";
-import { Route, Routes } from "react-router-dom";
-import AuthPageContainer from "./layouts/AuthPageContainer";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import AdminLayout from "./layouts/AdminLayout";
-import AdminAuthPageContainer from "./layouts/AdminAuthPageContainer";
-import AdminLogin from "./pages/admin/Login";
+import Layout from "./layouts/Layout"; // Layout includes Sidebar and main content
+import Dashboard from "./components/Dashboard";
+import Curriculums from "./components/Curriculums";
+import Courses from "./components/Courses";
+import CourseDetails from "./components/CourseDetails";
+import Exams from "./components/Exams";
+import Students from "./components/Students";
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route
-            index
-            element={
-              <AuthPageContainer>
-                <div>auth page</div>
-              </AuthPageContainer>
-            }
-          />
-          <Route path="login" element={<Login />} />
-          <Route path="AdminLogin" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Navigate to="/login" />} />
+        
+        {/* Routes for Courses and CourseDetails */}
+        <Route path="/dashboard" element={<Layout component={<Dashboard />} />} />
+        <Route path="/curriculums" element={<Layout component={<Curriculums />} />} />
+        <Route path="/courses/:curriculum" element={<Layout component={<Courses />} />} />
+        {/* Ensure this route captures both curriculum and course */}
+        <Route path="/course-details/:curriculum/:course" element={<Layout component={<CourseDetails />} />} />
 
-          <Route path="Register" element={<Register />} />
-          <Route path="*" element={<NoMatch />} />
-        </Route>
-
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route
-            index
-            element={
-              <AdminAuthPageContainer>
-                <div>Admin auth page</div>
-              </AdminAuthPageContainer>
-            }
-          />
-          <Route path="login" element={<AdminLogin />} />
-
-          <Route path="*" element={<NoMatch />} />
-        </Route>
+        <Route path="/exams" element={<Layout component={<Exams />} />} />
+        <Route path="/students" element={<Layout component={<Students />} />} />
       </Routes>
     </div>
   );

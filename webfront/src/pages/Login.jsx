@@ -1,117 +1,163 @@
-import React ,{useState} from "react";
+import React, { useState } from "react"; // Import useState for managing password visibility
+import { useFormik } from "formik";
+import * as Yup from "yup"; // Import Yup for validation
 import { useNavigate } from "react-router-dom";
-import { z } from "zod";
-import './Login.css'; // Import the CSS file
-
-// Zod validation schema
-const loginSchema = z.object({
-  email: z.string().email("Invalid email format").refine((value) => {
-    return value.endsWith("@gmail.com");
-  }, {
-    message: "Email must be a Gmail address.",
-  }),
-  password: z.string().min(8, "Password must be at least 8 characters long")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number")
-    .regex(/[\W_]/, "Password must contain at least one special character"),
-});
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons for show/hide functionality
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState({ email: "", password: "", general: "" });
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setError({ ...error, [name]: "" }); // Clear field-specific errors on input change
-  };
+  // Define the validation schema using Yup
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"), // Mark email as required
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"), // Mark password as required
+  });
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    let hasError = false;
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema, // Add validation schema here
+    onSubmit: (values) => {
+      // Retrieve user from localStorage
+      const storedUser = JSON.parse(localStorage.getItem("user"));
 
-    // Check for empty fields
-    if (!formData.email) {
-      setError((prev) => ({ ...prev, email: "Email is required." }));
-      hasError = true;
-    }
-    if (!formData.password) {
-      setError((prev) => ({ ...prev, password: "Password is required." }));
-      hasError = true;
-    }
+      if (!storedUser || storedUser.email !== values.email) {
+        formik.setErrors({ email: "Invalid email. Please enter a registered email." });
+        return;
+      }
 
-    if (hasError) return;
+      if (storedUser.password !== values.password) {
+        formik.setErrors({ password: "Invalid password. Please try again." });
+        return;
+      }
 
-    setError({ ...error, general: "" });
+      // If valid, redirect to the dashboard
+      navigate("/dashboard");
+    },
+  });
 
-    // Validate with Zod
-    const result = loginSchema.safeParse(formData);
-    if (!result.success) {
-      setError((prev) => ({
-        ...prev,
-        general: result.error.errors.map((err) => err.message).join(", "),
-      }));
-      return;
-    }
-
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-
-    if (!storedUser || storedUser.email !== formData.email) {
-      setError((prev) => ({ ...prev, general: "You must register first." }));
-      return;
-    }
-
-    if (storedUser.password !== formData.password) {
-      setError((prev) => ({ ...prev, general: "Invalid password. Please try again." }));
-      return;
-    }
-
-    // If valid, redirect to the dashboard
-    navigate("/dashboard");
+  // Inline styles for the login page
+  const styles = {
+    container: {
+      width: "300px",
+      margin: "100px auto",
+      padding: "30px",
+      backgroundColor: "#f4f4f4",
+      borderRadius: "8px",
+      boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+    },
+    header: {
+      textAlign: "center",
+      marginBottom: "10px",
+    },
+    formGroup: {
+      marginBottom: "15px",
+    },
+    label: {
+      display: "block",
+      marginBottom: "5px",
+      fontWeight: "bold",
+    },
+    inputContainer: {
+      position: "relative",
+    },
+    input: {
+      width: "100%",
+      padding: "8px",
+      boxSizing: "border-box",
+      borderRadius: "4px",
+      border: "1px solid #ccc",
+    },
+    error: {
+      color: "red",
+      marginTop: "5px",
+    },
+    button: {
+      width: "100%",
+      padding: "10px",
+      backgroundColor: "#007bff",
+      color: "white",
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer",
+    },
+    signupLink: {
+      textAlign: "center",
+      marginTop: "15px",
+    },
+    link: {
+      color: "#007bff",
+      textDecoration: "none",
+    },
+    togglePassword: {
+      position: "absolute",
+      right: "10px",
+      top: "50%",
+      transform: "translateY(-50%)",
+      cursor: "pointer",
+    },
   };
 
   return (
-    <div className="login-container">
-      <h2 className="login-header">Login</h2>
-      {error.general && <div className="login-error">{error.general}</div>}
-      <form onSubmit={handleLogin}>
-        <div className="form-group">
-           <input
+    <div style={styles.container}>
+      <h2 style={styles.header}>Login</h2>
+      <form onSubmit={formik.handleSubmit}>
+        <div style={styles.formGroup}>
+          <label htmlFor="email" style={styles.label}>Email</label>
+          <input
             type="text"
             id="email"
             name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            placeholder="Enter your email"
             required
-            className="login-input"
+            style={styles.input}
           />
-          {error.email && <div className="field-error">{error.email}</div>}
+          {/* Error message for email */}
+          {formik.errors.email && <div style={styles.error}>{formik.errors.email}</div>}
         </div>
-        <div className=
-        
-        "form-group">
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Enter your password"
-            required
-            className="login-input"
-          />
-          {error.password && <div className="field-error">{error.password}</div>}
+        <div style={styles.formGroup}>
+          <label htmlFor="password" style={styles.label}>Password</label>
+          <div style={styles.inputContainer}>
+            <input
+              type={showPassword ? "text" : "password"} // Toggle between text and password
+              id="password"
+              name="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              placeholder="Enter your password"
+              required
+              style={styles.input}
+            />
+            {/* Show/Hide password icon */}
+            {showPassword ? (
+              <FaEyeSlash
+                style={styles.togglePassword}
+                onClick={() => setShowPassword(false)} // Hide password
+              />
+            ) : (
+              <FaEye
+                style={styles.togglePassword}
+                onClick={() => setShowPassword(true)} // Show password
+              />
+            )}
+          </div>
+          {/* Error message for password */}
+          {formik.errors.password && <div style={styles.error}>{formik.errors.password}</div>}
         </div>
-        <button type="submit" className="login-button">
-          Login
-        </button>
-
+        <button type="submit" style={styles.button}>Login</button>
       </form>
-      <div className="signup-link">
+      <div style={styles.signupLink}>
         <p>
-          Don't have an account? <a href="/register" className="login-link">Sign Up</a>
+          Don't have an account? <a href="/register" style={styles.link}>Sign Up</a>
         </p>
       </div>
     </div>
