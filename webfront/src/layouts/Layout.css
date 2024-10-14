@@ -40,6 +40,8 @@
   margin-bottom: 20px; /* Spacing between cards */
   padding: 20px;
   border-radius: 8px;
+  background-color: #f9f9f9;
+  font-weight: bold;
 }
 
 
@@ -58,7 +60,7 @@
 
 /* Content area */
 .content {
-  margin-left: 250px; /* Leave space for the fixed sidebar */
+  margin-left: 280px; /* Leave space for the fixed sidebar */
   padding: 20px; /* Add padding inside the content area */
   height: 100vh; /* Full height for the content area */
   overflow-y: auto; /* Enable vertical scrolling for the content area */
