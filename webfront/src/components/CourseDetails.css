@@ -1,43 +1,43 @@
 /* src/components/CourseDetails.css */
 
 .course-details {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  }
-  
-  .course-details h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .course-details h3 {
-    font-size: 20px;
-    margin: 10px 0;
-  }
-  
-  .course-details ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .course-details li {
-    margin: 5px 0;
-    padding: 5px;
-    background-color: #e9ecef;
-    border-radius: 4px;
-  }
-  
-  .add-student {
-    margin-top: 10px;
-  }
-  
-  .add-student input {
-    padding: 5px;
-    margin-right: 5px;
-  }
-  
-  .add-student button {
-    padding: 5px 10px;
-  }
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.course-details h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.course-details h3 {
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+.course-details ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.course-details li {
+  margin: 5px 0;
+  padding: 5px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+}
+
+.add-student {
+  margin-top: 10px;
+}
+
+.add-student input {
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.add-student button {
+  padding: 5px 10px;
+}

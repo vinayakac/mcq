@@ -1,37 +1,67 @@
 .students {
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  margin: 20px;
 }
 
-input[type="text"] {
-  padding: 8px;
+h2 {
   margin-bottom: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  width: calc(100% - 20px);
 }
 
-table {
+.search-bar {
+  margin-bottom: 20px;
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.student-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
 }
 
-th, td {
+.student-table th,
+.student-table td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
 }
 
-th {
-  background-color: #f2f2f2;
-}
-
-tr:hover {
-  background-color: #f1f1f1;
+.student-table th {
+  background-color: green;
 }
 
 .add-student-form {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Spacing between input fields */
+  margin-bottom: 10px;
+}
+
+.form-row input,
+.form-row select {
+  padding: 10px;
+  flex: 1; /* Allow inputs to grow */
+  min-width: 120px; /* Minimum width for inputs */
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
 }

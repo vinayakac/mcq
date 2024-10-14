@@ -1,30 +1,40 @@
-import React, { useState, useEffect } from "react";
-import "./Curriculums.css"; // Importing CSS for styling
-import Courses from "./Courses"; // Import Courses component
-import CourseDetails from "./CourseDetails"; // Import CourseDetails component
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import "./Curriculums.css"; // Import the CSS file
 
-const initialCurriculumsData = ["1-4 class", "5-7 class", "8-10 class"]; // Updated curriculums
+// Initial data for curriculums including names and descriptions
+const initialCurriculumsData = [
+  { name: "1-4 class", description: "Basic education for young learners." },
+  {
+    name: "5-7 class",
+    description: "Intermediate education focusing on core subjects.",
+  },
+  {
+    name: "8-10 class",
+    description: "Advanced education preparing for secondary studies.",
+  },
+];
 
 function Curriculums() {
   const [curriculums, setCurriculums] = useState(initialCurriculumsData);
   const [newCurriculum, setNewCurriculum] = useState("");
-  const [selectedCurriculum, setSelectedCurriculum] = useState(null); // State for the selected curriculum
-  const [selectedCourse, setSelectedCourse] = useState(null); // State for the selected course
+  const [newDescription, setNewDescription] = useState(""); // For new description
+  const navigate = useNavigate(); // Hook for navigation
 
+  // Function to add a new curriculum and description
   const addCurriculum = () => {
-    if (newCurriculum.trim() && !curriculums.includes(newCurriculum.trim())) {
-      setCurriculums([...curriculums, newCurriculum.trim()]);
+    if (
+      newCurriculum.trim() &&
+      newDescription.trim() &&
+      !curriculums.some((curr) => curr.name === newCurriculum.trim())
+    ) {
+      setCurriculums([
+        ...curriculums,
+        { name: newCurriculum.trim(), description: newDescription.trim() },
+      ]);
       setNewCurriculum("");
+      setNewDescription("");
     }
-  };
-
-  const handleCurriculumClick = (curriculum) => {
-    setSelectedCurriculum(curriculum); // Set the selected curriculum
-    setSelectedCourse(null); // Reset the selected course when changing curriculum
-  };
-
-  const handleCourseSelect = (course) => {
-    setSelectedCourse(course); // Set the selected course
   };
 
   return (
@@ -37,30 +47,38 @@ function Curriculums() {
           onChange={(e) => setNewCurriculum(e.target.value)}
           placeholder="Add new curriculum"
         />
+        <input
+          type="text"
+          value={newDescription}
+          onChange={(e) => setNewDescription(e.target.value)}
+          placeholder="Add description"
+        />
         <button onClick={addCurriculum}>Add Curriculum</button>
       </div>
-      <ul className="curriculums-list">
-        {curriculums.map((curriculum, index) => (
-          <li
-            key={index}
-            className="curriculum-item"
-            onClick={() => handleCurriculumClick(curriculum)}
-          >
-            {curriculum}
-          </li>
-        ))}
-      </ul>
-
-      {/* Show Courses component when a curriculum is selected */}
-      {selectedCurriculum && (
-        <Courses
-          curriculum={selectedCurriculum}
-          onCourseSelect={handleCourseSelect}
-        />
-      )}
-
-      {/* Show CourseDetails component when a course is selected */}
-      {selectedCourse && <CourseDetails course={selectedCourse} />}
+      <table className="curriculums-table">
+        <thead>
+          <tr>
+            <th>Curriculum</th>
+            <th>Description</th>
+            <th>View Courses</th> {/* New column for viewing courses */}
+          </tr>
+        </thead>
+        <tbody>
+          {curriculums.map((curriculum, index) => (
+            <tr key={index}>
+              <td>{curriculum.name}</td>
+              <td>{curriculum.description}</td>
+              <td>
+                <button
+                  onClick={() => navigate(`/courses/${curriculum.name}`)} // Navigate to CoursesPage
+                >
+                  View Courses
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

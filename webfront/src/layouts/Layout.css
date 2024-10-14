@@ -41,7 +41,7 @@
 /* Hover state */
 .sidebar ul li a:hover {
   background-color: #d1e7e0; /* Light background on hover */
-  text-decoration: underline;
+ 
 }
 
 /* Active state */

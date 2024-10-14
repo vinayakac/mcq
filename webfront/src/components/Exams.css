@@ -27,13 +27,13 @@
   }
   
   button {
-    
+
     background-color: paleturquoise;
-    color: white;
+    color: black;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
-    width: 120px; 
+    width: 150px; 
     height: 40px; 
   }
   

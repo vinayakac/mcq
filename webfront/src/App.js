@@ -12,7 +12,7 @@ import Courses from "./components/Courses";
 import Exams from "./components/Exams";
 import Students from "./components/Students";
 import McqExam from "./components/McqExam";
-
+import CoursesPage from "./components/CoursesPage";
 function App() {
   return (
     <div className="App">
@@ -58,6 +58,7 @@ function App() {
           }
         />
         <Route path="/mcq/:exam" element={<McqExam />} />
+        <Route path="/courses/:curriculumName" element={<CoursesPage />} />
         <Route
           path="students"
           element={

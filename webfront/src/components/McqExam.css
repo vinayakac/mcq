@@ -1,42 +1,40 @@
 .mcq-exam-container {
   max-width: 800px;
-  margin: 0 auto;
+  margin: auto;
   padding: 20px;
-  background-color: #f4f7f6;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .exam-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #4CAF50;
   text-align: center;
-  color: #333;
-  margin-bottom: 20px;
-  font-size: 24px;
 }
 
 .timer {
-  text-align: center;
   font-size: 18px;
-  color: #ff5722;
-  margin-bottom: 20px;
+  margin: 10px 0;
 }
 
 .question-card {
-  background-color: #fff;
-  padding: 20px;
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
 
 .question-text {
-  font-size: 18px;
-  font-weight: 500;
-  color: #333;
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 
 .options-list {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
 }
 
@@ -44,45 +42,34 @@
   margin: 10px 0;
 }
 
-.option-item label {
-  font-size: 16px;
-  color: #333;
-}
-
 .option-correct {
-  background-color: #d4edda; /* Light green for correct answers */
-  color: #155724; /* Dark green text */
-  padding: 5px;
-  border-radius: 4px;
+  background-color: #c8e6c9; /* Light green for correct answers */
 }
 
 .option-wrong {
-  background-color: #f8d7da; /* Light red for wrong answers */
-  color: #721c24; /* Dark red text */
-  padding: 5px;
-  border-radius: 4px;
+  background-color: #ffcdd2; /* Light red for wrong answers */
 }
 
-.btn-next, .btn-submit {
-  display: block;
-  background-color: #007bff;
-  color: white;
+.btn-next,
+.btn-submit,
+.btn-view-answers {
+  margin-top: 20px;
   padding: 10px 15px;
-  text-align: center;
   border: none;
   border-radius: 5px;
+  background-color: #4CAF50;
+  color: white;
   cursor: pointer;
-  width: 100%;
   font-size: 16px;
-  margin-top: 20px;
 }
 
-.btn-next:hover, .btn-submit:hover {
-  background-color: #0056b3;
+.btn-next:hover,
+.btn-submit:hover,
+.btn-view-answers:hover {
+  background-color: #45a049; /* Darker green on hover */
 }
 
 .score-section {
-  text-align: center;
   margin-top: 20px;
 }
 
@@ -101,24 +88,48 @@
 
 .no-questions {
   text-align: center;
-  color: #333;
-  font-size: 16px;
+  font-size: 18px;
+  color: #555;
 }
-.btn-view-answers {
-  display: block;
-  background-color: #007bff;
-  color: white;
-  padding: 10px 15px;
-  text-align: center;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-  width: 100%;
-  font-size: 16px;
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin: 10px 0;
+}
+.options-list {
+  list-style-type: none; /* Remove default list styling */
+  padding: 0; /* Remove padding */
+  margin: 20px 0; /* Add margin around the list */
 }
 
-.btn-view-answers:hover {
-  background-color: #0056b3;
+.option-item {
+  margin: 10px 0; /* Space between options */
 }
 
+.option-item label {
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Center items vertically */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  padding: 10px; /* Add padding for better click area */
+  border: 1px solid #ccc; /* Border for options */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+.option-item input {
+  margin-right: 10px; /* Space between radio and text */
+}
+
+.option-item:hover {
+  background-color: #f0f0f0; /* Change background color on hover */
+}
+
+.option-correct {
+  background-color: #d4edda; /* Light green for correct answers */
+  border-color: #c3e6cb; /* Border color for correct answers */
+}
+
+.option-wrong {
+  background-color: #f8d7da; /* Light red for wrong answers */
+  border-color: #f5c6cb; /* Border color for wrong answers */
+}

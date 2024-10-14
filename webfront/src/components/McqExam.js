@@ -6,54 +6,72 @@ import "./McqExam.css"; // Import the CSS file for styling
 function McqExam() {
   const { exam } = useParams(); // Get the exam name from the URL parameters
   const questions = mcqData[exam] || []; // Get questions for the specific exam
-  const [selectedAnswers, setSelectedAnswers] = useState({}); // To store selected answers
-  const [score, setScore] = useState(null); // To store the score after submission
-  const [results, setResults] = useState([]); // To store results for each question
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question
-  const [timeLeft, setTimeLeft] = useState(600); // Time limit in seconds
-  const [showAnswers, setShowAnswers] = useState(false); // State to toggle answer visibility
 
-  // Countdown timer
+  // State variables
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [score, setScore] = useState(null);
+  const [results, setResults] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(150);
+  const [showAnswers, setShowAnswers] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
+
+  // Countdown timer effect
   useEffect(() => {
     if (timeLeft > 0) {
-      const timerId = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      const timerId = setTimeout(() => setTimeLeft((prev) => prev - 1), 1000);
       return () => clearTimeout(timerId);
     } else {
-      handleSubmit(); // Auto-submit when time runs out
+      handleSubmit();
     }
   }, [timeLeft]);
 
+  // Handle answer selection
   const handleChange = (questionIndex, selectedOption) => {
     setSelectedAnswers((prev) => ({
       ...prev,
       [questionIndex]: selectedOption,
     }));
+    setErrorMessage(""); // Clear error message when selecting an option
   };
 
+  // Move to the next question
   const handleNextQuestion = () => {
-    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    const selectedOption = selectedAnswers[currentQuestionIndex];
+    if (!selectedOption) {
+      setErrorMessage("Please select an answer before proceeding."); // Set error message
+      return;
+    }
+    setCurrentQuestionIndex((prevIndex) =>
+      Math.min(prevIndex + 1, questions.length - 1)
+    );
+    setErrorMessage(""); // Clear error message if answer is selected
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
-    let totalScore = 0;
+
     const newResults = questions.map((questionData, index) => {
       const isCorrect = selectedAnswers[index] === questionData.answer;
-      if (isCorrect) totalScore += 1;
-      return { ...questionData, isCorrect, selected: selectedAnswers[index] }; // Store correctness and selected answer
+      return { ...questionData, isCorrect, selected: selectedAnswers[index] };
     });
+
+    const totalScore = newResults.filter((result) => result.isCorrect).length; // Calculate total score
     setScore(totalScore);
-    setResults(newResults); // Set the results state
+    setResults(newResults);
   };
 
+  // Format time for display
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
+  // Toggle answers visibility
   const toggleShowAnswers = () => {
-    setShowAnswers(!showAnswers);
+    setShowAnswers((prev) => !prev);
   };
 
   return (
@@ -62,6 +80,7 @@ function McqExam() {
       <div className="timer">
         Time Left: <span>{formatTime(timeLeft)}</span>
       </div>
+
       {questions.length > 0 ? (
         <>
           <form onSubmit={handleSubmit} className="question-form">
@@ -73,15 +92,14 @@ function McqExam() {
               <ul className="options-list">
                 {questions[currentQuestionIndex].options.map(
                   (option, optionIndex) => {
-                    const result = results[currentQuestionIndex]; // Fetch result after submission
+                    const result = results[currentQuestionIndex];
                     let optionClass = "";
 
-                    // Determine class based on answer and correctness
                     if (result) {
                       if (option === result.answer) {
-                        optionClass = "option-correct"; // Correct answer
+                        optionClass = "option-correct";
                       } else if (option === result.selected) {
-                        optionClass = "option-wrong"; // Wrong answer
+                        optionClass = "option-wrong";
                       }
                     }
 
@@ -101,7 +119,7 @@ function McqExam() {
                             onChange={() =>
                               handleChange(currentQuestionIndex, option)
                             }
-                            disabled={score !== null} // Disable input after submission
+                            disabled={score !== null}
                           />
                           {option}
                         </label>
@@ -112,22 +130,29 @@ function McqExam() {
               </ul>
             </div>
 
-            {currentQuestionIndex < questions.length - 1 && (
-              <button
-                type="button"
-                className="btn-next"
-                onClick={handleNextQuestion}
-              >
-                Next Question
-              </button>
-            )}
-            {currentQuestionIndex === questions.length - 1 && (
-              <button type="submit" className="btn-submit">
-                Submit Answers
-              </button>
-            )}
+            {/* Display error message */}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+            {/* Navigation Buttons */}
+            <div className="navigation-buttons">
+              {currentQuestionIndex < questions.length - 1 && (
+                <button
+                  type="button"
+                  className="btn-next"
+                  onClick={handleNextQuestion}
+                >
+                  Next Question
+                </button>
+              )}
+              {currentQuestionIndex === questions.length - 1 && (
+                <button type="submit" className="btn-submit">
+                  Submit Answers
+                </button>
+              )}
+            </div>
           </form>
 
+          {/* Display score and results */}
           {score !== null && (
             <div className="score-section">
               <h2>
