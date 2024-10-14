@@ -57,8 +57,8 @@
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
-  background-color: #4CAF50;
-  color: white;
+  background-color: paleturquoise;
+  color:black;
   cursor: pointer;
   font-size: 16px;
 }
@@ -132,4 +132,7 @@
 .option-wrong {
   background-color: #f8d7da; /* Light red for wrong answers */
   border-color: #f5c6cb; /* Border color for wrong answers */
+}
+.btn-previous {
+  margin-right: 10px; /* Add spacing for the previous button */
 }
