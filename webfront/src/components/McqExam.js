@@ -15,12 +15,14 @@ function McqExam() {
   const [timeLeft, setTimeLeft] = useState(150);
   const [showAnswers, setShowAnswers] = useState(false);
   const [errorMessage, setErrorMessage] = useState(""); // State for error message
+  const [timerId, setTimerId] = useState(null); // State for timer ID
 
   // Countdown timer effect
   useEffect(() => {
     if (timeLeft > 0) {
-      const timerId = setTimeout(() => setTimeLeft((prev) => prev - 1), 1000);
-      return () => clearTimeout(timerId);
+      const id = setTimeout(() => setTimeLeft((prev) => prev - 1), 1000);
+      setTimerId(id); // Store timer ID
+      return () => clearTimeout(id);
     } else {
       handleSubmit();
     }
@@ -58,6 +60,10 @@ function McqExam() {
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
 
+    // Clear the timer
+    clearTimeout(timerId);
+    setTimeLeft(0); // Optional: Set time left to 0 if you want to show that time is up
+
     const newResults = questions.map((questionData, index) => {
       const isCorrect = selectedAnswers[index] === questionData.answer;
       return { ...questionData, isCorrect, selected: selectedAnswers[index] };
@@ -82,7 +88,7 @@ function McqExam() {
 
   return (
     <div className="mcq-exam-container">
-      <h1 className="exam-title">{exam} Questions</h1>
+      <h1 className="exam-title">{exam} Paper</h1>
       <div className="timer">
         Time Left: <span>{formatTime(timeLeft)}</span>
       </div>
