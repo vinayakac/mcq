@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import * as Yup from "yup";
+
 
 const Login = () => {
   const navigate = useNavigate();

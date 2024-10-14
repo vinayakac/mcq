@@ -1,0 +1,96 @@
+
+/* src/components/CourseDetails.css */
+
+.course-details {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.add-course-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-course-button:hover {
+  background-color: #0056b3;
+}
+
+/* Form container to add a box around the form */
+.form-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.course-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.course-form input,
+.course-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.submit-button,
+.cancel-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.submit-button {
+  background-color: #28a745;
+}
+
+.submit-button:hover {
+  background-color: #218838;
+}
+
+.cancel-button {
+  background-color: #dc3545;
+  margin-left: 10px;
+}
+
+.cancel-button:hover {
+  background-color: #c82333;
+}
+
+/* Course details container to box each course */
+.courses-container {
+  margin-top: 30px;
+}
+
+.course-item {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.course-item h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.course-item p {
+  margin: 10px 0 0;
+  color: #666;
+}

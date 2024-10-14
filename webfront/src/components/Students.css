@@ -1,0 +1,50 @@
+
+.students {
+  padding: 20px;
+}
+
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.student-table th,
+.student-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.search-bar {
+  padding: 10px;
+  width: 200px; /* Adjust width as needed */
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%; /* Full width */
+  padding: 10px;
+  margin: 5px 0; /* Space between inputs */
+  border: 1px solid #ccc;
+  border-radius: 4px; /* Rounded corners */
+}
+
+button {
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text */
+  border: none; /* Remove borders */
+  padding: 10px 15px; /* Button padding */
+  cursor: pointer; /* Pointer cursor on hover */
+  border-radius: 4px; /* Rounded corners */
+}
+
+button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+button:disabled {
+  background-color: #ccc; /* Light grey when disabled */
+  cursor: not-allowed; /* Not-allowed cursor when disabled */
+}

@@ -1,0 +1,41 @@
+
+.exam-container {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.question-box {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  margin: 10px 0;
+  background-color: #f9f9f9; /* Light background color for boxes */
+}
+
+.options {
+  margin-top: 10px;
+}
+
+.option-label {
+  display: block; /* Stack options vertically */
+  margin: 5px 0; /* Add spacing between options */
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #4CAF50; /* Green */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049; /* Darker green */
+}
+
+.result {
+  margin-top: 20px;
+  font-weight: bold;
+}

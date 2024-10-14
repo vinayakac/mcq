@@ -1,0 +1,23 @@
+
+.class-range-table {
+  width: 100%; /* Full width of the container */
+  border-collapse: collapse; /* Merge borders */
+  margin-bottom: 20px; /* Space below the table */
+}
+
+.class-range-table th,
+.class-range-table td {
+  border: 2px solid #007bff; /* Blue border */
+  padding: 10px; /* Space inside cells */
+  text-align: center; /* Center text */
+}
+
+.class-range-table th {
+  background-color: #007bff; /* Blue background for header */
+  color: white; /* White text for header */
+}
+
+.class-range-table tr:hover {
+  background-color: #007bff; /* Light gray background on row hover */
+  cursor: pointer; /* Change cursor to pointer */
+}

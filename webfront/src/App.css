@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color:hsl(0, 0%, 96%);;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -36,3 +36,27 @@
     transform: rotate(360deg);
   }
 }
+
+/* src/App.css */
+
+.dashboard {
+  display: flex;
+}
+
+.dashboard-content {
+  padding: 20px;
+  flex-grow: 1; /* This allows the content area to take up the remaining space */
+}
+
+button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.App {
+  display: flex; /* Ensure main app displays flexibly */
+  flex-direction: column; /* Column layout for header, content, etc. */
+  height: 500vh; /* Full height */
+  background-color:white ; /* Optional: Set to white if not already */
+}
+

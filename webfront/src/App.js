@@ -1,45 +1,53 @@
+
+// App.js
 import "./App.css";
-import Layout from "./layouts/Layout";
 import NoMatch from "./layouts/NoMatch";
 import { Route, Routes } from "react-router-dom";
 import AuthPageContainer from "./layouts/AuthPageContainer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import AdminLayout from "./layouts/AdminLayout";
-import AdminAuthPageContainer from "./layouts/AdminAuthPageContainer";
-import AdminLogin from "./pages/admin/Login";
+import Dashboard from './components/Dashboard';
+import Curriculums from './components/Curriculums';
+import CourseDetails from './components/CourseDetails'; 
+import MCQExams from './components/MCQExams';
+import Students from './components/Students';
+import Exam from './components/Exam';
+import StudentList from './components/StudentList';
+import ExamPage from './components/ExamPage'; // Ensure the path is correct
+import Courses from './components/Courses'; // Ensure the path is correct
+import MainLayout from './components/MainLayout'; // Import MainLayout
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route
-            index
-            element={
-              <AuthPageContainer>
-                <div>auth page</div>
-              </AuthPageContainer>
-            }
-          />
-          <Route path="login" element={<Login />} />
-          <Route path="Register" element={<Register />} />
-          <Route path="*" element={<NoMatch />} />
+        {/* Authentication Routes */}
+        <Route path="/" element={<AuthPageContainer><div>Auth Page</div></AuthPageContainer>} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+
+        {/* Dashboard and its nested routes */}
+        <Route path="/" element={<MainLayout />}></Route>
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route path="curriculums" element={<Curriculums />} />
+          <Route path="courses" element={<CourseDetails />} />
+          <Route path="mcq-exams" element={<MCQExams />} />
+          <Route path="students" element={<Students />} />
+
+          {/* Dynamic routes for specific classes and courses */}
+          <Route path="courses/:classRange" element={<Courses />} />
+          <Route path="students/:course" element={<StudentList />} />
+          <Route path="exam/:course" element={<ExamPage />} /> {/* Dynamic exam route */}
+          
+          {/* Default route for /dashboard */}
+          <Route index element={<div>Dashboard Home</div>} /> {/* Placeholder content */}
         </Route>
 
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route
-            index
-            element={
-              <AdminAuthPageContainer>
-                <div>Admin auth page</div>
-              </AdminAuthPageContainer>
-            }
-          />
-          <Route path="login" element={<AdminLogin />} />
+        {/* Other routes */}
+        <Route path="/exam" element={<Exam />} />
 
-          <Route path="*" element={<NoMatch />} />
-        </Route>
+        {/* Catch-all for undefined routes */}
+        <Route path="*" element={<NoMatch />} />
       </Routes>
     </div>
   );

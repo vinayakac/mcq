@@ -1,0 +1,79 @@
+
+/* General styles for all text */
+body {
+  font-size: 20px; /* Medium font size for the entire application */
+}
+
+.mcq-exams {
+  margin: 20px;
+}
+
+.course-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.course-table th,
+.course-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.exam-section {
+  margin-top: 20px;
+}
+
+.question {
+  margin-bottom: 15px;
+  background-color: #f9f9f9; /* Light background for questions */
+  border: 1px solid #ccc; /* Border around question box */
+  padding: 15px; /* Padding inside the question box */
+  border-radius: 8px; /* Rounded corners */
+}
+
+.options {
+  margin-left: 20px;
+  display: flex; /* Use flexbox for options */
+  flex-direction: column; /* Stack options vertically */
+}
+
+.option {
+  background-color: hsla(198, 100%, 95%, 0.692); /* Light blue background for options */
+  border: 1px solid hsl(231, 100%, 85%); /* Border around option box */
+  padding: 10px; /* Padding inside option box */
+  margin-bottom: 10px; /* Space between options */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor for options */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.option:hover {
+  background-color: #cceeff; /* Darker blue on hover */
+}
+
+.score-section {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.take-exam-button {
+  background-color: blue; /* Button background color */
+  color: white; /* Text color */
+  border: none; /* Remove border */
+  padding: 10px 15px; /* Padding */
+  cursor: pointer; /* Pointer on hover */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+  font-size: 16px; /* Medium font size */
+}
+
+.take-exam-button:hover {
+  background-color: darkblue; /* Darker blue on hover */
+}
+
+/* Table header styles */
+.course-table th {
+  background-color: #007bff; /* Header background color */
+  color: white; /* Header text color */
+}

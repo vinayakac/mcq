@@ -1,0 +1,16 @@
+
+.table-container {
+    border: 2px solid #007bff; /* Blue border for the table box */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Space inside the box */
+    margin-bottom: 20px; /* Space below the box */
+    background-color: #f8f9fa; /* Light background color */
+  }
+  
+  .table-container h3 {
+    margin-bottom: 15px; /* Space below the heading */
+    color: #343a40; /* Darker text color */
+  }
+  
+  /* Additional styles for the Table component can go here if needed */
+  

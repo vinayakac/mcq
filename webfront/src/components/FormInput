@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./FormInput.css"; // Assume we have some CSS for styling
-import Registe from "Register.js";
+
 const FormInput = ({ label, name, type, value, onChange, onBlur, error, touched, placeholder }) => {
   return (
     <div className="form-group">

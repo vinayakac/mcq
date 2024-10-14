@@ -1,0 +1,15 @@
+
+/* Exam.css */
+.submit-exam-button {
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-exam-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
