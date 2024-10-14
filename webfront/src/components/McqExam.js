@@ -48,6 +48,12 @@ function McqExam() {
     setErrorMessage(""); // Clear error message if answer is selected
   };
 
+  // Move to the previous question
+  const handlePreviousQuestion = () => {
+    setCurrentQuestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    setErrorMessage(""); // Clear error message
+  };
+
   // Handle form submission
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
@@ -135,6 +141,15 @@ function McqExam() {
 
             {/* Navigation Buttons */}
             <div className="navigation-buttons">
+              {currentQuestionIndex > 0 && ( // Show previous button if not on first question
+                <button
+                  type="button"
+                  className="btn-previous"
+                  onClick={handlePreviousQuestion}
+                >
+                  Previous Question
+                </button>
+              )}
               {currentQuestionIndex < questions.length - 1 && (
                 <button
                   type="button"
