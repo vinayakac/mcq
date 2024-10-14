@@ -36,7 +36,12 @@
   display: block; /* Make links behave like buttons */
   transition: background-color 0.3s ease; /* Smooth background transition */
   border-radius: 4px; /* Rounded corners for better look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  margin-bottom: 20px; /* Spacing between cards */
+  padding: 20px;
+  border-radius: 8px;
 }
+
 
 /* Hover state */
 .sidebar ul li a:hover {
@@ -60,4 +65,3 @@
   background-color: #f8f9fc; /* Content background */
   width: 13000px;
 }
-

@@ -41,7 +41,8 @@
   th {
     background-color: green; /* Blue header */
   /* White text in the header */
-    font-weight: bold; /* Bold text for the header */
+    font-weight: bold;
+    color: white;  /* Bold text for the header */
   }
   
   tr:hover {
