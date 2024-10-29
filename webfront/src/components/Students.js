@@ -3,14 +3,14 @@ import './Students.css'; // Import the CSS file
 const Students = () => {
   const [studentList, setStudentList] = useState([
     { id: 1, name: 'smita', class: '5th', course: 'typing', age: 10, gender: 'Female' },
-    { id: 2, name: 'karthik', class: '7th', course: 'painting', age: 12, gender: 'Female' },
-    { id: 3, name: 'jyo', class: '10th', course: 'introduction to web ', age: 15, gender: 'Male' },
+    { id: 2, name: 'karthik', class: '7th', course: 'painting', age: 12, gender: 'Male' },
+    { id: 3, name: 'jyo', class: '10th', course: 'introduction to web ', age: 15, gender: 'Female' },
     { id: 4, name: 'maruti', class: '5th', course: 'introduction to c', age: 10, gender: 'Male' },
     { id: 5, name: 'teju', class: '5th', course: 'drawing', age: 10, gender: 'Female' },
-    { id: 6, name: 'Gowrish', class: '5th', course: 'c', age: 10, gender: 'Female' },
+    { id: 6, name: 'Gowrish', class: '5th', course: 'c', age: 10, gender: 'Male' },
     { id: 7, name: 'shama', class: '5th', course: 'typing', age: 10, gender: 'Female' },
     { id: 8, name: 'shishir', class: '5th', course: ' introduction to web', age: 10, gender: 'Male' },
-    { id: 9, name: 'mokshita', class: '5th', course: 'painting', age: 10, gender: 'Male' },
+    { id: 9, name: 'mokshita', class: '5th', course: 'painting', age: 10, gender: 'Female' },
   ]);
   const [newStudent, setNewStudent] = useState({ name: '', class: '', course: '', age: '', gender: '' });
   const [showForm, setShowForm] = useState(false); // State to control the visibility of the form

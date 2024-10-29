@@ -1,42 +1,79 @@
-.App {
-  text-align: center;
-}
+/* App.css */
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App {
+  display: flex;
+  height: 100vh;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.sidebar {
+  width: 250px;
+  background-color: #1a1a2e;
+  color: #e94560;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-between;
 }
 
-.App-link {
-  color: #61dafb;
+.sidebar h1 {
+  font-size: 2rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+  color: #e94560;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.sidebar nav ul li a.active {
+  font-weight: bold;
+  border-left: 4px solid #e94560;
+  padding-left: 10px;
+}
+
+.logout-container {
+  margin-top: auto;
+}
+
+.logout-button {
+  background-color: #e94560;
+  border: none;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.logout-button a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+
+.welcome-message {
+  text-align: center;
+}
+
+.blank-page {
+  margin-top: 20px;
 }
