@@ -1,12 +1,8 @@
 import React from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./MyExams.css";
 
 const MyExams = () => {
-  // Set default value for context to prevent errors if it's undefined
-  const context = useOutletContext() || {};
-  const joinCourse = context.joinCourse || [];
-
   const exams = [
     { id: 1, name: "Typing Exam 1", courseId: 1 },
     { id: 2, name: "Typing Exam 2", courseId: 1 },
@@ -55,7 +51,7 @@ const MyExams = () => {
                       courseExams.map((exam) => (
                         <Link
                           key={exam.id}
-                          to={`/student-dashboard/my-exams/${exam.name}`}
+                          to={`/exam/${exam.name.replace(/\s+/g, "-")}`} // Replace spaces with dashes for URL
                         >
                           <button className="take-exam-button">
                             {`Take ${exam.name}`}

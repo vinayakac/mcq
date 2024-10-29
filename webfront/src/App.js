@@ -38,7 +38,7 @@ function App() {
           {/* Default message */}
           <Route path="join-course" element={<JoinCourse />} />
           <Route path="my-exams" element={<MyExams />} />
-          <Route path="my-exams/:examId" element={<Exam />} />
+          <Route path="/exam/:examId" element={<Exam />} />
         </Route>
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route

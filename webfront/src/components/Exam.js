@@ -12,7 +12,7 @@ const Exam = () => {
 
   // Fetch questions based on examId
   useEffect(() => {
-    const fetchedQuestions = mcqData[examId] || [];
+    const fetchedQuestions = mcqData[examId.replace(/-/g, " ")] || []; // Convert back to space
     setQuestions(fetchedQuestions);
   }, [examId]);
 
@@ -45,7 +45,7 @@ const Exam = () => {
 
   return (
     <div className="exam-container">
-      <h2>{examId} Questions</h2>
+      <h2>{examId.replace(/-/g, " ")} Questions</h2>
       <div>
         Time Left: {Math.floor(timeLeft / 60)}:
         {("0" + (timeLeft % 60)).slice(-2)}
@@ -62,7 +62,7 @@ const Exam = () => {
                 <label>
                   <input
                     type="radio"
-                    name={"question-${currentQuestionIndex}"}
+                    name={`question-${currentQuestionIndex}`} // Use backticks for template literal
                     value={option}
                     checked={selectedAnswers[currentQuestionIndex] === option}
                     onChange={() => handleAnswerSelect(option)}
