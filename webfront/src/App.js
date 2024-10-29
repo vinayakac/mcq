@@ -15,7 +15,7 @@ import Courses from './components/Courses';
 import MainLayout from './components/MainLayout'; 
 import StudentLogin from "./pages/StudentLogin";
 import StudentDashboard from "./components/StudentDashboard";
-import JoinCourses from './components/JoinCourses';
+import JoinCourse from './components/JoinCourse';
 import CourseDetail from './components/CourseDetail';  
 import MyExams from "./components/MyExams";
 import Register from "./pages/Register"; 
@@ -43,7 +43,7 @@ function App() {
 
         {/* Course joining and exams */}
         <Route path="/exams" element={<Exams />} />
-        <Route path="/join-courses" element={<JoinCourses />} />
+        <Route path="/join-course" element={<JoinCourse />} />
         <Route path="/join-courses/:courseId" element={<CourseDetail />} />
         <Route path="/myexams" element={<MyExams />} />
         <Route path="/register" element={<Register />} />

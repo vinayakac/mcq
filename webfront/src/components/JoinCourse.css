@@ -1,0 +1,64 @@
+.join-course-container {
+  background: linear-gradient(145deg, #f9f9f9, #ffffff); /* Light gradient background */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 30px; /* More padding */
+  max-width: 800px; /* Limit width for better readability */
+  margin: 20px auto; /* Center align */
+}
+
+.join-course-container h2 {
+  font-size: 2rem; /* Increased font size */
+  color: #2c3e50; /* Dark color for headings */
+  margin-bottom: 20px; /* Space below heading */
+  text-align: center; /* Center align heading */
+}
+
+.courses-table {
+  width: 100%; /* Full width */
+  border-collapse: collapse; /* Remove space between borders */
+  margin-bottom: 20px; /* Space below table */
+}
+
+.courses-table th,
+.courses-table td {
+  padding: 15px; /* Padding inside table cells */
+  text-align: left; /* Align text to the left */
+  font-size: 1.0rem; /* Increased font size */
+  border-bottom: 1px solid #ddd; /* Light border for separation */
+}
+
+.courses-table th {
+  background-color: #3498db; /* Blue background for header */
+  color: white; /* White text for header */
+  font-size: 1.0rem; /* Slightly larger header font */
+  font-weight: bold;
+}
+
+.join-button {
+  background-color: paleturquoise; /* Green button */
+  color: black; /* White text */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px 15px; /* Padding inside button */
+  cursor: pointer; /* Pointer cursor */
+  font-size: 1.0rem; /* Increased button font size */
+  transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+.join-button:hover {
+  background-color:darkcyan; /* Darker green on hover */
+}
+
+.joined-courses-list {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove padding */
+}
+
+.joined-courses-list li {
+  background: #ecf0f1; /* Light gray background */
+  margin: 10px 0; /* Space between items */
+  padding: 10px; /* Padding inside items */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 1.0rem; /* Increased font size */
+}
