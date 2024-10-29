@@ -1,0 +1,60 @@
+/* StudentDashboard.css */
+
+.student-dashboard {
+    display: flex;
+    height: 100vh; /* Full height of the viewport */
+ width: 150vh;
+ 
+  }
+  
+  .student-sidebar {
+    position: fixed; /* Fix the sidebar in place */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 250px; /* Fixed width for sidebar */
+    height: 100%; /* Full height */
+    background-color: paleturquoise; /* Dark background for sidebar */
+    color: black; /* Light text color */
+    padding: 20px; /* Padding inside sidebar */
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3); /* Right shadow for sidebar */
+    transition: width 0.3s; /* Smooth width transition */
+    overflow-y: auto; /* Allow scrolling if content exceeds height */
+    
+  }
+  
+  .student-sidebar h3 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .student-sidebar ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+  }
+  
+  .student-sidebar li {
+    margin: 15px 0; /* Space between links */
+  }
+  
+  .student-sidebar a {
+    color: black; /* Link color */
+    text-decoration: none; /* Remove underline */
+    display: block; /* Make link fill the entire area */
+    padding: 10px; /* Space around link text */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth background transition */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+   
+  }
+  
+  .student-sidebar a:hover {
+    background-color:paleturquoise; /* Darker blue on hover */
+  }
+  
+ 
+  
+  .active {
+    background-color: #007bff; /* Blue background for active link */
+    color: white; /* White text for better contrast */
+    font-weight: bold; /* Emphasize active item */ /* Highlight active link */
+  }

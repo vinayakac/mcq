@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
-import FormInput from '../components/FormInput';
+import FormInput from '../../components/FormInput';
 
-import './Login.css'; // Import the CSS file
+
+import './AdminLogin.css'; // Import the CSS file
 
 // Zod validation schema
 const loginSchema = z.object({
@@ -18,7 +19,7 @@ const loginSchema = z.object({
     .regex(/[\W_]/, "Password must contain at least one special character"),
 });
 
-const Login = () => {
+const AdminLogin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "", general: "" });
   const navigate = useNavigate();
@@ -113,4 +114,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;
