@@ -1,15 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useOutletContext } from "react-router-dom";
-import "./MyExams.css"; // Ensure you create this CSS file
+import "./MyExams.css";
 
 const MyExams = () => {
-  const { joinedCourses } = useOutletContext();
-
   const exams = [
-    { id: 1, name: "Midterm Exam", courseId: 1 },
-    { id: 2, name: "Final Exam", courseId: 2 },
-    // Add more exams as needed
+    { id: 1, name: "Typing Exam 1", courseId: 1 },
+    { id: 2, name: "Typing Exam 2", courseId: 1 },
+    { id: 3, name: "Drawing Exam 1", courseId: 2 },
+    { id: 4, name: "Drawing Exam 2", courseId: 2 },
+    { id: 5, name: "Computer Exam 1", courseId: 3 },
+    { id: 6, name: "Computer Exam 2", courseId: 3 },
+    { id: 7, name: "PHP Exam 1", courseId: 4 },
+    { id: 8, name: "PHP Exam 2", courseId: 4 },
+    { id: 9, name: "Python Exam 1", courseId: 5 },
+    { id: 10, name: "Python Exam 2", courseId: 5 },
   ];
 
   const courses = [
@@ -23,23 +27,46 @@ const MyExams = () => {
   return (
     <div className="my-exams-container">
       <h2>Available Courses</h2>
-      {joinedCourses && joinedCourses.length > 0 ? (
-        joinedCourses.map((courseId) => {
-          const course = courses.find((course) => course.id === courseId);
-          const exam = exams.find((exam) => exam.courseId === courseId);
-          return (
-            <div key={course.id} className="course-card">
-              <h3>{course.name}</h3>
-              {exam ? (
-                <Link to={`/student-dashboard/my-exams/${exam.id}`}>
-                  <button className="take-exam-button">Take Exam</button>
-                </Link>
-              ) : (
-                <p>No exam available for this course.</p>
-              )}
-            </div>
-          );
-        })
+      {courses.length > 0 ? (
+        <table className="courses-table">
+          <thead>
+            <tr>
+              <th>Course Name</th>
+              <th>Curriculum</th>
+              <th>Exams</th>
+            </tr>
+          </thead>
+          <tbody>
+            {courses.map((course) => {
+              const courseExams = exams.filter(
+                (exam) => exam.courseId === course.id
+              );
+
+              return (
+                <tr key={course.id}>
+                  <td>{course.name}</td>
+                  <td>{course.curriculum}</td>
+                  <td>
+                    {courseExams.length > 0 ? (
+                      courseExams.map((exam) => (
+                        <Link
+                          key={exam.id}
+                          to={`/exam/${exam.name.replace(/\s+/g, "-")}`} // Replace spaces with dashes for URL
+                        >
+                          <button className="take-exam-button">
+                            {`Take ${exam.name}`}
+                          </button>
+                        </Link>
+                      ))
+                    ) : (
+                      <p>No exams available for this course.</p>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       ) : (
         <p>No courses available.</p>
       )}

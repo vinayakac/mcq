@@ -1,30 +1,27 @@
+// src/components/FormInput.js
 import React from "react";
 
-
 const FormInput = ({
-  type = "text",
   name,
+  type,
   value,
   onChange,
   onBlur,
   placeholder,
   error,
-}) => {
-  return (
-    <div className="form-input-container">
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur} // Handle blur event
-        placeholder={placeholder}
-        className={error ? "error" : ""}
-      />
-      {error && <div className="error-message">{error}</div>}
+}) => (
+  <div className="form-input-container">
+    <input
+      name={name}
+      type={type}
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
+      placeholder={placeholder}
+      className={`form-input ${error ? "error" : ""}`}
+    />
+    {error && <div className="error-message">{error}</div>}
+  </div>
+);
 
-    </div>
-  );
-};
-
-export default FormInput;
+export default FormInput; // Ensure this line is present

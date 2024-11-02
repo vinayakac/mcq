@@ -1,56 +1,45 @@
-import React, { useState } from 'react';
-import { Outlet, Link } from 'react-router-dom';
-import './StudentDashboard.css';
-
-const navItems = [
-  { path: 'dashboard', label: 'Dashboard' },
-  { path: 'join-course', label: 'Join Course' },
-  { path: 'myexams', label: 'My Exams' },
-];
+// src/components/StudentDashboard.js
+import React, { useState } from "react";
+import { NavLink, Outlet } from "react-router-dom"; // Use Outlet for nested routing
+import "./StudentDashboard.css"; // Optional: Create this CSS file for styling
 
 const StudentDashboard = () => {
-  const [activeLink, setActiveLink] = useState('dashboard');
-
-  const handleLinkClick = (link) => {
-    setActiveLink(link);
-  };
+  const [message] = useState("Welcome to your Student Dashboard!"); // Removed setMessage if not used
 
   return (
-    <div className="dashboard">
-      <aside className="sidebar">
-        <h1>Student Application</h1>
-        <nav>
-          <ul>
-            {navItems.map(({ path, label }) => (
-              <li key={path}>
-                <Link 
-                  to={path} 
-                  className={activeLink === path ? 'active' : ''} 
-                  onClick={() => handleLinkClick(path)}
-                  aria-current={activeLink === path ? 'page' : undefined}
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <div className="logout-container">
-          <Link to="/login" className="logout-button">
-            Logout
-          </Link>
-        </div>
-      </aside>
-      <main className="content">
-        {activeLink === 'dashboard' ? (
-          <div className="welcome-message">
-            <h2>Welcome to Dashboard</h2>
-            <p>Your dashboard overview will be here.</p>
-          </div>
-        ) : (
-          <Outlet />
-        )}
-        <div className="blank-page"></div>
+    <div className="student-dashboard">
+      <nav className="student-sidebar">
+        <h3>Student Dashboard</h3>
+        <ul>
+          <li>
+            <NavLink
+              to="/student-dashboard"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Dashboard
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/join-course"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Join Course
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/my-exams"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              My Exams
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+      <main className="student-content">
+        <h2>{message}</h2>
+        <Outlet /> {/* Render nested routes here */}
       </main>
     </div>
   );
