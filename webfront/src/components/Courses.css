@@ -1,5 +1,5 @@
 .courses {
-  background-color: white; /* Light cyan background */
+  background-color:white; /* Light cyan background */
   padding: 20px; /* Space around the content */
   border-radius: 10px; /* Rounded corners */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* More pronounced shadow for depth */
@@ -27,7 +27,7 @@
 
 .courses th {
   background-color: green; /* Teal for header background */
-  color: white; /* White text for header */
+  color:black; /* White text for header */
   padding: 12px; /* Space inside header cells */
   text-align: left; /* Align text to the left */
   font-size: 1.1rem; /* Slightly larger font for headers */

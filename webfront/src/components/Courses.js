@@ -73,7 +73,6 @@ function Courses({ curriculum }) {
           <tr>
             <th>Course Name</th>
             <th>Curriculum</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -82,11 +81,6 @@ function Courses({ curriculum }) {
               <tr key={index}>
                 <td>{course.name}</td>
                 <td>{course.curriculum}</td>
-                <td>
-                  <button onClick={() => handleTakeExam(course.name)}>
-                    Take Exam
-                  </button>
-                </td>
               </tr>
             ))
           ) : (

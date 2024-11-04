@@ -17,6 +17,7 @@
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
+    color: black;
   }
   
   .courses-table th {
@@ -33,5 +34,6 @@
   }
   
   .take-exam-button:hover {
-    background-color: #45a049;
+    background-color: darkcyan;
   }
+  

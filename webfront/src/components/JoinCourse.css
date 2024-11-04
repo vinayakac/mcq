@@ -36,8 +36,8 @@
 }
 
 .join-button {
-  background-color: paleturquoise; /* Green button */
-  color: black; /* White text */
+  background-color: #4CAF50; /* Green button */
+  color:white; /* White text */
   border: none; /* No border */
   border-radius: 5px; /* Rounded corners */
   padding: 10px 15px; /* Padding inside button */
