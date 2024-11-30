@@ -1,0 +1,53 @@
+.curriculums-container {
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background color */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  
+  .add-curriculum {
+    margin-bottom: 20px; /* Space below the add curriculum section */
+  }
+  
+  .add-curriculum input {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #00796b; /* Teal border for input fields */
+    border-radius: 5px; /* Rounded corners for input fields */
+    width: 150px; /* Fixed width for input fields */
+    font-size: 14px;
+  }
+  
+  .add-curriculum button {
+    padding: 8px 12px; /* Space inside button */
+    background-color: turquoise; /* Teal button background */
+    color: bla; /* White text for button */
+    border: none; /* No border for button */
+    border-radius: 5px; /* Rounded corners for button */
+    cursor: pointer; /* Change cursor on hover */
+  }
+  
+  .add-curriculum button:hover {
+    background-color: #004d40; /* Darker teal on hover */
+  }
+  
+  .curriculums-table {
+    width: 100%; /* Full width for the table */
+    border-collapse: collapse; /* Collapse borders for cleaner look */
+  }
+  
+  .curriculums-table th,
+  .curriculums-table td {
+    padding: 12px; /* Space inside cells */
+    text-align: center; /* Align text to the left */
+    border: 1px solid #ddd; /* Light gray border */
+  }
+  
+  .curriculums-table th {
+    background-color:paleturquoise; /* Teal background for header */
+    color: black; /* White text for header */
+  }
+  
+  .curriculums-table tr:hover {
+    background-color: #e0f7fa; /* Light cyan on row hover */
+  }

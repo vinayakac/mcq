@@ -1,4 +1,5 @@
 import React from "react";
+
 const FormInput = ({
   type = "text",
   name,

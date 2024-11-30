@@ -1,31 +1,32 @@
+// src/layouts/Layout.js
 import React from "react";
-import { Link } from "react-router-dom";
-import "./Layout.css"; // Ensure you have appropriate CSS for styling
+import { useLocation } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+import "./Layout.css"; // Import the CSS file
 
 const Layout = ({ children }) => {
+  const location = useLocation();
+
   return (
-    <div className="layout">
-      <nav className="sidebar">
-        <h2>MCQ APPLICATION</h2>
-        <ul>
-          <li>
-            <Link to="/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/curriculums">Curriculums</Link>
-          </li>
-          <li>
-            <Link to="/courses">Courses</Link>
-          </li>
-          <li>
-            <Link to="/exams">Exams</Link>
-          </li>
-          <li>
-            <Link to="/students">Students</Link>
-          </li>
-        </ul>
-      </nav>
-      <main className="content">{children}</main>
+    <div className="layout-container">
+      {/* Header */}
+      <header className="layout-header">
+        <h1>Computer Education</h1>
+      </header>
+
+      <div className="layout-body">
+        {/* Sidebar */}
+        <Sidebar currentPath={location.pathname} />
+        {/* Main Content */}
+        <div className="content">
+          {children} {/* Use children instead of component */}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="layout-footer">
+        <p>© 2024 MCQ Management Application.</p>
+      </footer>
     </div>
   );
 };

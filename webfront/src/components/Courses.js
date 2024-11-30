@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import CourseDetails from "./CourseDetails"; // Adjust the import based on your folder structure
+import React, { useState, useEffect } from "react";
+import Exams from "./Exams"; // Import the Exams component
+import "./Courses.css"; // Import the CSS file
 
 const initialCourses = [
   { name: "Typing", curriculum: "1-4 class" },
@@ -10,75 +10,116 @@ const initialCourses = [
   { name: "Python", curriculum: "8-10 class" },
 ];
 
-const styles = {
-  courses: {
-    backgroundColor: "#f5f5f5", // Light gray background
-    padding: "20px", // Space around the content
-    borderRadius: "10px", // Rounded corners
-    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
-  },
-  header: {
-    color: "#333", // Dark text for the heading
-    marginBottom: "15px", // Space below the heading
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-    marginTop: "10px",
-  },
-  th: {
-    border: "1px solid #ddd",
-    padding: "8px",
-    backgroundColor: "#e0e0e0", // Header background color
-  },
-  td: {
-    border: "1px solid #ddd",
-    padding: "8px",
-    cursor: "pointer", // Change cursor to pointer on hover
-    transition: "background-color 0.3s ease", // Smooth background color transition
-  },
-};
+function Courses({ curriculum }) {
+  const [courses, setCourses] = useState(initialCourses);
+  const [newCourseName, setNewCourseName] = useState("");
+  const [newCourseCurriculum, setNewCourseCurriculum] = useState("");
+  const [selectedExamsCourse, setSelectedExamsCourse] = useState(null); // State to hold the course for showing exams
 
-function Courses() {
-  const { curriculumName } = useParams(); // Get the curriculum name from the URL
-  const [selectedCourse, setSelectedCourse] = useState(null);
+  // Load courses from localStorage on component mount
+  useEffect(() => {
+    const storedCourses = JSON.parse(localStorage.getItem("courses"));
+    if (storedCourses) {
+      setCourses(storedCourses);
+    }
+  }, []);
+
+  // Update localStorage whenever the courses state changes
+  useEffect(() => {
+    localStorage.setItem("courses", JSON.stringify(courses));
+  }, [courses]);
 
   // Filter courses based on the selected curriculum
-  const filteredCourses = initialCourses.filter(
-    (course) => course.curriculum === curriculumName
-  );
+  const filteredCourses = curriculum
+    ? courses.filter((course) => course.curriculum === curriculum)
+    : courses; // Show all courses if no curriculum is selected
 
-  const handleCourseSelect = (courseName) => {
-    setSelectedCourse(courseName); // Set the selected course
+  // Function to handle adding a new course
+  const handleAddCourse = (e) => {
+    e.preventDefault(); // Prevent form submission from refreshing the page
+    const trimmedCourseName = newCourseName.trim();
+    const trimmedCourseCurriculum = newCourseCurriculum.trim();
+    if (
+      trimmedCourseName &&
+      trimmedCourseCurriculum &&
+      !courses.some(
+        (course) =>
+          course.name === trimmedCourseName &&
+          course.curriculum === trimmedCourseCurriculum
+      )
+    ) {
+      const newCourse = {
+        name: trimmedCourseName,
+        curriculum: trimmedCourseCurriculum,
+      };
+      setCourses((prevCourses) => [...prevCourses, newCourse]); // Add the new course
+      setNewCourseName(""); // Clear the input fields
+      setNewCourseCurriculum(""); // Clear the curriculum input
+    } else {
+      alert("Course already exists or input fields are empty!");
+    }
+  };
+
+  // Function to handle the "Take Exam" button click
+  const handleTakeExam = (courseName) => {
+    setSelectedExamsCourse(courseName); // Set the selected course for showing exams
   };
 
   return (
-    <div style={styles.courses}>
-      <h2 style={styles.header}>Courses for Curriculum: {curriculumName}</h2>
-      <table style={styles.table}>
+    <div className="courses">
+      <h2>Courses for Curriculum {curriculum || "All"}</h2>
+      <table>
         <thead>
           <tr>
-            <th style={styles.th}>Course Name</th>
+            <th>Course Name</th>
+            <th>Curriculum</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {filteredCourses.length > 0 ? (
             filteredCourses.map((course, index) => (
-              <tr key={index} onClick={() => handleCourseSelect(course.name)}>
-                <td style={styles.td}>{course.name}</td>
+              <tr key={index}>
+                <td>{course.name}</td>
+                <td>{course.curriculum}</td>
+                <td>
+                  <button onClick={() => handleTakeExam(course.name)}>
+                    Take Exam
+                  </button>
+                </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td style={styles.td}>
-                No courses available for this curriculum.
-              </td>
+              <td colSpan="3">No courses available for this curriculum.</td>
             </tr>
           )}
         </tbody>
       </table>
 
-      {selectedCourse && <CourseDetails course={selectedCourse} />}
+      {/* Show add course form only when no curriculum is selected */}
+      {!curriculum && (
+        <form onSubmit={handleAddCourse} className="add-course-form">
+          <input
+            type="text"
+            value={newCourseName}
+            onChange={(e) => setNewCourseName(e.target.value)}
+            placeholder="Course Name"
+            required
+          />
+          <input
+            type="text"
+            value={newCourseCurriculum}
+            onChange={(e) => setNewCourseCurriculum(e.target.value)}
+            placeholder="Curriculum (e.g., 1-4 class)"
+            required
+          />
+          <button type="submit">Add Course</button>
+        </form>
+      )}
+
+      {/* Render Exams component if a course is selected for taking exams */}
+      {selectedExamsCourse && <Exams course={selectedExamsCourse} />}
     </div>
   );
 }

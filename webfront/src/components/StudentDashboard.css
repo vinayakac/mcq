@@ -1,0 +1,57 @@
+/* src/components/StudentDashboard.css */
+
+.student-dashboard {
+  display: flex;
+  height: 100vh; /* Full height of the viewport */
+}
+
+.student-sidebar {
+  width: 250px; /* Fixed width for sidebar */
+  background-color: lightblue; /* Light blue background */
+  color: maroon;
+  padding: 20px;
+  font-size: 18px;
+}
+
+.student-sidebar h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 26px;
+  text-decoration: underline;
+}
+
+.student-sidebar ul {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0;
+}
+
+.student-sidebar li {
+  margin: 15px 0; /* Space between links */
+}
+
+.student-sidebar a {
+  background-color: #ffffff; /* White background for links */
+  color: black; /* Link color */
+  text-decoration: none; /* Remove underline */
+  display: block; /* Make link fill the entire area */
+  padding: 10px; /* Padding inside the link */
+  border-radius: 8px; /* Match the rounded corners of the box */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.student-sidebar a:hover {
+  background-color: lightskyblue; /* Change background on hover */
+  color: black; /* Keep text color the same */
+}
+
+.student-sidebar a.active {
+  background-color: #3498db; /* Background color for active link */
+  color: white; /* Text color for active link */
+  font-weight: bold; /* Bold font for active link */
+}
+
+.student-content {
+  flex: 1; /* Take remaining space */
+  padding: 20px; /* Space inside content area */
+  background-color: #ecf0f1; /* Light gray background for content */
+}

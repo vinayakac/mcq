@@ -1,183 +1,137 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import mcqData from "../data/mcqData"; // Import the MCQ data
+import mcqData from "../data/mcqData"; // Import your MCQ data
+import "./McqExam.css"; // Import the CSS file for styling
 
 function McqExam() {
   const { exam } = useParams(); // Get the exam name from the URL parameters
+  const questions = mcqData[exam] || []; // Get questions for the specific exam
 
-  // Wrap questions in useMemo to avoid unnecessary re-renders
-  const questions = useMemo(() => mcqData[exam] || [], [exam]);
+  // State variables
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [score, setScore] = useState(null);
+  const [results, setResults] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(150);
+  const [showAnswers, setShowAnswers] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
+  const [timerId, setTimerId] = useState(null); // State for timer ID
 
-  const [selectedAnswers, setSelectedAnswers] = useState({}); // To store selected answers
-  const [score, setScore] = useState(null); // To store the score after submission
-  const [results, setResults] = useState([]); // To store results for each question
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // To track the current question
-  const [timeLeft, setTimeLeft] = useState(180); // 3 minutes in seconds
-  const [isTimeUp, setIsTimeUp] = useState(false); // Flag to check if time is up
-
-  const handleSubmit = useCallback(
-    (e) => {
-      if (e) e.preventDefault();
-
-      let totalScore = 0;
-      const newResults = questions.map((questionData, index) => {
-        const isCorrect = selectedAnswers[index] === questionData.answer;
-        if (isCorrect) totalScore += 1;
-        return { questionData, isCorrect }; // Store the question data and if it's correct
-      });
-      setScore(totalScore); // Set the final score
-      setResults(newResults); // Store the results
-      setIsTimeUp(true); // Set time up flag to true
-      setTimeLeft(0); // Stop the timer
-    },
-    [questions, selectedAnswers]
-  );
-
-  // Handle countdown timer
+  // Countdown timer effect
   useEffect(() => {
-    if (timeLeft <= 0) {
-      if (!isTimeUp) {
-        setIsTimeUp(true);
-        handleSubmit(); // Automatically submit if time is up
-      }
-      return;
+    if (timeLeft > 0) {
+      const id = setTimeout(() => setTimeLeft((prev) => prev - 1), 1000);
+      setTimerId(id); // Store timer ID
+      return () => clearTimeout(id);
+    } else {
+      handleSubmit();
     }
+  }, [timeLeft]);
 
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [timeLeft, handleSubmit, isTimeUp]);
-
+  // Handle answer selection
   const handleChange = (questionIndex, selectedOption) => {
     setSelectedAnswers((prev) => ({
       ...prev,
       [questionIndex]: selectedOption,
     }));
+    setErrorMessage(""); // Clear error message when selecting an option
   };
 
+  // Move to the next question
   const handleNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    const selectedOption = selectedAnswers[currentQuestionIndex];
+    if (!selectedOption) {
+      setErrorMessage("Please select an answer before proceeding."); // Set error message
+      return;
     }
+    setCurrentQuestionIndex((prevIndex) =>
+      Math.min(prevIndex + 1, questions.length - 1)
+    );
+    setErrorMessage(""); // Clear error message if answer is selected
   };
 
+  // Move to the previous question
   const handlePreviousQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
-    }
+    setCurrentQuestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    setErrorMessage(""); // Clear error message
   };
 
-  const styles = {
-    container: {
-      backgroundColor: "#f0f8ff",
-      padding: "20px",
-      borderRadius: "8px",
-      fontFamily: "Arial, sans-serif",
-      maxWidth: "600px",
-      margin: "auto",
-      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-      color: "blue",
-    },
-    question: {
-      marginBottom: "20px",
-      fontSize: "18px",
-      fontWeight: "bold",
-      color: "black",
-    },
-    ul: {
-      listStyleType: "none",
-      padding: 0,
-    },
-    li: {
-      margin: "5px 0",
-    },
-    button: {
-      marginTop: "20px",
-      padding: "10px 15px",
-      fontSize: "16px",
-      backgroundColor: "#007bff",
-      color: "#fff",
-      border: "none",
-      borderRadius: "5px",
-      cursor: "pointer",
-      transition: "background-color 0.3s",
-    },
-    correct: {
-      color: "green", // Green for correct answers
-    },
-    incorrect: {
-      color: "red", // Red for incorrect answers
-    },
-    timer: {
-      color: timeLeft <= 30 ? "red" : "green", // Change to red when less than 30 seconds left
-      fontWeight: "bold",
-    },
-    timeTaken: {
-      color: "pink", // Pink for time taken
-    },
-    timeUp: {
-      color: "orange", // Orange for time up message
-      fontWeight: "bold",
-    },
-    score: {
-      color: "purple", // Purple for score message
-      fontWeight: "bold",
-    },
+  // Handle form submission
+  const handleSubmit = (e) => {
+    if (e) e.preventDefault();
+
+    // Clear the timer
+    clearTimeout(timerId);
+    setTimeLeft(0); // Optional: Set time left to 0 if you want to show that time is up
+
+    const newResults = questions.map((questionData, index) => {
+      const isCorrect = selectedAnswers[index] === questionData.answer;
+      return { ...questionData, isCorrect, selected: selectedAnswers[index] };
+    });
+
+    const totalScore = newResults.filter((result) => result.isCorrect).length; // Calculate total score
+    setScore(totalScore);
+    setResults(newResults);
+  };
+
+  // Format time for display
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
+
+  // Toggle answers visibility
+  const toggleShowAnswers = () => {
+    setShowAnswers((prev) => !prev);
   };
 
   return (
-    <div style={styles.container}>
-      <h1>{exam} Questions</h1>
-      <p style={styles.timer}>
-        Time Left: {Math.floor(timeLeft / 60)}:
-        {String(timeLeft % 60).padStart(2, "0")}
-      </p>
+    <div className="mcq-exam-container">
+      <h1 className="exam-title">{exam} Paper</h1>
+      <div className="timer">
+        Time Left: <span>{formatTime(timeLeft)}</span>
+      </div>
+
       {questions.length > 0 ? (
         <>
-          <form onSubmit={handleSubmit}>
-            <div style={styles.question}>
-              <p>
+          <form onSubmit={handleSubmit} className="question-form">
+            <div className="question-card">
+              <p className="question-text">
                 Question {currentQuestionIndex + 1}/{questions.length}:{" "}
                 {questions[currentQuestionIndex].question}
               </p>
-              <ul style={styles.ul}>
+              <ul className="options-list">
                 {questions[currentQuestionIndex].options.map(
                   (option, optionIndex) => {
-                    const userAnswer = selectedAnswers[currentQuestionIndex];
-                    const isCorrect = results[currentQuestionIndex]?.isCorrect;
-                    let optionStyle = {}; // Default style
+                    const result = results[currentQuestionIndex];
+                    let optionClass = "";
 
-                    // Determine the style based on user answer and correctness
-                    if (userAnswer === option) {
-                      optionStyle =
-                        styles[
-                          userAnswer === option
-                            ? isCorrect
-                              ? "correct"
-                              : "incorrect"
-                            : ""
-                        ];
-                    } else if (
-                      isCorrect === false &&
-                      option === questions[currentQuestionIndex].answer
-                    ) {
-                      optionStyle = styles.correct; // Show the correct answer
+                    if (result) {
+                      if (option === result.answer) {
+                        optionClass = "option-correct";
+                      } else if (option === result.selected) {
+                        optionClass = "option-wrong";
+                      }
                     }
 
                     return (
-                      <li key={optionIndex} style={optionStyle}>
+                      <li
+                        key={optionIndex}
+                        className={"option-item ${optionClass}"}
+                      >
                         <label>
                           <input
                             type="radio"
-                            name={`question-${currentQuestionIndex}`} // Group by question index
+                            name={"question-${currentQuestionIndex}"}
                             value={option}
-                            checked={userAnswer === option} // Check if this option is selected
+                            checked={
+                              selectedAnswers[currentQuestionIndex] === option
+                            }
                             onChange={() =>
                               handleChange(currentQuestionIndex, option)
-                            } // Handle answer selection
-                            disabled={score !== null || isTimeUp} // Disable radio buttons after submission or if time is up
+                            }
+                            disabled={score !== null}
                           />
                           {option}
                         </label>
@@ -188,84 +142,66 @@ function McqExam() {
               </ul>
             </div>
 
-            {/* Show buttons for navigation */}
-            <div
-              style={{
-                marginTop: "20px",
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              {/* Previous Question Button */}
-              {currentQuestionIndex > 0 && (
+            {/* Display error message */}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+            {/* Navigation Buttons */}
+            <div className="navigation-buttons">
+              {currentQuestionIndex > 0 && ( // Show previous button if not on first question
                 <button
-                  style={styles.button}
                   type="button"
+                  className="btn-previous"
                   onClick={handlePreviousQuestion}
-                  disabled={isTimeUp} // Disable if time is up
                 >
                   Previous Question
                 </button>
               )}
-
-              {/* Add a gap here */}
-              <div style={{ width: "20px" }}></div>
-
-              {/* Next Question Button */}
               {currentQuestionIndex < questions.length - 1 && (
                 <button
-                  style={styles.button}
                   type="button"
+                  className="btn-next"
                   onClick={handleNextQuestion}
-                  disabled={isTimeUp} // Disable button if time is up
                 >
                   Next Question
                 </button>
               )}
+              {currentQuestionIndex === questions.length - 1 && (
+                <button type="submit" className="btn-submit">
+                  Submit Answers
+                </button>
+              )}
             </div>
-            {/* Show "Submit Answers" button if on the last question */}
-            {currentQuestionIndex === questions.length - 1 && (
-              <button style={styles.button} type="submit" disabled={isTimeUp}>
-                Submit Answers
-              </button>
-            )}
           </form>
 
+          {/* Display score and results */}
           {score !== null && (
-            <div>
-              <h2 style={styles.score}>
+            <div className="score-section">
+              <h2>
                 Your Score: {score}/{questions.length}
               </h2>
-              <h3>Results:</h3>
-              <ul style={styles.ul}>
-                {results.map((result, index) => (
-                  <li key={index}>
-                    <strong>{result.questionData.question}</strong>:{" "}
-                    <span
-                      style={
-                        result.isCorrect ? styles.correct : styles.incorrect
-                      }
+              <button onClick={toggleShowAnswers} className="btn-view-answers">
+                {showAnswers ? "Hide Answers" : "View Answers"}
+              </button>
+              {showAnswers && (
+                <ul className="results-list">
+                  {results.map((result, index) => (
+                    <li
+                      key={index}
+                      className={result.isCorrect ? "correct" : "incorrect"}
                     >
-                      {result.isCorrect
-                        ? "Correct"
-                        : `Incorrect (Correct answer: ${result.questionData.answer})`}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <h3 style={styles.timeTaken}>
-                Time Taken: {180 - timeLeft} seconds
-              </h3>
+                      Q{index + 1}: {result.question} -{" "}
+                      {result.isCorrect ? "Correct" : "Wrong"} (Your Answer:{" "}
+                      {result.selected || "Not Answered"})<br />
+                      <strong>Correct Answer: {result.answer}</strong>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
-          )}
-          {isTimeUp && (
-            <h2 style={styles.timeUp}>
-              Time is up! Your Score: {score}/{questions.length}
-            </h2>
           )}
         </>
       ) : (
-        <p>No questions available for this exam.</p>
+        <p className="no-questions">No questions available for this exam.</p>
       )}
     </div>
   );

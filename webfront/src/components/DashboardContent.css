@@ -1,0 +1,27 @@
+/* DashboardContent.css */
+
+.dashboard-content {
+    background-color: #f0f4f8; /* Light background color */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px; /* Inner spacing */
+    max-width: 1000px; /* Limit width for better readability */
+    margin: 20px auto; /* Center align the content */
+    text-align: center; /* Center text */
+  }
+  
+  .dashboard-content h2 {
+    color: #333; /* Dark text color */
+    font-family: 'Arial', sans-serif; /* Clean font */
+    font-size: 2.8em; /* Bigger font size for the heading */
+    margin-bottom: 600px; /* Space below the heading */
+    text-decoration: underline;
+    font-weight: bold;
+  }
+  
+  .dashboard-content p {
+    color: #666; /* Lighter text color for the paragraph */
+    font-size: 1.2em; /* Slightly larger font size */
+    line-height: 1.5; /* Improved line spacing */
+  }
+  

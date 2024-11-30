@@ -99,7 +99,7 @@ function Students() {
 
   return (
     <div className="students">
-      <h2>All Students</h2>
+      <h2 className="underline">All Students</h2>
 
       <input
         type="text"
@@ -192,15 +192,27 @@ function Students() {
       <style jsx>{`
         .students {
           padding: 20px;
-          background-color: #f9f9f9; /* Change to your preferred background color */
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+          text-align: center;
+          color: maroon;
+        }
+
+        .underline {
+          text-decoration: underline; /* Add underline to the heading */
         }
 
         .search-bar {
-          padding: 8px;
+          padding: 10px;
           margin-bottom: 20px;
           width: 100%;
           border: 1px solid #ccc;
           border-radius: 4px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         table {
@@ -212,45 +224,63 @@ function Students() {
         th,
         td {
           border: 1px solid #ddd;
-          padding: 8px;
+          padding: 10px;
           text-align: left;
         }
 
         th {
-          background-color: #e0e0e0; /* Change to your preferred header color */
+          background-color: paleturquoise;
+          color: black;
         }
 
         tr:nth-child(even) {
-          background-color: #f2f2f2; /* Change the background color for even rows */
+          background-color: #f2f2f2;
+        }
+
+        tr:hover {
+          background-color: #e0e0e0;
         }
 
         .add-student-form {
           display: flex;
           flex-wrap: wrap;
           gap: 10px;
+          padding: 20px;
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .add-student-form input {
-          padding: 8px;
+          padding: 10px;
           flex: 1;
           border: 1px solid #ccc;
           border-radius: 4px;
+          transition: border-color 0.3s;
+        }
+
+        .add-student-form input:focus {
+          border-color: #4caf50;
+          outline: none;
         }
 
         .add-student-form button {
-          padding: 8px 12px;
+          padding: 10px 15px;
           border: none;
-          background-color: #4caf50; /* Change button color */
-          color: white;
+          background-color: turquoise;
+          color: black;
           border-radius: 4px;
           cursor: pointer;
+          transition: background-color 0.3s;
         }
 
         .add-student-form button:hover {
-          background-color: #45a049; /* Darker button color on hover */
+          background-color: #45a049;
         }
-        tr:hover {
-          background-color: #ddd; /* Change row hover color */
+
+        .highlight {
+          font-weight: bold;
+          color: black;
         }
       `}</style>
     </div>

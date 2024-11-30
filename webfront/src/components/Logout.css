@@ -1,0 +1,38 @@
+/* Logout.css */
+
+.logout-container {
+    max-width: 400px; /* Maximum width for the container */
+    margin: auto; /* Center the container */
+    padding: 20px; /* Padding inside the container */
+    background-color: #f9f9f9; /* Light background color */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    text-align: center; /* Center text */
+  }
+  
+  .logout-container h2 {
+    color: #333; /* Darker text color for heading */
+    margin-bottom: 10px; /* Space below heading */
+  }
+  
+  .logout-container p {
+    color: #555; /* Slightly lighter text for paragraph */
+    margin-bottom: 20px; /* Space below paragraph */
+  }
+  
+  .logout-container button {
+    padding: 10px 15px; /* Button padding */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover */
+  }
+  
+  .logout-container button:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  

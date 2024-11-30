@@ -1,57 +1,120 @@
-/* src/components/Courses.css */
-.dashboard {
-  display: flex; /* Use flexbox for layout */
-  height: 100vh; /* Full height of the viewport */
+
+.courses {
+  background-color: white; /* Light cyan background */
+  padding: 20px; /* Space around the content */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* More pronounced shadow for depth */
+  transition: background-color 0.3s; /* Smooth transition for background color */
 }
 
-.sidebar {
-  width: 250px; /* Fixed width for the sidebar */
-  flex-shrink: 0; /* Prevent shrinking */
-  background-color: #f0f0f0; /* Light background for the sidebar */
-  padding: 20px; /* Padding for the sidebar */
+.courses:hover {
+  background-color: white; /* Darker cyan on hover */
 }
 
-.main-content {
-  flex-grow: 1; /* Fill the remaining space */
-  padding: 20px;
-  overflow-y: auto; /* Allow scrolling if content exceeds the view */
+.courses h2 {
+  text-decoration: underline;
+  color:maroon; /* Dark teal text for the heading */
+  margin-bottom: 15px; /* Space below the heading */
+  font-family: "Georgia", serif; /* Elegant font for heading */
+  font-size: 1.75rem; /* Larger heading */
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); /* Soft text shadow */
 }
 
-.course-list {
-  font-family: Arial, sans-serif;
-  text-align: center;
+.courses table {
+  width: 100%; /* Full width for the table */
+  border-collapse: collapse; /* Collapse borders for a cleaner look */
+  margin-top: 10px; /* Space above the table */
 }
 
-.course-list h1 {
-  margin-bottom: 20px;
+.courses th {
+  background-color: paleturquoise; /* Teal for header background */
+  color: black; /* White text for header */
+  padding: 12px; /* Space inside header cells */
+  text-align: center; /* Align text to the left */
+  font-size: 1.1rem; /* Slightly larger font for headers */
+  border-bottom: 2px solid #004d40; /* Darker bottom border for header */
 }
 
-.course-cards {
-  display: block; /* Change to block for vertical layout */
-  margin: 0 auto; /* Center the course cards */
+.courses td {
+  border: 1px solid #b2dfdb; /* Light teal border */
+  padding: 15px; /* Space inside each cell */
+  text-align: left; /* Left align text */
+  background-color: #ffffff; /* White background for table cells */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
-.course-card {
-  background-color: #f9f9f9; /* Light gray background for course cards */
-  border: 1px solid #ddd; /* Light gray border */
-  border-radius: 5px; /* Rounded corners */
-  padding: 20px; /* Spacing inside the card */
-  margin: 10px 0; /* Margin for vertical spacing */
-  min-width: 200px; /* Minimum width for the card */
-  text-align: left; /* Align text to the left */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+.courses td:hover {
+  background-color: #e0f7fa; /* Light cyan on cell hover */
 }
 
-.exam-button {
-  background-color: #4caf50; /* Green background for the button */
-  color: white; /* White text color */
-  border: none; /* Remove border */
-  border-radius: 5px; /* Rounded corners */
-  padding: 10px 15px; /* Padding for the button */
+.courses tr:hover {
+  background-color: #b2ebf2; /* Light cyan on row hover */
+}
+
+.courses tr.selected-course {
+  background-color: #004d40; /* Darker teal background for the selected course */
+  color: red; /* White text color for selected course */
+  font-weight: bold; /* Bold text for selected course */
+}
+
+.add-course-form {
+  margin-top: 20px; /* Space above the add course form */
+  display: flex; /* Flexbox for alignment */
+  align-items: center; /* Vertically center items */
+}
+
+.add-course-form input {
+  height: 50px;
+  margin-right: 10px; /* Space between input fields */
+  padding: 8px; /* Padding inside input fields */
+  border: 1px solid #00796b; /* Teal border for input fields */
+  border-radius: 5px; /* Rounded corners for input fields */
+  width: 250px; /* Fixed width for input fields */
+  transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+.add-course-form input:focus {
+  border-color: #004d40; /* Darker teal border on focus */
+  outline: none; /* Remove outline */
+}
+
+.course-details {
+  margin-top: 20px; /* Space between course list and exam details */
+  padding: 15px; /* Space inside the course details section */
+  background-color: #ffffff; /* White background for details section */
+  border: 1px solid #ddd; /* Light gray border around details */
+  border-radius: 8px; /* Rounded corners for details section */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.course-details h3 {
+  margin-top: 0; /* No margin above the details heading */
+  color: #005662; /* Dark teal text for details heading */
+}
+
+.course-details p {
+  color: #666; /* Slightly lighter color for details text */
+  line-height: 1.5; /* Increased line height for readability */
+}
+.add-course-form button {
+  margin-top: 1px;
+  padding: 10px 15px; /* Vertical and horizontal padding for the button */
+  border: none; /* No border for button */
+  border-radius: 5px; /* Rounded corners for button */
+  background-color: turquoise; /* Teal background for button */
+  color: black; /* White text color for button */
   cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Transition for hover effect */
+  height: 50px; /* Set height to ensure it's uniform with the input field */
+  font-size: 1rem; /* Font size for button text */
+  transition: background-color 0.3s, transform 0.2s; /* Smooth transition for background color and transform */
 }
 
-.exam-button:hover {
-  background-color: #45a049; /* Darker green on hover */
+.add-course-form button:hover {
+  background-color: #004d40; /* Darker teal on hover */
+  transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+.add-course-form button:focus {
+  outline: none; /* Remove outline on focus */
 }

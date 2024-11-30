@@ -1,32 +1,49 @@
-/* src/components/Sidebar.css */
-.sidebar {
-  width: 200px; /* Set width for sidebar */
-  background-color: #f4f4f4; /* Background color */
-  padding: 20px; /* Padding */
-  border-right: 1px solid #ddd; /* Right border */
-  height: 100vh; /* Full height */
+/* src/components/DashboardContent.css */
+
+.dashboard-content {
+  background-color: #f9f9f9; /* Match the sidebar background color */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  padding: 20px; /* Padding for spacing */
+  margin: 20px auto; /* Center the component */
+  max-width: 600px; /* Limit the width for better layout */
 }
 
-.sidebar h2 {
-  margin: 0 0 15px; /* Margin for heading */
+.dashboard-content h2 {
+  color: #34495e; /* Darker color for header to match sidebar text */
+  font-size: 2rem; /* Increased font size */
+  margin-bottom: 10px; /* Space below the heading */
+  text-transform: capitalize; /* Capitalize for emphasis */
+  font-weight: normal; /* Ensure it's not bold */
 }
 
-.button-container {
-  display: flex; /* Flexbox for buttons */
-  flex-direction: column; /* Stack buttons vertically */
+.dashboard-content p {
+  color: #34495e; /* Darker text color for paragraphs */
+  line-height: 1.6; /* Improved line height for readability */
+  font-size: 1rem; /* Standard font size */
 }
 
-.curriculum-button {
-  margin: 10px 0; /* Spacing between buttons */
-  padding: 10px; /* Padding for buttons */
-  border: none; /* Remove default border */
-  background-color: #007bff; /* Button color */
-  color: white; /* Button text color */
-  cursor: pointer; /* Pointer cursor on hover */
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s; /* Smooth transition */
+.dashboard-content ul {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove padding */
 }
 
-.curriculum-button:hover {
-  background-color: #0056b3; /* Darker shade on hover */
+.dashboard-content ul li {
+  background: #ecf0f1; /* Light gray background for list items */
+  border-radius: 5px; /* Rounded corners for list items */
+  margin: 10px 0; /* Space between list items */
+  padding: 10px; /* Padding inside list items */
+  font-size: 1rem; /* Standard font size for list items */
+}
+
+.dashboard-content ul li:hover {
+  background: #dfe6e9; /* Darker gray on hover */
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .dashboard-content {
+      margin: 10px; /* Reduce margin on smaller screens */
+      padding: 15px; /* Reduce padding on smaller screens */
+  }
 }
