@@ -139,7 +139,7 @@
   }
   .navigation-buttons {
     display: flex;
-    gap: 500px; /* Adjust this value to increase/decrease space between buttons */
+    gap: 500px; 
   }
   
   .btn-previous,
